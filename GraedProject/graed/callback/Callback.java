@@ -23,4 +23,5 @@ public interface Callback extends Remote {
 	public void notify( Object o, int cause )  throws RemoteException ;
 	public Object getSource() throws RemoteException ;
 	public int getCause() throws RemoteException ;
+	public void init() throws RemoteException;
 }

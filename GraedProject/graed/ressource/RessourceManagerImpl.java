@@ -100,7 +100,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     public void deleteRessource(RessourceInterface r) throws RemoteException {
         try {
             dbm.delete(r);
-            fireRessourceDeleted( new RessourceEvent(r));
+            fireRessourceDeleted( r);
         } catch (DataBaseException e) {
         	throw new RemoteException(e.getMessage());
         }
@@ -112,14 +112,14 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     public void updateRessource(RessourceInterface r) throws RemoteException {
         try {
             dbm.update(r);
-            fireRessourceUpdated( new RessourceEvent(r));
+            fireRessourceUpdated( r);
         } catch (DataBaseException e) {
             throw (RemoteException)new RemoteException().initCause(e);
         }
     }
     
     
-   protected void fireRessourceDeleted( RessourceEvent re  ) {
+   protected void fireRessourceDeleted( RessourceInterface re  ) {
        for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
            try {
 			((Callback)i.next()).notify(re, Callback.DELETE);
@@ -129,7 +129,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
        }
    }
    
-   protected void fireRessourceUpdated( RessourceEvent re  ) {
+   protected void fireRessourceUpdated( RessourceInterface re  ) {
    	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
         try {
 			((Callback)i.next()).notify(re, Callback.UPDATE);
@@ -185,5 +185,12 @@ public RessourceInterface createRessource(Class type) throws RemoteException {
 		e.printStackTrace();
 		throw new RemoteException(e.getMessage());
 	}
+}
+
+/* (non-Javadoc)
+ * @see graed.ressource.RessourceManager#unregister(graed.callback.Callback)
+ */
+public void unregister(Callback c) throws RemoteException {
+	toBeNotified.remove(c);
 }
 }

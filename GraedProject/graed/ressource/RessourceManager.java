@@ -44,6 +44,8 @@ public interface RessourceManager extends Remote{
      * @throws RemoteException
      */
     public void registerForNotification( Callback c ) throws RemoteException;
+    public void unregister( Callback c ) throws RemoteException;
+    
     /**
      * Returns the availables types for ressources.
      * @return An array containing all types.

@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<project name="Graed" default="jar" basedir=".">
+<project name="Graed" default="compile" basedir=".">
 
 <property name="src" value="graed"/>
 <property name="build" value="build"/>
@@ -24,11 +24,11 @@
 	</copy>
 	
 	<!-- Ajout des librairies externes utilisées -->
-	<unjar dest="${build}">
+	<!--<unjar dest="${build}">
 		<fileset dir="${lib}">
 			<include name="**/*.jar"/>
 		</fileset>
-	</unjar>
+	</unjar>-->
 	
 </target>
 

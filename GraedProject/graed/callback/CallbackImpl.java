@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public class CallbackImpl implements Callback {
+public class CallbackImpl implements Callback{
 	private Object o;
 	private int cause;
 	
@@ -24,9 +24,10 @@ public class CallbackImpl implements Callback {
 	}
 	
 	public void notify(Object o, int cause) throws RemoteException {
+		System.out.println("Notified");
 		this.o = o;
 		this.cause = cause;
-		notify();
+		//notify();
 	}
 
 	/* (non-Javadoc)
@@ -42,4 +43,14 @@ public class CallbackImpl implements Callback {
 	public int getCause() throws RemoteException {
 		return cause;
 	}
+
+	/* (non-Javadoc)
+	 * @see graed.callback.Callback#init()
+	 */
+	public void init() throws RemoteException {
+		o=null;
+		cause = -1;
+		
+	}
+	
 }

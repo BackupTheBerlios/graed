@@ -8,6 +8,7 @@ package graed.client;
 
 import graed.callback.Callback;
 import graed.callback.CallbackImpl;
+import graed.callback.CallbackThread;
 import graed.indisponibilite.IndisponibiliteManager;
 import graed.ressource.RessourceManager;
 import graed.ressource.type.TeacherInterface;
@@ -55,27 +56,23 @@ public class Client {
 	}
 	
 	public static void main(String[] args) throws RemoteException {
+		CallbackThread t = new CallbackThread();
+		
+		t.start();
+		
 		IndisponibiliteManager im = Client.getIndisponibiliteManager();
 		TeacherInterface ti = (TeacherInterface)Client.getRessourceManager().createRessource("Professeur");
 		ti.setName("Forax");
+		ti.setFirstName("Rémi");
+		ti.setEmail("forax@univ-mlv.fr");
+		Client.getRessourceManager().addRessource(ti);
+		
 		Collection c = Client.getRessourceManager().getRessources(ti);
+		
 		System.out.println(c);
-		//TeacherInterface tic = (TeacherInterface)c.iterator().next();
-		//rm.deleteRessource(tic);
-		final Callback ca = new CallbackImpl();
-		UnicastRemoteObject.exportObject(ca);
-		Client.getRessourceManager().registerForNotification(ca);
-		Thread t = new Thread() {
-			public void run() {
-				synchronized(ca) {
-					try {
-						System.out.println(ca.getSource()+" "+ca.getSource());
-					} catch (RemoteException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		};
-		t.start();
+		TeacherInterface tic = (TeacherInterface)c.iterator().next();
+		rm.deleteRessource(tic);
+		
+		t.stopThread();
 	}
 }
