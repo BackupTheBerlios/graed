@@ -293,7 +293,8 @@ protected JButton search(){
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
 			
-			System.out.println("List:"+l);			
+			System.out.println("List:"+l);	
+			new ListTeacherWindow(l).OpenWindow();
 			System.exit(0);
 		}		
 	});
