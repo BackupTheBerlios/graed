@@ -91,6 +91,11 @@ public class CreateMainFrame {
 	private int start=8;
 	private int stop=15;
 	
+	/* ************************* */
+	/* Droits de l'utilisateur   */
+	/* ************************* */
+	
+	
 	/**
 	 * Constructeur
 	 * @return
@@ -110,7 +115,7 @@ public class CreateMainFrame {
 	    debut=null;
 		fin=null;
 	    
-		//Subject subj = null;
+		Subject subj = null;
 		
 		/*try{
 		fin=null;	    

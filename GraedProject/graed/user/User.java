@@ -203,8 +203,13 @@ public class User extends UnicastRemoteObject implements UserInterface{
      * @see graed.user.UserInterface#control()
      */
     public String control() throws RemoteException{
-        // TODO Auto-generated method stub
-        return null;
+    	if(name==null || name.equals(""))return "Veuillez renseigner le nom de l'utilisateur";
+		if(firstName==null || firstName.equals(""))return "Veuillez renseigner le prénom de l'utilisateur";
+		if(login==null || login.equals(""))return "Veuillez renseigner le login de l'utilisateur";
+		if(password==null || password.equals(""))return "Veuillez renseigner le mot de passe de l'utilisateur";
+		if(fonction==null || fonction.equals(""))return "Veuillez renseigner le rôle de l'utilisateur";
+		if(email==null || email.equals(""))return "Veuillez renseigner le courriel de l'utilisateur";
+		return null;
     }
     
     public static String encodePassword(String password) throws NoSuchAlgorithmException{
