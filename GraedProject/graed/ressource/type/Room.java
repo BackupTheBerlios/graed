@@ -92,4 +92,16 @@ public class Room extends Ressource {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+	/**
+	 * @return Returns the id.
+	 */
+	public String getId() {
+		return id;
+	}
+	/**
+	 * @param id The id to set.
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
 }
