@@ -12,7 +12,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -209,6 +209,11 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	 */
 	public IndisponibiliteInterface createIndisponibilite(Date debut, Date fin, Time hdebut, int duree, String periodicite,
 			String libelle, String type) throws RemoteException {
-		return null;
+		return new Indisponibilite( debut,  fin,  hdebut,  duree,  periodicite,
+				 libelle,  type);
+	}
+	
+	public IndisponibiliteInterface createIndisponibilite() throws RemoteException {
+		return new Indisponibilite();
 	}
 }

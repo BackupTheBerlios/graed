@@ -6,7 +6,7 @@
  */
 package graed.gui.indisponibilite;
 
-import graed.indisponibilite.Indisponibilite;
+import graed.indisponibilite.IndisponibiliteInterface;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,16 +36,16 @@ public abstract class ListIndWindow {
 	 * @param i position de l'indisponibilité
 	 * @return l'indisponibilité à la position i
 	 */
-	public Indisponibilite getInd(int i){
+	public IndisponibiliteInterface getInd(int i){
 		if(i<0)i=0;
-		return (Indisponibilite) list_ind.toArray()[i];
+		return (IndisponibiliteInterface) list_ind.toArray()[i];
 	}
 	/**
 	 * Renvoie l'indisponibilité à la position i
 	 * @param i position de l'indisponibilité
 	 * @return l'indisponibilité à la position i
 	 */
-	public void removeInd(Indisponibilite r){		
+	public void removeInd(IndisponibiliteInterface r){		
 		list_ind.remove(r);
 	}
 	/**

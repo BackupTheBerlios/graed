@@ -4,10 +4,10 @@
  */
 package graed.gui.indisponibilite;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.indisponibilite.Indisponibilite;
-import graed.indisponibilite.IndisponibiliteManagerImpl;
+import graed.indisponibilite.IndisponibiliteInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -54,15 +54,19 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 		int j=0;
 		Object[][]o= new Object[super.size()][8];
 		for (Iterator i=super.getIteractor();i.hasNext();){
-			Indisponibilite t=(Indisponibilite)i.next();
-			o[j][0]=t.getLibelle();
-			o[j][1]=t.getDebut();
-			o[j][2]=t.getFin();
-			o[j][3]=t.getHdebut();
-			o[j][4]=t.getDuree()+"";
-			o[j][5]=t.getPeriodicite();			
-			o[j][6]=t.getType();	
-			o[j][7]=t.getRessources().toString();
+			IndisponibiliteInterface t=(IndisponibiliteInterface)i.next();
+			try {
+				o[j][0]=t.getLibelle();
+				o[j][1]=t.getDebut();
+				o[j][2]=t.getFin();
+				o[j][3]=t.getHdebut();
+				o[j][4]=t.getDuree()+"";
+				o[j][5]=t.getPeriodicite();			
+				o[j][6]=t.getType();	
+				o[j][7]=t.getRessources().toString();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 			j++;
 		}
 		return o;
@@ -105,7 +109,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 		JButton b=new JButton("Consulter");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Indisponibilite t = (Indisponibilite) getInd(table.getSelectedRow());	
+				IndisponibiliteInterface t = (IndisponibiliteInterface) getInd(table.getSelectedRow());	
 				frame.setEnabled(false);
 				try {
 					new IndisponibiliteWindow(InformationWindow.SEE,t).OpenWindow();
@@ -127,7 +131,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 		JButton b=new JButton("Modifier");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Indisponibilite t = (Indisponibilite) getInd(table.getSelectedRow());
+				IndisponibiliteInterface t = (IndisponibiliteInterface) getInd(table.getSelectedRow());
 				frame.setEnabled(false);
 				try {
 					new IndisponibiliteWindow(InformationWindow.MODIFY,t).OpenWindow();
@@ -149,7 +153,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 		JButton b=new JButton("Afficher EDP");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Indisponibilite t = (Indisponibilite) getInd(table.getSelectedRow());
+				IndisponibiliteInterface t = (IndisponibiliteInterface) getInd(table.getSelectedRow());
 				//frame.setEnabled(false);
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",
@@ -167,12 +171,12 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 		JButton b=new JButton("Supprimer");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Indisponibilite t = (Indisponibilite) getInd(table.getSelectedRow());
+				IndisponibiliteInterface t = (IndisponibiliteInterface) getInd(table.getSelectedRow());
 				table.remove(table.getSelectedRow());
 				System.out.println(table);
 				removeInd(t);
 				try {
-					IndisponibiliteManagerImpl.getInstance().deleteIndisponibilite(t);
+					Client.getIndisponibiliteManager().deleteIndisponibilite(t);
 				} catch (RemoteException e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(frame,

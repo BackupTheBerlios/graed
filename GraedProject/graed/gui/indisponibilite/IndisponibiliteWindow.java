@@ -3,14 +3,16 @@
  */
 package graed.gui.indisponibilite;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.IndWindow;
 import graed.gui.factory.SpinnerFactory;
 import graed.gui.model.SpinnerTimeModel;
 import graed.indisponibilite.Indisponibilite;
+import graed.indisponibilite.IndisponibiliteInterface;
 import graed.indisponibilite.IndisponibiliteManagerImpl;
 import graed.ressource.Ressource;
-import graed.ressource.RessourceManagerImpl;
+import graed.ressource.RessourceManager;
 import graed.ressource.event.RessourceEvent;
 
 import java.awt.BorderLayout;
@@ -79,7 +81,7 @@ public class IndisponibiliteWindow extends IndWindow{
      * @param i the indisponibility
      * @throws InvalidStateException
      */
-    public IndisponibiliteWindow(int state, Indisponibilite i) throws InvalidStateException{
+    public IndisponibiliteWindow(int state, IndisponibiliteInterface i) throws InvalidStateException{
     	super(state,i);
     	libelle = new JFormattedTextField();
     	if (state!=IndWindow.SEARCH){
@@ -145,11 +147,11 @@ public class IndisponibiliteWindow extends IndWindow{
     private Object[] fillTypeRess(){
     	Object[] o=null;
 		try {
-			RessourceManagerImpl rmi = RessourceManagerImpl.getInstance();
-			o = rmi.getRessourcesTypes();
+			RessourceManager rm = Client.getRessourceManager();;
+			o = rm.getRessourcesTypes();
 			for (int i=0;i<o.length;++i){
-				ress_found.put(o[i],rmi.getRessourcesByType((String)o[i]));//Collection
-				System.out.println(rmi.getRessourcesByType((String)o[i]));
+				ress_found.put(o[i],rm.getRessourcesByType((String)o[i]));//Collection
+				System.out.println(rm.getRessourcesByType((String)o[i]));
 			}			
 		} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
@@ -307,17 +309,21 @@ public class IndisponibiliteWindow extends IndWindow{
      * @param c constraint
      */
     private void FillComponent(){
-    	libelle.setText(((Indisponibilite) getInformation()).getLibelle());
-    	this.date_debut.setDate(((Indisponibilite) getInformation()).getDebut());
-    	this.date_fin.setDate(((Indisponibilite) getInformation()).getFin());
-    	duree.setValue(new Date(((Indisponibilite) getInformation()).getDuree()*60000-3600000));
-    	this.hdebut.setValue(((Indisponibilite) getInformation()).getHdebut());
-    	this.periodicite.setSelectedItem(((Indisponibilite) getInformation()).getPeriodicite());
-    	this.type.setSelectedItem(((Indisponibilite) getInformation()).getType());
-    	Set s=((Indisponibilite) getInformation()).getRessources();
-    	for(Iterator i=s.iterator();i.hasNext();)
-    		((DefaultListModel)this.select_ress.getModel()).addElement((Ressource)i.next());
     	
+    	try {
+			libelle.setText(((IndisponibiliteInterface) getInformation()).getLibelle());
+		   	this.date_debut.setDate(((IndisponibiliteInterface) getInformation()).getDebut());
+		   	this.date_fin.setDate(((IndisponibiliteInterface) getInformation()).getFin());
+		   	duree.setValue(new Date(((IndisponibiliteInterface) getInformation()).getDuree()*60000-3600000));
+		   	this.hdebut.setValue(((IndisponibiliteInterface) getInformation()).getHdebut());
+		   	this.periodicite.setSelectedItem(((IndisponibiliteInterface) getInformation()).getPeriodicite());
+		   	this.type.setSelectedItem(((IndisponibiliteInterface) getInformation()).getType());
+		   	Set s=((IndisponibiliteInterface) getInformation()).getRessources();
+		   	for(Iterator i=s.iterator();i.hasNext();)
+		   		((DefaultListModel)this.select_ress.getModel()).addElement((Ressource)i.next());
+    	} catch (RemoteException e) {
+			e.printStackTrace();
+		}
     	
     }
     /**
@@ -514,7 +520,7 @@ public class IndisponibiliteWindow extends IndWindow{
      */
     public static void main (String[] args) throws InvalidStateException{
     	try {
-    		Indisponibilite i=new Indisponibilite();
+    		IndisponibiliteInterface i=Client.getIndisponibiliteManager().createIndisponibilite();
     		new IndisponibiliteWindow(IndWindow.SEARCH,i).OpenWindow();
     	} catch (RemoteException e) {
 			e.printStackTrace();

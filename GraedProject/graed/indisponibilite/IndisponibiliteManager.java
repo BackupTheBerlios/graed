@@ -8,7 +8,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.sql.Time;
 import java.util.Collection;
-import java.util.Date;
+import java.sql.Date;
 
 
 /**
@@ -65,6 +65,7 @@ public interface IndisponibiliteManager extends Remote{
      * @throws RemoteException
      */
 	public Collection getIndisponibilites( RessourceInterface r, Date begin, Date end ) throws RemoteException;
+	
 	/**
 	 * Permet aux listener de s'enregister pour être avertis des modifications.
      * @param il Le listener voulant s'enregister.
@@ -73,4 +74,5 @@ public interface IndisponibiliteManager extends Remote{
     public void registerForNotification( IndisponibiliteListener il ) throws RemoteException;
     public IndisponibiliteInterface createIndisponibilite(Date debut, Date fin, Time hdebut, int duree, String periodicite,
 			String libelle, String type) throws RemoteException;
+    public IndisponibiliteInterface createIndisponibilite() throws RemoteException;
 }
