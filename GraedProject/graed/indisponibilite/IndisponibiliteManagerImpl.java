@@ -18,6 +18,7 @@ import java.util.List;
 
 
 import net.sf.hibernate.Criteria;
+import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.expression.Example;
 import net.sf.hibernate.expression.Expression;
 
@@ -107,33 +108,51 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 	       }
 	}
 	
+	protected Criteria getCriteriaBetween( Date begin, Date end ) {
+		return dbm.createCriteria(Indisponibilite.class)
+			.add(Expression.or(
+					Expression.between("debut", begin, end ),
+					Expression.between("fin", begin, end ))
+			);
+	}
+	
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#getIndisponibilitesBetween(java.util.Date, java.util.Date)
 	 */
 	public Collection getIndisponibilitesBetween(Date begin, Date end) throws RemoteException {
-		Criteria c = dbm.createCriteria(Indisponibilite.class);
-		c.add(Expression.between("debut", begin, end ));
 		try {
-			return c.list();
+			return getCriteriaBetween(begin, end).list();
 		} catch(Exception e) {
 			throw new RemoteException(e.getMessage());
 		}
 	}
 	
+	
 	public Collection getIndisponibilitesForRessource( Ressource r ) throws RemoteException {
-		try {
-			Criteria c = dbm.createCriteria(Indisponibilite.class)
-						.createCriteria("ressources")
-							.add( Example.create(r).excludeZeroes().ignoreCase().enableLike() );
 		
-			return c.list();
+		try {
+			return dbm.createCriteria(Indisponibilite.class)
+			.createCriteria("ressources")
+				.add( Expression.eq("id_ressource", r.getId_ressource()) )
+					.list();
+		} catch(Exception e) {
+			throw new RemoteException(e.getMessage());
+		}
+	}
+	
+	public Collection getIndisponibilitesForRessourceBetween( Ressource r, Date begin, Date end ) throws RemoteException {
+		try {
+			return getCriteriaBetween(begin,end).createCriteria("ressources")
+				.add( Expression.eq("id_ressource", r.getId_ressource()) )
+				.list();
 		} catch(Exception e) {
 			throw new RemoteException(e.getMessage());
 		}
 	}
 	
 	public static void main( String[] args ) throws RemoteException {
-		Ressource t = new Teacher("Zipstein", "Mark", "", "", "zipstein@univ-mlv.fr");
+		/*Ressource t = new Teacher("Zipstein", "Mark", "", "", "zipstein@univ-mlv.fr");
+		Ressource u = new Teacher("Forax", "Remi", "", "", "forax@univ-mlv.fr");
 		Ressource r = new Room("2b104","Copernic","Copernic",40);
 		Indisponibilite in = new Indisponibilite( new Date(), new Date(), 2, "Unique", "Réseau", "Cours");
 		in.addRessource(t);
@@ -141,15 +160,18 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		
 		RessourceManagerImpl.getInstance().addRessource(t);
 		RessourceManagerImpl.getInstance().addRessource(r);
+		RessourceManagerImpl.getInstance().addRessource(u);
 		
 		IndisponibiliteManagerImpl.getInstance().addIndisponibilite(in);
+		*/
+		Ressource zip = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Zipstein", null, null, null, null)).iterator().next();
+		//System.out.println( zip  );
+		Ressource forax = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Forax", null, null, null, null)).iterator().next();
+		//System.out.println( forax  );
 		
-		Indisponibilite inn = new Indisponibilite();
-		inn.addRessource(new Teacher("Forax", null, null, null, null));
-		
-		/*Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilites(inn);
+		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilitesForRessource(forax);
 		for( Iterator i = c.iterator(); i.hasNext(); ) {
-			System.out.println(i.next());
-		}*/
+			System.out.println(((Indisponibilite)i.next()).getRessources());
+		}
 	}
 }
