@@ -22,18 +22,16 @@ public class SpinnerTimeModel extends SpinnerDateModel {
 	private Date max;
 		
 	public SpinnerTimeModel(Date begin, Date min, Date max ) {
-		super(begin,min,new Date(max.getTime()+1000*60),Calendar.HOUR_OF_DAY );
-		this.max = max;
-		this.min = min;
+		super(begin,new Date(min.getTime()-1000*60),new Date(max.getTime()+1000*60),Calendar.HOUR_OF_DAY );
+		this.max = new Date(max.getTime()+1000*60);
+		this.min = new Date(min.getTime()-1000*60);
 	}
 	
 	public Comparable getStart() {
-		System.out.println(super.getStart());
 		return min;
 	}
 	
 	public Comparable getEnd() {
-		System.out.println(super.getEnd());
 		return max;
 	}
 	
@@ -41,12 +39,12 @@ public class SpinnerTimeModel extends SpinnerDateModel {
 		Date value = (Date)getValue();
 		if( getCalendarField() == Calendar.HOUR_OF_DAY ) {
 			Date test = new Date(value.getTime()-1000*60*60);
-			if( test.after((Date)this.getEnd()) ) value.setTime(value.getTime()-1000*60*60);
+			if( test.after((Date)this.getStart()) ) value.setTime(value.getTime()-1000*60*60);
 			return value;
 		}
 		if(getCalendarField() == Calendar.MINUTE ) {
 			Date test = new Date(value.getTime()-1000*60*15);
-			if( test.after((Date)this.getEnd()) ) value.setTime(value.getTime()-1000*60*15);
+			if( test.after((Date)this.getStart()) ) value.setTime(value.getTime()-1000*60*15);
 			return value;
 		}
 		return value;
