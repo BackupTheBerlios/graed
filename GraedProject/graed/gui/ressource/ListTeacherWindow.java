@@ -6,6 +6,7 @@
  */
 package graed.gui.ressource;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.ressource.RessourceManagerImpl;
@@ -178,7 +179,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 				System.out.println(table);
 				removeRessource(t);
 				try {
-					RessourceManagerImpl.getInstance().deleteRessource(t);
+					Client.getRessourceManager().deleteRessource(t);
 				} catch (RemoteException e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(frame,
