@@ -15,15 +15,37 @@ import java.util.Set;
 
 
 /**
- * @author ngonord
+ * Classe représentant une indisponibilite.
+ * @author Helder DE SOUSA
  */
 public class Indisponibilite {
+	/**
+	 * L'identifiant de l'indisponibilité.
+	 */
 	private String id;
+	/**
+	 * L'ensemble des ressources liées à cette indisponibilité.
+	 */
 	private Set ressources;
+	/**
+	 * Date de début de l'indisponibilité.
+	 */
 	private Date debut;
+	/**
+	 * Date de fin de l'indisponibilité.
+	 */
 	private Date fin;
+	/**
+	 * Durée de l'indisponibilité.
+	 */
 	private int duree;
+	/**
+	 * Fréquence de l'indisponibilité.
+	 */
 	private String periodicite;
+	/**
+	 * Libelle de l'indisponibilité.
+	 */
 	private String libelle;
 	private String type;
 	private Time hdebut;

@@ -12,38 +12,61 @@ import java.util.Date;
 
 /**
  * @author Helder DE SOUSA
+ * Interface définissant le fonctionnement d'un gestionnaire d'indisponibilité.
  */
 public interface IndisponibiliteManager extends Remote{
     /**
-     * Adds a resource.
-     * @param r The resource to add
+     * Ajoute une indisponibilite.
+     * @param r L'indisponibilité à ajouter.
      * @throws RemoteException
      */
     public void addIndisponibilite( Indisponibilite i ) throws RemoteException;
     /**
-     * Deletes a Indiponibilite.
-     * @param i The Indiponibilite to delete
+     * Supprime une indisponibilite.
+     * @param i L'indisponibilite à supprimer.
      * @throws RemoteException
      */
     public void deleteIndisponibilite( Indisponibilite i ) throws RemoteException;
     /**
-     * Updates a resource.
-     * @param i The resource to update.
+     * Met à jour une indisponibilité.
+     * @param i L'indisponibilite à mettre à jour.
      * @throws RemoteException
      */
     public void updateIndiponibilite( Indisponibilite i ) throws RemoteException;
     /**
-     * Gets resources using a resource as example.
-     * @param i The resource used as an example
-     * @return A collection of <code>Indiponibilite</code>
+     * Récupère les indiponibilité en utilisant une indisponibilité comme example.
+     * @param i L'indisponibilite servant d'example.
+     * @return Une collection contenant les indisponibilités.
      * @throws RemoteException
      */
     public Collection getIndisponibilites( Indisponibilite i ) throws RemoteException;
+    /**
+     * Récupère les indisponibilités d'une ressource.
+     * @param r La ressource commune aux indisponibilité.
+     * @return Une collection contenant les indisponibilités.
+     * @throws RemoteException
+     */
     public Collection getIndisponibilites( Ressource r ) throws RemoteException;
+    /**
+     * Récupère les indisponibilité entre deux dates.
+     * @param begin La date de début.
+     * @param end La date de fin.
+     * @return Une collection contenant les indisponibilités.
+     * @throws RemoteException
+     */
     public Collection getIndisponibilites( Date begin, Date end ) throws RemoteException;
     /**
-     * Objects can register on an implementation of the Indiponibilite manager to be notified of changes.
-     * @param il The object to register.
+     * Récupère les indisponibilité entre deux dates pour une ressource donnée.
+     * @param r La ressource commune aux indisponibilité.
+     * @param begin La date de début.
+     * @param end La date de fin.
+     * @return Une collection contenant les indisponibilités.
+     * @throws RemoteException
+     */
+	public Collection getIndisponibilites( Ressource r, Date begin, Date end ) throws RemoteException;
+	/**
+	 * Permet aux listener de s'enregister pour être avertis des modifications.
+     * @param il Le listener voulant s'enregister.
      * @throws RemoteException
      */
     public void registerForNotification( IndisponibiliteListener il ) throws RemoteException;
