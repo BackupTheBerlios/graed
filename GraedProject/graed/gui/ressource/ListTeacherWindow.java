@@ -8,7 +8,6 @@ package graed.gui.ressource;
 
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.ressource.Ressource;
 import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Teacher;
 
@@ -187,6 +186,20 @@ public class ListTeacherWindow extends ListRessourceWindow {
 			}		
 		});
 		return b;
+	}
+	/**
+	 * Création du bouton annuler
+	 * @return bouton
+	 */
+	protected JButton stop(){
+		JButton b=new JButton("Annuler");
+		b.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}		
+		});
+		return b;
+		
 	}
 
 }

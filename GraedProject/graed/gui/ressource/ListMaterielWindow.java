@@ -112,7 +112,7 @@ public class ListMaterielWindow extends ListRessourceWindow {
 							"Vous ne pouvez consulter cette ressource",
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
-				
+				frame.dispose();
 			}		
 		});
 		return b;
@@ -134,7 +134,7 @@ public class ListMaterielWindow extends ListRessourceWindow {
 							"Vous ne pouvez consulter cette ressource",
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
-				
+				frame.dispose();
 			}		
 		});
 		return b;
@@ -152,6 +152,7 @@ public class ListMaterielWindow extends ListRessourceWindow {
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",
 							"Erreur",JOptionPane.WARNING_MESSAGE);
+				frame.dispose();
 				
 			}		
 		});
@@ -173,7 +174,7 @@ public class ListMaterielWindow extends ListRessourceWindow {
 							"Cette ressource ne peut etre supprimée",
 							"Erreur",JOptionPane.WARNING_MESSAGE);
 				}
-				
+				frame.dispose();
 				
 			}		
 		});

@@ -43,6 +43,14 @@ public abstract class ListRessourceWindow {
 		return (Ressource) list_ress.toArray()[i];
 	}
 	/**
+	 * Renvoie la ressource à la position i
+	 * @param i position de la ressource
+	 * @return la ressource à la position i
+	 */
+	public void removeRessource(Ressource r){		
+		list_ress.remove(r);
+	}
+	/**
 	 * Création du bouton annuler
 	 * @return bouton
 	 */

@@ -181,5 +181,19 @@ public class ListRoomWindow extends ListRessourceWindow {
 		});
 		return b;
 	}
+	/**
+	 * Création du bouton annuler
+	 * @return bouton
+	 */
+	protected JButton stop(){
+		JButton b=new JButton("Annuler");
+		b.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}		
+		});
+		return b;
+		
+	}
 
 }
