@@ -44,6 +44,8 @@ public class HokageRadioButtonUI extends BasicRadioButtonUI {
 
     private boolean defaults_initialized = false;
 
+    private Color buttonFocusColor;
+
     // ********************************
     //        Create PlAF
     // ********************************
@@ -57,6 +59,7 @@ public class HokageRadioButtonUI extends BasicRadioButtonUI {
     public void installDefaults(AbstractButton b) {
         super.installDefaults(b);
         if(!defaults_initialized) {
+            buttonFocusColor =  UIManager.getColor("Button.focus");
             focusColor = UIManager.getColor(getPropertyPrefix() + "focus");
             selectColor = UIManager.getColor(getPropertyPrefix() + "select");
             disabledTextColor = UIManager.getColor(getPropertyPrefix() + "disabledText");
@@ -179,6 +182,8 @@ public class HokageRadioButtonUI extends BasicRadioButtonUI {
                if(model.isEnabled()) {
                    // *** paint the text normally
                    g.setColor(b.getForeground());
+                   if( model.isPressed() )
+                       g.setColor(buttonFocusColor);
                } else {
                    // *** paint the text disabled
                    g.setColor(getDisabledTextColor());

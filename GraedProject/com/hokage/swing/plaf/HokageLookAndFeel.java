@@ -166,7 +166,7 @@ public class HokageLookAndFeel extends BasicLookAndFeel
      * Returns true if we're using the Ocean Theme.
      */
     static boolean usingOcean() {
-        return (getCurrentTheme() instanceof OceanTheme);
+        return true;
     }
 
     public String getName() {
@@ -1486,12 +1486,12 @@ public class HokageLookAndFeel extends BasicLookAndFeel
                     // use DefaultHokageTheme if told to.
                     String theme = (String)AccessController.doPrivileged(
                                    new GetPropertyAction("swing.HokageTheme"));
-                    if ("steel".equals(theme)) {
+                    /*if ("steel".equals(theme)) {
                         currentTheme = new DefaultHokageTheme();
                     }
-                    else {
+                    else {*/
                         currentTheme = new OceanTheme();
-                    }
+                    //}
                 }
                 setCurrentTheme(currentTheme);
             }

@@ -62,9 +62,9 @@ public class HokageButtonUI extends BasicButtonUI {
     // ********************************
     public void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        //b.setBorder(HokageBorders.getButtonBorder());
+        b.setMinimumSize(new Dimension(40,25));
     }
-
+    
     public void uninstallDefaults(AbstractButton b) {
 	super.uninstallDefaults(b);
     }
@@ -120,38 +120,39 @@ public class HokageButtonUI extends BasicButtonUI {
                 if (!model.isArmed() && !model.isPressed() &&
                         HokageUtils.drawGradient(
                         c, g, "Button.gradient", 0, 0, c.getWidth(),
-                        c.getHeight(), true)) {
+                        c.getHeight(), false) ) {//true)) {
                     paint(g, c);
                     return;
                 }
             }
             else if (model.isRollover() && HokageUtils.drawGradient(
                         c, g, "Button.gradient", 0, 0, c.getWidth(),
-                        c.getHeight(), true)) {
+                        c.getHeight(), false)) { // true)) {
                 paint(g, c);
                 return;
             }
         }
         super.update(g, c);
     }
+    
+    protected void paintIcon(Graphics g, JComponent b, Rectangle rect) {
+        ButtonModel bm = ((AbstractButton)b).getModel();
+        if( bm.isPressed() ) {
+            Rectangle rectB = new Rectangle(rect);
+            rectB.x+=1;
+            rectB.y+=1;
+            super.paintIcon(g, b, rectB);
+        } else 
+            super.paintIcon(g, b, rect);
+    }
 
     protected void paintButtonPressed(Graphics g, AbstractButton b) {
         if ( b.isContentAreaFilled() ) {
             Dimension size = b.getSize();
 	    g.setColor(getSelectColor());
-	    g.fillRect(0, 0, size.width, size.height);
+	    //g.fillRect(0, 0, size.width, size.height);
+        g.fillRoundRect(0, 0, size.width, size.height,12,12);
 	}
-    }
-
-    protected void paintIcon(Graphics g, JComponent b, Rectangle rect) {
-        ButtonModel bm = ((AbstractButton)b).getModel();
-        if( bm.isPressed() ) {
-            Rectangle rectB = new Rectangle(rect);
-            rectB.x+=2;
-            rectB.y+=2;
-            super.paintIcon(g, b, rectB);
-        } else 
-            super.paintIcon(g, b, rect);
     }
     
     protected void paintFocus(Graphics g, AbstractButton b,
@@ -184,7 +185,7 @@ public class HokageButtonUI extends BasicButtonUI {
           focusRect.width+1, focusRect.height+1);
         }
         else {
-            g.drawRect((focusRect.x+1), (focusRect.y+1),
+            g.drawRect((focusRect.x), (focusRect.y),
                     focusRect.width+1, focusRect.height+1);
         }
             
@@ -229,6 +230,6 @@ public class HokageButtonUI extends BasicButtonUI {
                                   textRect.x, textRect.y + fm.getAscent());
         else 
             SwingUtilities2.drawStringUnderlineCharAt(c, g,text,mnemIndex,
-                    textRect.x+2, textRect.y+2 + fm.getAscent());
+                    textRect.x+1, textRect.y+1 + fm.getAscent());
     }
 }

@@ -78,12 +78,12 @@ public class HokageBorders {
 
         public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
             if (HokageLookAndFeel.usingOcean()) {
+                
                 paintOceanBorder(c, g, x, y, w, h);
                 return;
             }
             AbstractButton button = (AbstractButton)c;
 	    ButtonModel model = button.getModel();
-
 	    if ( model.isEnabled() ) {
                 boolean isPressed = model.isPressed() && model.isArmed();
                 boolean isDefault = (button instanceof JButton && ((JButton)button).isDefaultButton());
@@ -104,6 +104,8 @@ public class HokageBorders {
 
         private void paintOceanBorder(Component c, Graphics g, int x, int y,
                                       int w, int h) {
+            int aw=12;
+            int ah=12;
             AbstractButton button = (AbstractButton)c;
 	    ButtonModel model = ((AbstractButton)c).getModel();
 
@@ -111,32 +113,51 @@ public class HokageBorders {
             if (HokageUtils.isToolBarButton(button)) {
                 if (model.isEnabled()) {
                     if (model.isPressed()) {
-                        g.setColor(HokageLookAndFeel.getWhite());
-                        g.fillRect(1, h - 1, w - 1, 1);
-                        g.fillRect(w - 1, 1, 1, h - 1);
+                        /*g.setColor(HokageLookAndFeel.getControlDarkShadow());
+                        //g.fillRect(0, 0, w, 2);
+                        g.drawRoundRect(0, 0, w-2, h-2,6,6);*/
+                        
+                        HokageLookAndFeel.getWhite();
+                        //g.fillRect(1, h - 1, w - 1, 1);
+                        //g.fillRoundRect(1,h-1,w-1,1,6,6);
+                        //g.fillRect(w - 1, 1, 1, h - 1);
+                        //g.fillRoundRect(w - 1, 1, 1, h - 1,6,6);
                         g.setColor(HokageLookAndFeel.getControlDarkShadow());
-                        g.drawRect(0, 0, w - 2, h - 2);
-                        g.fillRect(1, 1, w - 3, 1);
+                        //g.drawRect(0, 0, w - 2, h - 2);
+                        g.drawRoundRect(0, 0, w-2, h - 2,6,6);
+                        g.drawRoundRect(1, 1, w-4, h - 4,6,6);
+                        g.drawLine(0,3,3,0);
+                        g.drawLine(w-3,3,w-4,0);
+                        g.drawLine(w-2,h-5,w-5,h-2);
+                        g.drawLine(0,h-5,3,h-2);
+                        //g.fillRect(1, 1, w - 3, 1);
+                        //g.fillRoundRect(1, 1, w-3, 1,6,6);
                     }
                     else if (model.isSelected() || model.isRollover()) {
                         g.setColor(HokageLookAndFeel.getWhite());
-                        g.fillRect(1, h - 1, w - 1, 1);
-                        g.fillRect(w - 1, 1, 1, h - 1);
+                        //g.fillRect(1, h - 1, w - 1, 1);
+                        g.fillRoundRect(1, h-1, w-1,1,6,6);
+                        //g.fillRect(w - 1, 1, 1, h - 1);
+                        g.fillRoundRect(w-1, 1,1, h - 1,6,6);
                         g.setColor(HokageLookAndFeel.getControlDarkShadow());
-                        g.drawRect(0, 0, w - 2, h - 2);
+                        //g.drawRect(0, 0, w - 2, h - 2);
+                        g.drawRoundRect(0, 0, w-2, h - 2,6,6);
                     }
                     else {
                         g.setColor(HokageLookAndFeel.getWhite());
-                        g.drawRect(1, 1, w - 2, h - 2);
+                        //g.drawRect(1, 1, w - 2, h - 2);
+                        g.drawRoundRect(1, 1, w-2, h - 2,6,6);
                         g.setColor(UIManager.getColor(
                                 "Button.toolBarBorderBackground"));
-                        g.drawRect(0, 0, w - 2, h - 2);
+                        //g.drawRect(0, 0, w - 2, h - 2);
+                        g.drawRoundRect(0, 0, w-2, h - 2,6,6);
                     }
                 }
                 else {
                    g.setColor(UIManager.getColor(
                            "Button.disabledToolBarBorderBackground"));
-                   g.drawRect(0, 0, w - 2, h - 2); 
+                   //g.drawRect(0, 0, w - 2, h - 2);
+                   g.drawRoundRect(0, 0, w-2, h - 2,6,6);
                 }
             }
 	    else if (model.isEnabled()) {
@@ -145,36 +166,60 @@ public class HokageBorders {
 
                 if ((c instanceof JButton) && ((JButton)c).isDefaultButton()) {
                     g.setColor(HokageLookAndFeel.getControlDarkShadow());
-                    g.drawRect(0, 0, w - 1, h - 1);
-                    g.drawRect(1, 1, w - 3, h - 3);
+                    //g.drawRect(0, 0, w - 1, h - 1);
+                    g.drawRoundRect(0, 0, w-1, h - 12,6,6);
+                    //g.drawRect(1, 1, w - 3, h - 3);
+                    g.drawRoundRect(1, 1, w-3, h - 3,6,6);
                 }
                 else if (pressed) {
+                    
                     g.setColor(HokageLookAndFeel.getControlDarkShadow());
-                    g.fillRect(0, 0, w, 2);
-                    g.fillRect(0, 2, 2, h - 2);
-                    g.fillRect(w - 1, 1, 1, h - 1);
-                    g.fillRect(1, h - 1, w - 2, 1);
+                    //g.fillRect(0, 0, w, 2);
+                    g.drawRoundRect(0, 0, w-1, h-1,6,6);
+                    //g.drawRoundRect(1, 1, w-3, h-3,aw+1,ah+1);
+                    //g.drawRoundRect(0, 0, w-1, h-1,aw-1,ah-1);
+                    //g.drawRoundRect(1, 1, w-1, h-1,aw,ah);
+                    //g.fillRect(0, 2, 2, h - 2);
+                    /*g.fillRoundRect(0, 2, 2, h - 2,aw,ah);
+                    //g.fillRect(w - 1, 1, 1, h - 1);
+                    g.fillRoundRect(w-1, 1, 1, h - 1,aw,ah);
+                    //g.fillRect(1, h - 1, w - 2, 1);
+                    g.fillRoundRect(1, h-1, w-2,1,aw,ah);*/
                 }
                 else if (model.isRollover() && button.getClientProperty(
                                NO_BUTTON_ROLLOVER) == null) {
-                    g.setColor(HokageLookAndFeel.getPrimaryControl());
-                    g.drawRect(0, 0, w - 1, h - 1);
-                    g.drawRect(2, 2, w - 5, h - 5);
                     g.setColor(HokageLookAndFeel.getControlDarkShadow());
-                    g.drawRect(1, 1, w - 3, h - 3);
+                    //g.drawRect(0, 0, w - 1, h - 1);
+                    g.drawRoundRect(0, 0, w-1, h - 1,6,6);
+                    g.drawRoundRect(1, 1, w-3, h - 3,6,6);
+                    g.drawLine(0,3,3,0);
+                    g.drawLine(w-1,3,w-4,0);
+                    g.drawLine(w-1,h-4,w-4,h-1);
+                    g.drawLine(0,h-4,3,h-1);
+                    
+                    //g.drawRect(2, 2, w - 5, h - 5);
+                    g.setColor(HokageLookAndFeel.getPrimaryControl());
+                    g.drawRoundRect(2, 2, w-5, h - 5,6,6);
+                    //
+                    //g.drawRect(1, 1, w - 3, h - 3);
+                    //g.drawRoundRect(1, 1, w-3, h - 3,6,6);
                 }
                 else {
                     g.setColor(HokageLookAndFeel.getControlDarkShadow());
-                    g.drawRect(0, 0, w - 1, h - 1);
+                    //g.drawRect(0, 0, w - 1, h - 1);
+                    g.drawRoundRect(0, 0, w-1, h - 1,6,6);
                 }
             }
             else {
                 g.setColor(HokageLookAndFeel.getInactiveControlTextColor());
-                g.drawRect(0, 0, w - 1, h - 1);
+                //g.drawRect(0, 0, w - 1, h - 1);
+                g.drawRoundRect(0, 0, w-1, h - 1,6,6);
                 if ((c instanceof JButton) && ((JButton)c).isDefaultButton()) {
-                    g.drawRect(1, 1, w - 3, h - 3);
+                    //g.drawRect(1, 1, w - 3, h - 3);
+                    g.drawRoundRect(1, 1, w-3, h - 3,6,6);
                 }
             }
+            
         }
 
         public Insets getBorderInsets( Component c ) {
@@ -899,10 +944,10 @@ public class HokageBorders {
      */
     public static Border getButtonBorder() {
 	if (buttonBorder == null) {
-	    buttonBorder = new BorderUIResource.CompoundBorderUIResource(
+	    buttonBorder = new HokageBorders.ButtonBorder();}/*new BorderUIResource.CompoundBorderUIResource(
 						   new HokageBorders.ButtonBorder(),
-						   new BasicBorders.MarginBorder());
-    }
+                           //new HokageBorders.ButtonBorder());
+                           new BasicBorders.MarginBorder());}*/
 	return buttonBorder;
     }
 

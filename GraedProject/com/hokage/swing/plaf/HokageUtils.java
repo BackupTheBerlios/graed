@@ -215,7 +215,7 @@ class HokageUtils {
 
         // Size of images to create. For vertical gradients this is the width,
         // otherwise it's the height.
-        private static final int IMAGE_SIZE = 64;
+        private static final int IMAGE_SIZE = 20;
 
         /**
          * This is the actual width we're painting in, or last painted to.
@@ -280,6 +280,9 @@ class HokageUtils {
             boolean isVertical = ((Boolean)args[1]).booleanValue();
             // Render to the screen
             g.translate(x, y);
+            
+            
+            
             if (isVertical) {
                 for (int counter = 0; counter < w; counter += IMAGE_SIZE) {
                     int tileSize = Math.min(IMAGE_SIZE, w - counter);
@@ -292,6 +295,7 @@ class HokageUtils {
                     int tileSize = Math.min(IMAGE_SIZE, h - counter);
                     g.drawImage(image, 0, counter, w, counter + tileSize,
                                 0, 0, w, tileSize, null);
+                    
                 }
             }
             g.translate(-x, -y);
@@ -328,10 +332,13 @@ class HokageUtils {
                                             Color c3, int w, int h) {
             int mid = (int)(ratio1 * w);
             int mid2 = (int)(ratio2 * w);
+            /*g.setColor(c1);
+            g.fillRect(0, 0, w, h);*/
+            
             if (mid > 0) {
                 g.setPaint(getGradient((float)0, (float)0, c1,
                                        (float)mid, (float)0, c2));
-                g.fillRect(0, 0, mid, h);
+                g.fillRect(0,0,mid+12,h);
             }
             if (mid2 > 0) {
                 g.setColor(c2);
@@ -345,7 +352,8 @@ class HokageUtils {
             if (w - mid * 2 - mid2 > 0) {
                 g.setPaint(getGradient((float)mid * 2 + mid2, (float)0, c1,
                                        w, (float)0, c3));
-                g.fillRect(mid * 2 + mid2, 0, w - mid * 2 - mid2, h);
+               g.fillRect(mid * 2 + mid2, 0, w - mid * 2 - mid2, h);
+                
             }
         }
 
