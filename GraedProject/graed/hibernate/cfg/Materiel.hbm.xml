@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+    PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="graed.ressource.type.Materiel" table="materiel">
+
+        <!-- Une chaîne de 32 caractères hexadécimaux est notre
+	    clé technique. Elle est générée automatiquement par 
+	    Hibernate en utilisant le pattern UUID. -->
+        <id name="id" type="string" unsaved-value="null" >
+            <column name="id_materiel" sql-type="char(32)" not-null="true"/>
+            <generator class="uuid.hex"/>
+        </id>
+
+        <property name="name">
+            <column name="nom" sql-type="varchar(30)" not-null="true"/>
+        </property>
+
+        <property name="type">
+        	<column name="type" sql-type="varchar(30)" not-null="true"/>
+        </property>
+
+    </class>
+
+</hibernate-mapping>

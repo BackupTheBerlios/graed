@@ -15,13 +15,50 @@ import graed.ressource.Ressource;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Materiel extends Ressource {
+	private String id;
+	private String name;
+	private String type;
+	
 	public Materiel(){
 		super("Materiel");
 	}
 	public Materiel(String nom,String type){
 		this();
 	}
-	public Materiel(int id,String nom,String type){
-		this(nom,type);
+	/**
+	 * @return Returns the id.
+	 */
+	public String getId() {
+		return id;
+	}
+	/**
+	 * @param id The id to set.
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+	/**
+	 * @return Returns the name.
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name The name to set.
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * @return Returns the type.
+	 */
+	public String getType() {
+		return type;
+	}
+	/**
+	 * @param type The type to set.
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 }
