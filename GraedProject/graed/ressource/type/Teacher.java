@@ -18,24 +18,22 @@ public class Teacher extends Ressource {
 	private int id;
 	private String name;
 	private String firstName;
-	private boolean exterior;
 	private String office;
 	private String phone; 
 	private String email;
-	public Teacher(String name, String firstName, boolean exterior,
+	public Teacher(String name, String firstName, 
 					String office, String phone, String email){
 		super();
 		this.id=0;
 		this.name=name;
 		this.firstName=firstName;
-		this.exterior=exterior;
 		this.office=office;
 		this.phone=phone;
 		this.email=email;		
 	}
-	public Teacher(int id,String name, String firstName, boolean exterieur,
+	public Teacher(int id,String name, String firstName,
 						String office, String phone, String email){
-			this(name,firstName,exterieur,office,phone,email);
+			this(name,firstName,office,phone,email);
 			this.id=id;
 		}
 	/* (non-Javadoc)
@@ -45,7 +43,6 @@ public class Teacher extends Ressource {
 		String p="";
 		p+="Name: "+name+" ";
 		p+="First name: "+firstName+" ";
-		p+="Exterior: "+exterior+" ";
 		p+="Office: "+office+" ";
 		p+="Phone: "+phone+" ";
 		p+="E-Mail: "+email;		
@@ -53,4 +50,64 @@ public class Teacher extends Ressource {
 	}
 	/* ******************** Getter et Setter *********************** */
 	
+	/**
+	 * @return Returns the email.
+	 */
+	public String getEmail() {
+		return email;
+	}
+	/**
+	 * @param email The email to set.
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	/**
+	 * @return Returns the firstName.
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+	/**
+	 * @param firstName The firstName to set.
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	/**
+	 * @return Returns the name.
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name The name to set.
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * @return Returns the office.
+	 */
+	public String getOffice() {
+		return office;
+	}
+	/**
+	 * @param office The office to set.
+	 */
+	public void setOffice(String office) {
+		this.office = office;
+	}
+	/**
+	 * @return Returns the phone.
+	 */
+	public String getPhone() {
+		return phone;
+	}
+	/**
+	 * @param phone The phone to set.
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 }
