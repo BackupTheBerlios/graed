@@ -112,19 +112,19 @@ public SelectTimetable(CreateMainFrame main) {
 	
 	ButtonGroup group=new ButtonGroup();
 	
-	semestre1 = new JRadioButton("1er semestre");
+	semestre1 = new JRadioButton("1er trimestre");
 	/*d="Deb s1";
 	f="Fin s1";*/
 	Graphic.makeTransparent(semestre1);
 	group.add(semestre1);
 	
-	semestre2 = new JRadioButton("2ème semestre"); 
+	semestre2 = new JRadioButton("2ème trimestre"); 
 	/*d="Deb s2";
 	f="Fin s2";*/
 	group.add(semestre2);
 	Graphic.makeTransparent(semestre2);
 	
-	semestre3 = new JRadioButton("3ème semestre");
+	semestre3 = new JRadioButton("3ème trimestre");
 	/*d="Deb s3";
 	f="Fin s3";*/
 	group.add(semestre3);

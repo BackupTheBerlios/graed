@@ -39,7 +39,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -67,6 +69,9 @@ public class CreateMainFrame {
 	private final JList notif;
 	private Hashtable timetable_list;
 	private Hashtable buttons;
+	final JLabel date;
+	private int start=8;
+	private int stop=15;
 	/**
 	 * Constructeur
 	 * @throws UnsupportedLookAndFeelException 
@@ -77,7 +82,7 @@ public class CreateMainFrame {
 	 */
 	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
-	    
+	    date=new JLabel();	
 	    buttons = new Hashtable();
 	    notif = new JList();
 	    timetable_list=new Hashtable();
@@ -130,10 +135,11 @@ public class CreateMainFrame {
 		sp.setLeftComponent(new SelectTimetable(this).OpenWindow());
 		
 		/* Affichage graphique d'un emploi du temps */		
-		CreateColTimetable time1=new CreateColTimetable(null,"Emploi du temps n°1",8,15);
+		/*CreateColTimetable time1=new CreateColTimetable(null,"Emploi du temps n°1",8,15);
 		tp.add(time1.getTitle(),time1.getTimetable());
 		CreateColTimetable time2=new CreateColTimetable(null,"Emploi du temps n°2",8,15);
-		tp.add(time2.getTitle(),time2.getTimetable());
+		tp.add(time2.getTitle(),time2.getTimetable());*/
+		tp.setPreferredSize(new Dimension((stop-start)*100+80,500));
 		sp.setRightComponent(tp);
 		
 		return sp;
@@ -336,7 +342,8 @@ public class CreateMainFrame {
 				
 			});
 			trie.addAll(c);
-			CreateColTimetable time2=new CreateColTimetable(null,r.getType()+": "+r.print(),8,15);
+			String title="<html>"+r.getType()+": "+r.print()+"<br>du "+dateDebut+" au "+dateFin+"</html>";
+			CreateColTimetable time2=new CreateColTimetable(null,title,start,stop);
 			tp.addTab(time2.getTitle(),time2.getTimetable(), (Icon)icons.get(r.getType()));
 			if(c!=null){
 				for(Iterator i=trie.iterator();i.hasNext();)
@@ -437,18 +444,31 @@ public class CreateMainFrame {
 	    		}
 	    });
 	    
+	    
 	    buttons.put("export",exp);
 	    buttons.put("print",imp);
 	    buttons.put("refresh",ref);
 	    
+	    
+	    /** Choix de la période de l'emploi du temps **/   	   
+	   
 	    JBackgroundPanel p = new JBackgroundPanel();
 	    p.setOpaque(false);
 	    p.setBorder(BorderFactory.createTitledBorder("Navigation"));
-	    p.add(createButton("","","icons/navigation/Back16.gif",null));
-	    JComboBox cb = new JComboBox();
-	    cb.addItem("Semaine");
-	    p.add(cb);
-	    p.add(createButton("","","icons/navigation/Forward16.gif",null));
+	    p.add(createButton("","Période précédente","icons/navigation/Back16.gif",
+	    		new ActionListener() {
+    		public void actionPerformed( ActionEvent ae ) {
+    		}
+    		}));
+	    Object[] o={"semaine","mois","trimestre"};
+	    JComboBox jcb=new JComboBox(o);
+	    p.add(jcb);
+	    p.add(createButton("","Période suivante","icons/navigation/Forward16.gif",
+	    		new ActionListener() {
+    		public void actionPerformed( ActionEvent ae ) {
+    		}	
+    		}));
+	    p.add(date);
 	    p.setMaximumSize(new Dimension(300,75));
 	    
 	    tb.add(exp);
