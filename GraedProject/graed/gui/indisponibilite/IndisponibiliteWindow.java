@@ -379,11 +379,25 @@ public class IndisponibiliteWindow extends InformationWindow{
     		public void actionPerformed(ActionEvent arg0) {
     			/*setInformation(new Indisponibilite());
     			System.out.println(((Indisponibilite) getInformation()));
-    			*/System.exit(0);
+    			*/
+    			frame.dispose();
     		}		
     	});
     	return b;
     	
+    }
+    /**
+     * Création du bouton annuler
+     * @return bouton
+     */
+    protected JButton stop(){
+    	JButton b=new JButton("Annuler");
+    	b.addActionListener(new ActionListener(){
+    		public void actionPerformed(ActionEvent arg0) {
+    			frame.dispose();
+    		}		
+    	});
+    	return b;
     }
     /**
      * Test the class

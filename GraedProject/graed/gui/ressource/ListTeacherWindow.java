@@ -195,7 +195,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		JButton b=new JButton("Annuler");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
+				frame.dispose();
 			}		
 		});
 		return b;

@@ -213,7 +213,7 @@ protected JButton modify(){
 					"La salle ne peut être modifiée ",
 					"Erreur",JOptionPane.ERROR_MESSAGE);	
 				}
-			System.exit(0);
+				frame.dispose();
 		}		
 	});
 	return b;
@@ -248,7 +248,7 @@ protected JButton create(){
 						"Veuillez renseigner tous les champs",
 						"Attention",JOptionPane.INFORMATION_MESSAGE);
 			}
-			System.exit(0);
+			frame.dispose();
 		}		
 	});
 	return b;
@@ -282,10 +282,24 @@ protected JButton search(){
 			System.out.println(l);	
 			frame.setEnabled(false);
 			new ListRoomWindow(l).OpenWindow();
+			frame.dispose();
 		}		
 	});
 	return b;
 	
+}
+/**
+ * Création du bouton annuler
+ * @return bouton
+ */
+protected JButton stop(){
+	JButton b=new JButton("Annuler");
+	b.addActionListener(new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			frame.dispose();
+		}		
+	});
+	return b;
 }
 /**
  * Test the class

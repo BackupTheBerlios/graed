@@ -6,9 +6,6 @@ package graed.gui;
 
 import graed.exception.InvalidStateException;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 
 /**
@@ -54,16 +51,7 @@ public abstract void OpenWindow();
  * Création du bouton annuler
  * @return bouton
  */
-protected JButton stop(){
-	JButton b=new JButton("Annuler");
-	b.addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent arg0) {
-			System.exit(0);
-		}		
-	});
-	return b;
-	
-}
+protected abstract JButton stop();
 /**
  * Création du bouton modifier
  * @return bouton

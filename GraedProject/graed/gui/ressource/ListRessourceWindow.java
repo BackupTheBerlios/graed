@@ -8,8 +8,6 @@ package graed.gui.ressource;
 
 import graed.ressource.Ressource;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -54,16 +52,7 @@ public abstract class ListRessourceWindow {
 	 * Création du bouton annuler
 	 * @return bouton
 	 */
-	protected JButton stop(){
-		JButton b=new JButton("Annuler");
-		b.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}		
-		});
-		return b;
-		
-	}
+	protected abstract JButton stop();
 	/**
 	 * Ouvre la fenêtre contenant la liste
 	 *
