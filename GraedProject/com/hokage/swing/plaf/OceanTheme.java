@@ -38,7 +38,7 @@ public class OceanTheme extends DefaultHokageTheme {
     private static final ColorUIResource SECONDARY2 =
                               new ColorUIResource(0xBFE5B8);
     private static final ColorUIResource SECONDARY3 =
-                              new ColorUIResource(0xEEEEEE);
+                              new ColorUIResource(0xFEFEF1);//E7F6E4);//EEEEEE);
 
     private static final ColorUIResource CONTROL_TEXT_COLOR =
                               new ColorUIResource(0x333333);

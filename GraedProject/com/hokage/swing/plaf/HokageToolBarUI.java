@@ -39,6 +39,8 @@ import javax.swing.plaf.basic.*;
  */
 public class HokageToolBarUI extends BasicToolBarUI
 {
+        
+    private Color background;
     /**
      * An array of WeakReferences that point to JComponents. This will contain
      * instances of JToolBars and JMenuBars and is used to find
@@ -63,7 +65,6 @@ public class HokageToolBarUI extends BasicToolBarUI
     protected PropertyChangeListener rolloverListener;
 
     private static Border nonRolloverBorder;
-
 
     /**
      * Registers the specified component.
