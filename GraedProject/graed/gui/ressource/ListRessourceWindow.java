@@ -84,7 +84,7 @@ public abstract class ListRessourceWindow {
 	 * Création du bouton d'affichage de l'emploi du temps
 	 * @return bouton d'affichage de l'emploi du temps
 	 */
-	public abstract JButton timetable();
+	//public abstract JButton timetable();
 	
 	
 }

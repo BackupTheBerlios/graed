@@ -32,18 +32,18 @@ public abstract class ListIndWindow {
 		return list_ind.iterator();
 	}
 	/**
-	 * Renvoie la ressource à la position i
-	 * @param i position de la ressource
-	 * @return la ressource à la position i
+	 * Renvoie l'indisponibilité à la position i
+	 * @param i position de l'indisponibilité
+	 * @return l'indisponibilité à la position i
 	 */
 	public Indisponibilite getInd(int i){
 		if(i<0)i=0;
 		return (Indisponibilite) list_ind.toArray()[i];
 	}
 	/**
-	 * Renvoie la ressource à la position i
-	 * @param i position de la ressource
-	 * @return la ressource à la position i
+	 * Renvoie l'indisponibilité à la position i
+	 * @param i position de l'indisponibilité
+	 * @return l'indisponibilité à la position i
 	 */
 	public void removeInd(Indisponibilite r){		
 		list_ind.remove(r);
@@ -84,7 +84,7 @@ public abstract class ListIndWindow {
 	 * Création du bouton d'affichage de l'emploi du temps
 	 * @return bouton d'affichage de l'emploi du temps
 	 */
-	public abstract JButton timetable();
+	//public abstract JButton timetable();
 	
 	
 }

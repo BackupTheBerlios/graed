@@ -89,7 +89,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		JPanel button=new JPanel();
 		button.add(see());
 		button.add(modify());
-		button.add(timetable());
+		//button.add(timetable());
 		button.add(del());
 		button.add(stop());
 		frame.getContentPane().add(button,BorderLayout.SOUTH);

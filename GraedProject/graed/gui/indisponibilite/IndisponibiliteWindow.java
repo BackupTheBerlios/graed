@@ -45,6 +45,8 @@ import com.toedter.calendar.JDateChooser;
 
 /**
  * @author Helder DE SOUSA
+ * Création de la fenêtre de recherche, création, consultation et modification
+ * d'une indisponibilité
  */
 public class IndisponibiliteWindow extends InformationWindow{
     /**
