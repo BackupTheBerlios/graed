@@ -3,6 +3,7 @@ package graed.gui.timetable;
 
 
 
+import graed.gui.JBackgroundPanel;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceInterface;
 
@@ -53,7 +54,7 @@ public class CreateColTimetable {
 		this.title=title;
 		this.start = start;
 		this.stop = stop;
-		colTimetable=new JPanel();
+		colTimetable=new JBackgroundPanel("graed/gui/timetable/icons/fond.png");
 		colTimetable.setSize((stop-start)*100+60,500);
 		CreateTables();		
 	}
@@ -102,6 +103,7 @@ public class CreateColTimetable {
 	private JTable CreateDaysTable(){
 		/* Table affichant les jours */
 		JTable days =new JTable(5,1);
+		days.setOpaque(false);
 		days.setBackground(color);
 		days.setGridColor(Color.BLACK);		
 		days.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
@@ -125,6 +127,7 @@ public class CreateColTimetable {
 	 */
 	private TimetableColJTable CreateIndispoTable(String name, TimetableDefaultListSelectionModel mdl){
 		TimetableColJTable t= new TimetableColJTable(new TimetableDefaultTableModel(stop-start+1,name ),mdl);
+		t.setOpaque(false);
 		t.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		t.setPreferredSize( new Dimension( (stop-start)*100,colTimetable.getHeight()/6 ));
 		t.setRowHeight(colTimetable.getHeight()/6);
@@ -142,10 +145,12 @@ public class CreateColTimetable {
 		colTimetable.setLayout(l);
 		colTimetable.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		colTimetable.setBackground(color);
+		colTimetable.setOpaque(false);
 		GridBagConstraints c= new GridBagConstraints();
 		
 		/* Table affichant les heures */
-		JTable heure =CreateHoursTable();	
+		JTable heure =CreateHoursTable();
+		heure.setOpaque(false);
 		c.gridx = 1;
 	    c.gridy = 0;
 	    c.gridwidth = 1;
@@ -157,6 +162,7 @@ public class CreateColTimetable {
 		
 		/* Table affichant les jours */
 		JTable jour =CreateDaysTable();
+		jour.setOpaque(false);
 		c.gridx = 0;
 	    c.gridy = 1;
 	    c.gridwidth = 1;
@@ -168,7 +174,7 @@ public class CreateColTimetable {
 	
 		
 		/* Tables affichant les cours */
-		JPanel col=new JPanel();
+		JPanel col=new JBackgroundPanel("graed/gui/timetable/icons/fond.png");
 		col.setLayout(new GridLayout(5,1));
 		col.setPreferredSize( new Dimension( (stop-start)*100,colTimetable.getHeight()*5/6  ));
 		TimetableDefaultListSelectionModel mdl=new TimetableDefaultListSelectionModel();

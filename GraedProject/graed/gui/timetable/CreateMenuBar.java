@@ -56,6 +56,7 @@ public class CreateMenuBar {
 		this.frame=frame;
 		this.tp=tp;
 		barMenu=new JMenuBar();
+		barMenu.setOpaque(false);
 		barMenu.add(createMenuExport());
 		barMenu.add(createMenuRessource());
 		barMenu.add(createMenuImport());

@@ -55,7 +55,8 @@ public class CreateMainFrame {
 	public CreateMainFrame(){
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
 		frame=new JFrame();
-		tp=new CloseableTabbedPane();		
+		tp=new CloseableTabbedPane("graed/gui/timetable/icons/fond.png");
+		tp.setOpaque(false);
 		frame.setTitle("Graed project");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(fillFrame());
