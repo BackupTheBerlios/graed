@@ -10,6 +10,8 @@ import graed.indisponibilite.IndisponibiliteManager;
 import graed.indisponibilite.IndisponibiliteManagerImpl;
 import graed.ressource.RessourceManager;
 import graed.ressource.RessourceManagerImpl;
+import graed.user.UserManager;
+import graed.user.UserManagerImpl;
 
 import java.net.InetAddress;
 import java.rmi.registry.LocateRegistry;
@@ -42,14 +44,17 @@ public class Server {
 			//Creation des objets serveurs
 			RessourceManager rm = RessourceManagerImpl.getInstance();
 			IndisponibiliteManager im = IndisponibiliteManagerImpl.getInstance();
+			UserManager um = UserManagerImpl.getInstance();
 			
 			//Enregistrement du serveur dans le domaine de nom rmi
 			r.rebind("rmi://"+InetAddress.getLocalHost().getHostName()+":6666/RessourceManager", rm);
 			r.rebind("rmi://"+InetAddress.getLocalHost().getHostName()+":6666/IndisponibiliteManager", im);
+			r.rebind("rmi://"+InetAddress.getLocalHost().getHostName()+":6666/UserManager", um);
 			
 		    System.out.println("Serveur lancé : rmi://"+InetAddress.getLocalHost().getHostName()+":6666/RessourceManager");
 		    System.out.println("Serveur lancé : rmi://"+InetAddress.getLocalHost().getHostName()+":6666/IndisponibiliteManager");
-		    
+		    System.out.println("Serveur lancé : rmi://"+InetAddress.getLocalHost().getHostName()+":6666/UserManager");
+
 		} catch (Exception e) {
 			System.out.println("Exception capturée: ");
 			e.printStackTrace();

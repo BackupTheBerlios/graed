@@ -12,6 +12,7 @@ import graed.indisponibilite.IndisponibiliteManager;
 import graed.ressource.RessourceInterface;
 import graed.ressource.RessourceManager;
 import graed.ressource.type.TeacherInterface;
+import graed.user.UserManager;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -28,6 +29,7 @@ import java.util.Collection;
 public class Client {
 	private static final RessourceManager rm;
 	private static final IndisponibiliteManager im;
+	private static final UserManager um;
 	private static final String host="pccop2b104-15.univ-mlv.fr";
 	static {
 		try {
@@ -36,8 +38,10 @@ public class Client {
 			//Récupération de la référence du serveur distant
 			Remote r = rg.lookup("rmi://"+host+":6666/RessourceManager");
 			Remote i = rg.lookup("rmi://"+host+":6666/IndisponibiliteManager");
+			Remote u = rg.lookup("rmi://"+host+":6666/UserManager");
 			rm = (RessourceManager)r;
 			im = (IndisponibiliteManager)i;
+			um = (UserManager)u;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("Erreur de connexion RMI : " + e.getMessage(), e);
@@ -50,6 +54,10 @@ public class Client {
 	
 	public static IndisponibiliteManager getIndisponibiliteManager() {
 		return im;
+	}
+	
+	public static UserManager getUserManager() {
+		return um;
 	}
 	
 	public static void main(String[] args) throws RemoteException {
