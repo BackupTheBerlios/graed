@@ -75,6 +75,7 @@ protected abstract JButton modify();
  * @return bouton
  */
 protected abstract JButton create();
+
 /**
  * Création du bouton de recherche
  * @return bouton

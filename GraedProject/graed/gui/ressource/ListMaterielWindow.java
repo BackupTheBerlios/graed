@@ -8,11 +8,13 @@ package graed.gui.ressource;
 
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Materiel;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -85,6 +87,7 @@ public class ListMaterielWindow extends ListRessourceWindow {
 		button.add(see());
 		button.add(modify());
 		button.add(timetable());
+		button.add(del());
 		button.add(stop());
 		frame.getContentPane().add(button,BorderLayout.SOUTH);
 		
@@ -149,6 +152,28 @@ public class ListMaterielWindow extends ListRessourceWindow {
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",
 							"Erreur",JOptionPane.WARNING_MESSAGE);
+				
+			}		
+		});
+		return b;
+	}
+
+	/* (non-Javadoc)
+	 * @see graed.gui.ressource.ListRessourceWindow#del()
+	 */
+	public JButton del() {
+		JButton b=new JButton("Supprimer");
+		b.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				Materiel t = (Materiel) getRessource(table.getSelectedRow());
+				try {
+					RessourceManagerImpl.getInstance().deleteRessource(t);
+				} catch (RemoteException e) {
+					JOptionPane.showMessageDialog(frame,
+							"Cette ressource ne peut etre supprimée",
+							"Erreur",JOptionPane.WARNING_MESSAGE);
+				}
+				
 				
 			}		
 		});

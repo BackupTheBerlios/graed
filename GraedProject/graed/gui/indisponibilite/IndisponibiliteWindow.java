@@ -37,6 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
+import com.toedter.calendar.JDateChooser;
 
 /**
  * @author Helder DE SOUSA
@@ -52,8 +53,8 @@ public class IndisponibiliteWindow extends InformationWindow{
      * TextField
      */
     private JFormattedTextField libelle;
-    private JFormattedTextField date_debut;
-	private JFormattedTextField date_fin;
+    private JDateChooser date_debut;
+	private JDateChooser date_fin;
 	private JFormattedTextField hdebut;
 	private JFormattedTextField duree;
 	private JComboBox periodicite;/* occ, hebdo */
@@ -74,8 +75,8 @@ public class IndisponibiliteWindow extends InformationWindow{
     public IndisponibiliteWindow(int state, Indisponibilite i) throws InvalidStateException{
     	super(state,i);
     	libelle = new JFormattedTextField();
-        date_debut = new JFormattedTextField();
-    	date_fin = new JFormattedTextField();
+        date_debut = new JDateChooser();
+    	date_fin = new JDateChooser();
     	hdebut = new JFormattedTextField();
     	duree = new JFormattedTextField();
     	periodicite = new JComboBox(fillPeriodicite());/* occ, hebdo */
@@ -347,8 +348,8 @@ public class IndisponibiliteWindow extends InformationWindow{
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
     			setInformation(new Indisponibilite(
-    					Date.valueOf(date_debut.getText()), 
-    					Date.valueOf(date_fin.getText()), 
+    					new Date(date_debut.getDate().getTime()), 
+    					new Date(date_fin.getDate().getTime()), 
 						Time.valueOf(hdebut.getText()),
 						new Integer(duree.getText()).intValue(),
 						(String)periodicite.getSelectedItem(),

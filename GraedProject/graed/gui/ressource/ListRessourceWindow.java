@@ -79,9 +79,15 @@ public abstract class ListRessourceWindow {
 	 */
 	public abstract JButton modify();
 	/**
+	 * Création du bouton de suppression
+	 * @return bouton de suppression
+	 */
+	public abstract JButton del();
+	/**
 	 * Création du bouton d'affichage de l'emploi du temps
 	 * @return bouton d'affichage de l'emploi du temps
 	 */
 	public abstract JButton timetable();
+	
 	
 }
