@@ -34,13 +34,15 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
         
         types = new Hashtable();
         
-        String[] files = new File("build/"+directoryTypes).list(new FilenameFilter() {
+        String[] files = new File(directoryTypes).list(new FilenameFilter() {
         	public boolean accept( File dir, String name) {
-        		return !name.endsWith("Interface.class")&&!name.endsWith("Stub.class");
+        		//System.out.println(">>>> "+name+" "+!(name.endsWith("Interface.class")||name.endsWith("Stub.class")));
+        		return !(name.endsWith("Interface.class")||name.endsWith("java")||name.endsWith("Stub.class"));
         	}
         });
         
         for( int i=0; i<files.length; ++i) {
+        	//System.out.println(files[i]);
         	 try {
 				files[i] = files[i].split("\\.")[0];
 				String packageType = directoryTypes.replaceAll("/",".");

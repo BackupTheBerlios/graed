@@ -12,8 +12,7 @@
 	
 	<!-- Copie des fichiers de configuration hibernate -->
 	<copy todir="${build}">
-		 <fileset dir="${src}">
-		     <include name="**/*.java"/>
+		 <fileset dir=".">
 		 	 <include name="**/*.png"/>
 		 	 <include name="**/*.gif"/>
 		     <include name="**/*.jpg"/>
@@ -27,18 +26,18 @@
 	</copy>
 	
 	<!-- Ajout des librairies externes utilisées -->
-	<!--<unjar dest="${build}">
+	<unjar dest="${build}">
 		<fileset dir="${lib}">
 			<exclude name="**/graed*.jar"/>
 			<include name="**/*.jar"/>
 		</fileset>
-	</unjar>-->
+	</unjar>
 	
 </target>
 
 <target name="compile" depends="init">
 	<!-- Compilation des sources -->
-    <javac srcdir="${src}" destdir="${build}">
+    <javac srcdir="." destdir="${build}">
     	<classpath>
     	    <fileset dir="${lib}">
     	    	<include name="**/*.jar"/>
