@@ -37,9 +37,7 @@ private Object o;
  */
 public IndWindow(int state,Object o) throws InvalidStateException{
 	if((state!=CREATE && state!=MODIFY
-			&& state!=SEE && state!=SEARCH)
-			|| (o==null && 
-			state!=CREATE && state!=SEARCH))
+			&& state!=SEE && state!=SEARCH))
 		throw new InvalidStateException();
 	this.state=state;
 	this.o=o;	

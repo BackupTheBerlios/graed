@@ -354,7 +354,7 @@ public class IndisponibiliteWindow extends IndWindow{
     	c.fill = GridBagConstraints.BOTH;
     	c.insets=new Insets(1,1,1,1);
     	addJComponent(p,c);
-    	if(isModify() || isSee()){
+    	if(((IndisponibiliteInterface) getInformation())!=null){
     		FillComponent();
     	}
     	

@@ -5,6 +5,7 @@
 package graed.gui.timetable;
 
 import graed.client.Client;
+import graed.conf.Configuration;
 import graed.exception.InvalidStateException;
 import graed.gui.renderer.RessourceListRenderer;
 import graed.ressource.RessourceInterface;
@@ -139,7 +140,8 @@ public SelectTimetable(CreateMainFrame main) {
 	
 	
 	/** Listener **/
-	addSelectedListener(semestre1,new Date(104,8,01),new Date(104,11,31));
+	
+	addSelectedListener(semestre1,new Date(Configuration.getParamValue("premier-trimestre","debut")),new Date(Configuration.getParamValue("premier-trimestre","fin")));
 	addSelectedListener(semestre2,new Date(105,0,01),new Date(105,03,31));
 	addSelectedListener(semestre3,new Date(105,4,01),new Date(105,8,31));
 	

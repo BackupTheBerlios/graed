@@ -29,7 +29,6 @@ import java.rmi.RemoteException;
 import java.sql.Date;
 import java.util.Hashtable;
 
-import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -42,8 +41,14 @@ import javax.swing.table.TableColumn;
  */
 public class TimetableColJTable extends JTable {
 	private Hashtable list_ind;
+	private IndisponibiliteInterface i_tmp;	
 	private TimetableDefaultTableModel tm;	/* Modèle de données associé à la table */
 	TimetableDefaultListSelectionModel l; /* Modèle de sélection partagé entre les différentes tables */
+	/* Menu Popup */
+	private JMenuItem creer;
+	private JMenuItem consu;
+	private JMenuItem modif;
+	private JMenuItem suppr;
 	/**
 	 * Constructeur de la classe
 	 * Réalise le Drag and Drop
@@ -55,6 +60,8 @@ public class TimetableColJTable extends JTable {
 	 */
 	public TimetableColJTable(TimetableDefaultTableModel arg0,TimetableDefaultListSelectionModel l) {
 		super(arg0);
+		i_tmp=null;
+		creer=null;
 		this.setComponentPopupMenu(CreatePopupMenu());
 		list_ind = new Hashtable(); 
 		tm=arg0;
@@ -90,16 +97,28 @@ public class TimetableColJTable extends JTable {
             			TimetableColJTable.this.setCellSelectionEnabled(false);
             			TimetableColJTable.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
             		}     
+            		/* Menu Popup */
             		if(e.getButton() == MouseEvent.BUTTON3 ){
     				 	JPopupMenu pop=TimetableColJTable.this.getComponentPopupMenu();
-    				 	if( k!= null){            
-                			try {
-								System.out.println("\nPopUp: "+getI(colF).print());
+    				 	    				 	if( k!= null){      				 		
+                			try {                    				
+                				creer.setEnabled(false);
+                				consu.setEnabled(true);
+                				modif.setEnabled(true);
+                				suppr.setEnabled(true);
+                				i_tmp=getI(colF);
+								System.out.println("\nPopUp: "+i_tmp.print());
 							} catch (RemoteException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
                 		} 
+    				 	else{
+    				 		creer.setEnabled(true);
+            				consu.setEnabled(false);
+            				modif.setEnabled(false);
+            				suppr.setEnabled(false);
+    				 	}
     				 	if(pop!=null)pop.show(TimetableColJTable.this, e.getX(),e.getY());
     				 	return;
     				 }
@@ -171,12 +190,11 @@ public class TimetableColJTable extends JTable {
 	private JPopupMenu CreatePopupMenu(){
 		JPopupMenu p= new JPopupMenu();		
 		/* Créer une indisponibilite */
-		JMenuItem creer=new JMenuItem("Creer");
+		creer=new JMenuItem("Creer");
 		creer.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				IndisponibiliteInterface t=null;
-				try {					
-					new IndisponibiliteWindow(InformationWindow.CREATE,t).OpenWindow();					
+			public void actionPerformed(ActionEvent e) {						
+				try {				
+					new IndisponibiliteWindow(InformationWindow.CREATE,i_tmp).OpenWindow();					
 				} catch (InvalidStateException e1) {
 					JOptionPane.showMessageDialog(null,
 							"le système ne peut afficher la fenêtre de création",
@@ -188,7 +206,45 @@ public class TimetableColJTable extends JTable {
 			}
 			
 		});
+		consu=new JMenuItem("Consulter");
+		consu.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if(i_tmp!=null)new IndisponibiliteWindow(InformationWindow.SEE,i_tmp).OpenWindow();
+				} catch (InvalidStateException e) {
+					JOptionPane.showMessageDialog(null,
+							"Vous ne pouvez consulter cette indisponibilite",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+			}		
+		});
+		modif=new JMenuItem("Modifier");
+		modif.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					if(i_tmp!=null)new IndisponibiliteWindow(InformationWindow.MODIFY,i_tmp).OpenWindow();
+				} catch (InvalidStateException e) {
+					JOptionPane.showMessageDialog(null,
+							"Vous ne pouvez modifier cette indisponibilite",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+			}		
+		});
+		suppr=new JMenuItem("Supprimer");
+		suppr.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {				
+					try {
+						if(i_tmp!=null)Client.getIndisponibiliteManager().deleteIndisponibilite(i_tmp);
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					i_tmp=null;				
+			}		
+		});
 		p.add(creer);
+		p.add(consu);
+		p.add(modif);
 		return p;
 	}
 	/**
