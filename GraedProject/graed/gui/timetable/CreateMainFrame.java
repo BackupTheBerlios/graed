@@ -7,38 +7,28 @@
 package graed.gui.timetable;
 
 import graed.client.Client;
-import graed.gui.JBackgroundPanel;
-import graed.gui.JSplashScreen;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceInterface;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
-import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.plaf.metal.OceanTheme;
+
+import com.hokage.swing.JBackgroundPanel;
+import com.hokage.swing.JCloseableTabbedPane;
+import com.hokage.swing.JSplashScreen;
 
 
 /**
@@ -49,7 +39,7 @@ import javax.swing.plaf.metal.OceanTheme;
  */
 public class CreateMainFrame {
 	private JFrame frame;
-	private CloseableTabbedPane tp;
+	private JCloseableTabbedPane tp;
 	private Hashtable icons;
 	/**
 	 * Constructeur
@@ -58,7 +48,7 @@ public class CreateMainFrame {
 	public CreateMainFrame(){
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
 		frame=new JFrame();
-		tp=new CloseableTabbedPane("graed/gui/timetable/icons/fond.png");
+		tp=new JCloseableTabbedPane("graed/gui/timetable/icons/fond.png");
 		tp.setOpaque(false);
 		frame.setTitle("Graed project");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

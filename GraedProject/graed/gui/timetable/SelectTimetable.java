@@ -6,12 +6,10 @@ package graed.gui.timetable;
 
 import graed.client.Client;
 import graed.exception.InvalidStateException;
-import graed.gui.JBackgroundPanel;
 import graed.gui.renderer.RessourceListRenderer;
 import graed.ressource.RessourceInterface;
 import graed.util.Graphic;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -35,6 +33,7 @@ import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.hokage.swing.JBackgroundPanel;
 import com.toedter.calendar.JDateChooser;
 
 /**

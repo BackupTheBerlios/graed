@@ -21,6 +21,6 @@
 	<classpathentry kind="lib" path="graed/lib/postgresql-8.0-310.jdbc3.jar"/>
 	<classpathentry kind="lib" path="graed/lib/jcalendar.jar"/>
 	<classpathentry kind="lib" path="graed/lib/looks-1.2.2.jar"/>
-	<classpathentry kind="lib" path="graed/lib/SwingUtil.jar"/>
+	<classpathentry sourcepath="graed/lib/SwingUtil.jar" kind="lib" path="graed/lib/SwingUtil.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

@@ -3,7 +3,6 @@ package graed.gui.timetable;
 
 
 
-import graed.gui.JBackgroundPanel;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceInterface;
 
@@ -24,6 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+
+import com.hokage.swing.JBackgroundPanel;
 
 
 /**
