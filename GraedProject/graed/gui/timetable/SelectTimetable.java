@@ -9,7 +9,9 @@ import graed.exception.InvalidStateException;
 import graed.gui.JBackgroundPanel;
 import graed.gui.renderer.RessourceListRenderer;
 import graed.ressource.RessourceInterface;
+import graed.util.Graphic;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -77,14 +79,14 @@ public SelectTimetable(CreateMainFrame main) {
 	p.setSize(with,height);
 	
 	
-	String[] ressTypes=new String[0];//null;
-	/*try {
+	String[] ressTypes=new String[0];
+	try {
 		
 		ressTypes=Client.getRessourceManager().getRessourcesTypes();
 	} catch (RemoteException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
-	}*/
+	}
 
 	
 	ressource = new JComboBox();
@@ -115,23 +117,27 @@ public SelectTimetable(CreateMainFrame main) {
 	semestre1 = new JRadioButton("1er semestre");
 	/*d="Deb s1";
 	f="Fin s1";*/
+	Graphic.makeTransparent(semestre1);
 	group.add(semestre1);
 	
 	semestre2 = new JRadioButton("2ème semestre"); 
 	/*d="Deb s2";
 	f="Fin s2";*/
 	group.add(semestre2);
+	Graphic.makeTransparent(semestre2);
 	
 	semestre3 = new JRadioButton("3ème semestre");
 	/*d="Deb s3";
 	f="Fin s3";*/
 	group.add(semestre3);
+	Graphic.makeTransparent(semestre3);
 	
 	autre = new JRadioButton("autre");  
 	group.add(autre);
+	Graphic.makeTransparent(autre);
 	
-	dateDebut = new JDateChooser("d/MMMM/yyyy",false);	
-	dateFin = new JDateChooser("d/MMMM/yyyy",false);
+	dateDebut = new JDateChooser("dd/MM/yyyy",false);	
+	dateFin = new JDateChooser("dd/MM/yyyy",false);
 	
 	
 	/** Listener **/
@@ -156,6 +162,7 @@ public SelectTimetable(CreateMainFrame main) {
 		
 	});
 }
+
 /**
  * Affiche les dates du semestre sélectionné
  * @param jrb bouton radio sélectionné
