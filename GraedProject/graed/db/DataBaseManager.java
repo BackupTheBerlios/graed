@@ -53,7 +53,17 @@ public class DataBaseManager{
 	        session.save(dbo);
 	        tx.commit();
 	    } catch( HibernateException he ) {
-	    	he.printStackTrace();
+	    	//he.printStackTrace();
+	    	Throwable[] t = he.getThrowables();
+	    	
+	    	for( int i=0; i<t.length; ++i ) {
+	    		if( t[i] instanceof java.sql.SQLException ) {
+	    			Exception e = ((java.sql.SQLException)t[i]).getNextException();
+	    			e.printStackTrace();
+	    		}
+	    	}
+	    	
+	    	
 	        throw (DataBaseException)new DataBaseException( "Erreur lors de l'ajout dans la base de données").initCause(he);
 	    }
 	}
