@@ -10,6 +10,7 @@
 <target name="init">
 	<mkdir dir="${build}"/>
 	
+	<!-- Copie des fichiers de configuration hibernate -->
 	<copy todir="${build}">
 		 <fileset dir="${src}">
 		     <include name="**/*.java"/>
@@ -21,7 +22,8 @@
 	        <include name="*.xml"/>
 	      </fileset>
 	</copy>
-		
+	
+	<!-- Ajout des librairies externes utilisées -->
 	<unjar dest="${build}">
 		<fileset dir="${lib}">
 			<include name="**/*.jar"/>
@@ -42,7 +44,9 @@
 </target>
 
 <target name="jar" depends="compile">
+	<!-- Création du jar exécutable -->
 	<jar destfile="graed.jar" basedir="${build}">
+		<!-- Création du fichier mantifest.mf -->
 		<manifest>
 			<attribute name="Built-By" value="Your name"/>
 			<attribute name="Main-Class"
