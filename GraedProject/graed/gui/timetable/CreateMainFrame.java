@@ -105,6 +105,14 @@ public class CreateMainFrame {
 			lc.login();
 			
 			subj = lc.getSubject();
+			Iterator i = subj.getPrincipals().iterator();
+
+			if(i.hasNext()){
+			   System.out.println("Principal"+((GraedPrincipal)i.next()).getName()); 
+			}
+			else{
+			    System.out.println("pas de principal");
+			}
 			
 		}catch(LoginException e){
 			e.printStackTrace();

@@ -103,6 +103,9 @@ public class GraedLoginModule implements LoginModule {
             	System.out.println("Pas loggééééé !!!!");
             	throw new LoginException("Pb d'Authentification : login/password ne correspondent pas");
             }
+            else{
+                tmpPrincipals.add(new GraedPrincipal(userName));
+            }
 
             return true;
             
@@ -115,7 +118,8 @@ public class GraedLoginModule implements LoginModule {
     
     public boolean commit() throws LoginException {
         if (success) {
-
+            System.out.println("COMMIT ---");
+            
         	// subject peut-être en lecture seule, ce qui empèche
         	// de valider l'authentification
             if (subject.isReadOnly()) {
@@ -204,6 +208,9 @@ public class GraedLoginModule implements LoginModule {
     			if(userToLog.getPassword().equals(hpassword)==false){
     				success = false;
     				throw new LoginException("mdp ne correspond pas");
+    			}
+    			else{
+    			    success = true;
     			}
     	
     		}catch(RemoteException remoteEx){
