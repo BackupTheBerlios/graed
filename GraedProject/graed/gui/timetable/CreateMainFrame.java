@@ -69,15 +69,25 @@ import com.hokage.swing.JSplashScreen;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class CreateMainFrame {
-	private JFrame frame;
-	private JCloseableTabbedPane tp;
-	private Hashtable icons;
-	private final JList notif;
-	private ConcurrentHashMap timetable_list;
-	private Hashtable buttons;
+	
+	/* ********************************************* */
+	/* Composant graphiques de la fenêtre principale */
+	/* ********************************************* */
+	private JFrame frame;/* fenêtre principale */
+	private JCloseableTabbedPane tp;/* onglet */
+	private JLabel date_lib;/* date de l'eploi du temps (navigation) */
+	private final JList notif;/* Notification de modification RMI */
+	
+	/* ************************************************************ */
+	/* Composant de stockage d'évènements sur la fenêtre principale */
+	/* ************************************************************ */
+	private Hashtable icons;/* Images pour les onglets */
+	private ConcurrentHashMap timetable_list;/* Stockage des emplois du temps ouverts */
+	private Hashtable buttons;/* barre de menu */
+	/* Date de début et de fin pour la navigation dans un emploi du temps */
 	Date debut;
 	Date fin;
-	private JLabel date_lib;
+	/* Heure de début et de fin de l'emploi du temps */
 	private int start=8;
 	private int stop=15;
 	/**
@@ -90,14 +100,15 @@ public class CreateMainFrame {
 	 *
 	 */
 	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
-	    date_lib=new JLabel();	
+	    /* Navigation dans les dates de l'emploi du temps */
+		date_lib=new JLabel();	
+		date_lib.setHorizontalAlignment(JLabel.CENTER);
+	    date_lib.setVerticalAlignment(JLabel.CENTER);
 	    debut=null;
-		fin=null;
-	    
-		Subject subj = null;
-		JFrame mainFrame = new JFrame();
-		
-		try{
+		fin=null;	    
+				
+		/* Identification */
+		/*try{
 			GraedGraphicCallbackHandler cbh = new GraedGraphicCallbackHandler(frame);
 			
 			LoginContext lc = new LoginContext("GraedAuth",cbh);
@@ -116,19 +127,15 @@ public class CreateMainFrame {
 		}catch(LoginException e){
 			e.printStackTrace();
 			System.exit(0);
-		}
+		}*/
+		/* Ecran de démarrage */
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
 		
-	    date_lib=new JLabel();
-	    date_lib.setHorizontalAlignment(JLabel.CENTER);
-	    date_lib.setVerticalAlignment(JLabel.CENTER);
-	    buttons = new Hashtable();
-	    notif = new JList();
+	    
+	    
+	    /* Onglets */
 	    timetable_list=new ConcurrentHashMap();
-	    notif.setModel(new DefaultListModel());
-	    notif.setCellRenderer(new NotificationRenderer());
-	    frame=new JFrame();
-		tp=new JCloseableTabbedPane("graed/gui/timetable/icons/fond.png");
+	    tp=new JCloseableTabbedPane("graed/gui/timetable/icons/fond.png");
 		tp.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e) {
 				CreateColTimetable tmp=(CreateColTimetable) tp.getSelectedComponent();
@@ -144,23 +151,36 @@ public class CreateMainFrame {
 			}
 
 			public void componentRemoved(ContainerEvent e) {
-				timetable_list.remove(e.getComponent());
-				System.out.println("Component remove");
+				timetable_list.remove(e.getChild());
+				if (timetable_list.size()==0){
+					date_lib.setText("");
+					debut=null;
+					fin=null;
+				}		
 			}
 			
 		});
-		tp.setOpaque(false);
-		frame.setTitle("Graed project");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setContentPane(fillFrame());
+		tp.setOpaque(false);		
 		icons = new Hashtable();
 		icons.put( "Salle", new ImageIcon(RoomWindow.class.getResource("classe16.gif")) );
 		icons.put( "Professeur", new ImageIcon(TeacherWindow.class.getResource("professeur16.jpg")) );
 		//icons.put( "Materiel", new ImageIcon(TeacherWindow.class.getResource("classe.gif")) );
 		
-        //UIManager.setLookAndFeel("com.hokage.swing.plaf.HokageLookAndFeel");
+        
+		/* Fenêtre principale */
+		buttons = new Hashtable();
+		notif = new JList();
+	    notif.setModel(new DefaultListModel());
+	    notif.setCellRenderer(new NotificationRenderer());
+	    frame=new JFrame();
+		frame.setTitle("Graed project");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setContentPane(fillFrame());
+		//UIManager.setLookAndFeel("com.hokage.swing.plaf.HokageLookAndFeel");
         //SwingUtilities.updateComponentTreeUI(frame);
 		
+		/* Fermeture de l'écran de démarrage 
+		 * ouverture de la fenêtre principale */
         splash.close();
 		frame.pack();
 		frame.setVisible(true);
@@ -194,10 +214,6 @@ public class CreateMainFrame {
 		sp.setLeftComponent(new SelectTimetable(this).OpenWindow());
 		
 		/* Affichage graphique d'un emploi du temps */		
-		/*CreateColTimetable time1=new CreateColTimetable(null,"Emploi du temps n°1",8,15);
-		tp.add(time1.getTitle(),time1.getTimetable());
-		CreateColTimetable time2=new CreateColTimetable(null,"Emploi du temps n°2",8,15);
-		tp.add(time2.getTitle(),time2.getTimetable());*/
 		tp.setPreferredSize(new Dimension((stop-start)*100+80,550));
 		sp.setRightComponent(tp);
 		
@@ -219,7 +235,7 @@ public class CreateMainFrame {
 	}
 	
 	/**
-	 * Prévenir l'utilistauer des modifications
+	 * Prévenir l'utilisateur des modifications
 	 *
 	 */
 	private void runCallback() {
@@ -769,6 +785,10 @@ public class CreateMainFrame {
 		}
 	}
 
+	/**
+	 * Rend le bouton de rafraichissement actif ou non
+	 * @param b indique si le bouton doit etre actif ou non
+	 */
 	protected void enableRefresh(boolean b) {
 		((JButton)buttons.get("refresh")).setEnabled(b);
 	}
