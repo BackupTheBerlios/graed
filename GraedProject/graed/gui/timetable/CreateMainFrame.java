@@ -331,7 +331,7 @@ public class CreateMainFrame {
 				"icons/general/Refresh24.gif",
 				new ActionListener() {
 	    		public void actionPerformed( ActionEvent ae ) {
-	    			JOptionPane.showInternalMessageDialog(frame,"Non implémenté","Arf",JOptionPane.INFORMATION_MESSAGE);
+	    			refresh();
 	    		}
 	    });
 	    
