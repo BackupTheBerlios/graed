@@ -24,7 +24,7 @@
         </property>
 
         <property name="lieu">
-        	<column name="lieu" sql-type="varchar(30)" not-null="true"/>
+        	<column name="lieu" sql-type="varchar(64)" not-null="true"/>
         </property>
         
         <property name="capacite">

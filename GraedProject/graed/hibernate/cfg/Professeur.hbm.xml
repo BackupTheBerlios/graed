@@ -16,11 +16,11 @@
         </id>
 
         <property name="name">
-            <column name="nom" sql-type="varchar(16)" not-null="true"/>
+            <column name="nom" sql-type="varchar(32)" not-null="true"/>
         </property>
 
         <property name="firstName">
-        	<column name="prenom" sql-type="varchar(16)" not-null="true"/>
+        	<column name="prenom" sql-type="varchar(32)" not-null="true"/>
         </property>
 
 		<property name="office">
