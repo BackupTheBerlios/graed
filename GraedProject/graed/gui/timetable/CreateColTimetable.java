@@ -13,6 +13,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -218,13 +220,26 @@ public class CreateColTimetable {
 	 */
 	public void addIndispo(Indisponibilite i){
 		GregorianCalendar gcal=new GregorianCalendar();
+		String libelle;
 		gcal.setTime(i.getDebut());
 		System.out.println(gcal.get(GregorianCalendar.DAY_OF_WEEK));
 		int celldebut =(i.getHdebut().getHours()-start)*4+(i.getHdebut().getMinutes()/15);
 		int nbcell=i.getDuree()/15;
-		System.out.println("("+celldebut+","+nbcell+")");
+		libelle=i.getLibelle();
+		if(i.getPeriodicite().equals("ponctuel")){
+			libelle+=" le "+i.getDebut();
+		}
+		else if(i.getPeriodicite().equals("bihebdomadaire")){
+			libelle+=" tous les 15 jours à partir du "+i.getDebut();
+		}
+		Set s=i.getRessources();
+		for(Iterator it=s.iterator();it.hasNext();){			
+			Ressource tmp=(Ressource)it.next();
+			if (this.r!=tmp)
+				libelle+=" "+tmp;
+		}
 		((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(
-				i.getLibelle(),celldebut,nbcell);
+				libelle,celldebut,nbcell);
 	}
 	/**
 	 * Test
