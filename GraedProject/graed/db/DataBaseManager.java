@@ -145,4 +145,12 @@ public class DataBaseManager implements Serializable{
 	}
 	
 	
+	
+	
+	/**
+	 * @return Returns the session.
+	 */
+	public Session getSession() {
+		return session;
+	}
 }

@@ -1,6 +1,7 @@
 package graed.indisponibilite;
 
 import graed.db.DataBaseManager;
+import graed.db.DataBaseUtil;
 import graed.exception.DataBaseException;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
@@ -59,7 +60,14 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	 */
 	public void addIndisponibilite(IndisponibiliteInterface i) throws RemoteException {
 		try {
-            dbm.add(i);
+			Indisponibilite in = (Indisponibilite)DataBaseUtil.convertStub(dbm.getSession(), i);
+			in.getRessources().clear();
+			for( Iterator it = in.getRessources().iterator(); it.hasNext(); ) {
+				in.getRessources().add(
+						DataBaseUtil.convertStub(dbm.getSession(), it.next())
+						);
+			}
+            dbm.add(in);
         } catch (DataBaseException e) {
         	e.printStackTrace();
         	throw new RemoteException(e.getMessage());
