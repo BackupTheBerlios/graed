@@ -26,12 +26,12 @@
 	</copy>
 	
 	<!-- Ajout des librairies externes utilisées -->
-	<!--<unjar dest="${build}">
+	<unjar dest="${build}">
 		<fileset dir="${lib}">
 			<exclude name="**/graed*.jar"/>
 			<include name="**/*.jar"/>
 		</fileset>
-	</unjar>-->
+	</unjar>
 	
 </target>
 

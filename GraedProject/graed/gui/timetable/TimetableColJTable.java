@@ -203,7 +203,11 @@ public class TimetableColJTable extends JTable {
 		JTextArea j = new JTextArea();
 		//j.add(CreatePopupMenu());
 		try {
-			j.setText(i.print());	
+			j.setText(i.print());
+			String text = "<html>";
+			text+=i.print();
+			text=text.replaceAll("\\n","<br>");			
+			j.setToolTipText(text+"</html>");
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
