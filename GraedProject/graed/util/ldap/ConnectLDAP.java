@@ -2,10 +2,12 @@ package graed.util.ldap;
 
 import graed.db.DataBaseManager;
 import graed.exception.DataBaseException;
+import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Group;
 import graed.ressource.type.Room;
 import graed.ressource.type.Teacher;
 
+import java.rmi.RemoteException;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -258,8 +260,8 @@ public class ConnectLDAP {
 		for (Iterator i=p.iterator();i.hasNext();){
 			Teacher t=(Teacher)i.next();
 			System.out.println(t);
-			DataBaseManager.getInstance().add(t);
-		}
+			RessourceManagerImpl.getInstance().addRessource(t);
+		}*//*
 		List p= ldap.searchGroup();
 		System.out.println(p.size()+" groups find:");
 		for (Iterator i=p.iterator();i.hasNext();){
@@ -274,8 +276,13 @@ public class ConnectLDAP {
 		System.out.println(p.size()+" rooms find:");
 		for (Iterator i=p.iterator();i.hasNext();){
 				Room r=(Room)i.next();
-				//System.out.println(r);
-				DataBaseManager.getInstance().add(r);
+				System.out.println(r);
+				try {
+					RessourceManagerImpl.getInstance().addRessource(r);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 }
