@@ -19,7 +19,7 @@
     <joined-subclass name="graed.ressource.type.Group" table="formation">
         <key column="id_formation"/>
         <property name="number">
-            <column name="number" sql-type="varchar(10)" not-null="true"/>
+            <column name="number" sql-type="varchar(10)" not-null="false"/>
         </property>
         
 		<property name="name">

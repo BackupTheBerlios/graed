@@ -1,5 +1,5 @@
 /*
- * Created on 21 févr. 2005
+ * Created on 4 mars 2005
  *
  */
 package graed.gui.ressource;
@@ -7,7 +7,7 @@ package graed.gui.ressource;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Teacher;
+import graed.ressource.type.Group;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -28,9 +28,9 @@ import javax.swing.SwingConstants;
 /**
  * @author Gonord Nadège
  *
- * The window for alter teachers
+ * The window for alter groups
  */
-public class TeacherWindow extends InformationWindow{
+public class GroupWindow extends InformationWindow{
 
 /**
  * Window
@@ -42,23 +42,21 @@ private static int height=200;
  * TextField
  */
 private JFormattedTextField name;
-private JFormattedTextField firstName;
-private JFormattedTextField office;
-private JFormattedTextField phone; 
+private JFormattedTextField description;
 private JFormattedTextField email;
+private JFormattedTextField option;
 
 /**
- * Constructor which open the teacher window
+ * Constructor which open the group window
  * @param state the state of the window
- * @param t the teacher
+ * @param t the group
  * @throws InvalidStateException
  */
-public TeacherWindow(int state, Teacher t) throws InvalidStateException{
+public GroupWindow(int state, Group t) throws InvalidStateException{
 	super(state,t);
 	name = new JFormattedTextField();
-	firstName = new JFormattedTextField();
-	office = new JFormattedTextField();
-	phone = new JFormattedTextField(); 
+	description = new JFormattedTextField();
+	option = new JFormattedTextField();
 	email = new JFormattedTextField();
 }
 /**
@@ -101,7 +99,7 @@ private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextFie
 	p.add(tf,c);
 }
 /**
- * Add the component for the window create and search
+ * Add the component for the frame
  * @param p panel
  * @param c constraint
  */
@@ -109,23 +107,18 @@ private void addJComponent(JPanel p,GridBagConstraints c){
 	String mask="UUUUUUUUUUUUUUUUUUUUUUUU";
 	c.gridy = 0;
 	addLine(p,c,mask,name, "Nom : ");
-	c.gridy = 1;
-	addLine(p,c,mask,firstName,"Prénom : ");
+	c.gridy ++;
+	addLine(p,c,mask,description,"Description : ");
 	
 	mask="*****";
-	c.gridy = 2;		
-	addLine(p,c,mask,office,"Bureau : ");
-	
-	/* Phone */
-	mask="##.##.##.##.##";
-	c.gridy = 3;
-	addLine(p,c,mask,phone,"Téléphone : ");
+	c.gridy ++;		
+	addLine(p,c,mask,option,"Option(s) : ");	
 	
 	mask="************************";
-	c.gridy = 4;
+	c.gridy ++;
 	addLine(p,c,mask,email,"Courriel : ");
 	
-	c.gridy = 5;
+	c.gridy ++;
 	c.gridx = 0;
 	
 	if(isCreate()){
@@ -144,11 +137,10 @@ private void addJComponent(JPanel p,GridBagConstraints c){
  * @param c constraint
  */
 private void FillComponent(){
-	name.setText(((Teacher) getInformation()).getName());
-	firstName.setText(((Teacher) getInformation()).getFirstName());
-	office.setText(((Teacher) getInformation()).getOffice());
-	phone.setText(((Teacher) getInformation()).getPhone());
-	email.setText(((Teacher) getInformation()).getEmail());
+	name.setText(((Group) getInformation()).getName());
+	description.setText(((Group) getInformation()).getDescription());
+	option.setText(((Group) getInformation()).getOptions());
+	email.setText(((Group) getInformation()).getMail());
 	
 }
 /**
@@ -157,20 +149,20 @@ private void FillComponent(){
 public void OpenWindow(){
 	/** Fenêtre d'affichage des données d'un professeur **/
 	frame=new JFrame();
-	Class clazz=TeacherWindow.class;
-	ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
+	Class clazz=GroupWindow.class;
+	ImageIcon i=new ImageIcon(clazz.getResource("classe.gif"));
 	frame.setIconImage(i.getImage());
 	if(isSee()){
-		frame.setTitle("Consulter un professeur");
+		frame.setTitle("Consulter une formation");
 	}
 	else if(isModify()){
-		frame.setTitle("Modifier un professeur");
+		frame.setTitle("Modifier une formation");
 	}
 	else if(isSearch()){
-		frame.setTitle("Rechercher un professeur");
+		frame.setTitle("Rechercher une formation");
 	}
 	else if(isCreate()){
-		frame.setTitle("Créer un professeur");
+		frame.setTitle("Créer une formation");
 	}
 	frame.setSize(with,height);
 	frame.setResizable(false);
@@ -209,17 +201,16 @@ protected JButton modify(){
 	JButton b=new JButton("Modifier");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			((Teacher) getInformation()).setName(name.getText());
-			((Teacher) getInformation()).setFirstName(firstName.getText());
-			((Teacher) getInformation()).setOffice(office.getText());
-			((Teacher) getInformation()).setPhone(phone.getText());
-			((Teacher) getInformation()).setEmail(email.getText());
-			System.out.println(((Teacher) getInformation()));
+			((Group) getInformation()).setName(name.getText());
+			((Group) getInformation()).setDescription(description.getText());
+			((Group) getInformation()).setOptions(option.getText());
+			((Group) getInformation()).setMail(email.getText());
+			System.out.println(((Group) getInformation()));
 			try {
-				RessourceManagerImpl.getInstance().updateRessource(((Teacher) getInformation()));
+				RessourceManagerImpl.getInstance().updateRessource(((Group) getInformation()));
 			} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
-				"Le professeur ne peut être modifiée ",
+				"La formation ne peut être modifiée ",
 				"Erreur",JOptionPane.ERROR_MESSAGE);	
 			}
 			frame.dispose();
@@ -238,25 +229,26 @@ protected JButton create(){
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			if(name.getText()!=null &&
-					firstName.getText()!=null && email.getText()!=null){			
-				setInformation(new Teacher(name.getText(),firstName.getText(),
-						office.getText(),phone.getText(),email.getText()));
-				System.out.println(((Teacher) getInformation()));				
+					description.getText()!=null){			
+				setInformation(new Group(null,name.getText(),description.getText(),
+						email.getText(),null,null,option.getText()));
+				System.out.println(((Group) getInformation()));				
 					try {
-						RessourceManagerImpl.getInstance().addRessource(((Teacher) getInformation()));
-					} catch (RemoteException e) {						
+						RessourceManagerImpl.getInstance().addRessource(((Group) getInformation()));
+					} catch (RemoteException e) {	
+						e.printStackTrace();
 						JOptionPane.showMessageDialog(frame,
-						"Le professeur ne peut être crée",
+						"La formation ne peut être crée",
 						"Erreur",JOptionPane.ERROR_MESSAGE);	
 					}
-				
+					frame.dispose();
 			}
 			else{
 				JOptionPane.showMessageDialog(frame,
-						"Veuillez renseigner les champs nom, prenom et courriel",
+						"Veuillez renseigner les champs nom et description",
 						"Attention",JOptionPane.INFORMATION_MESSAGE);
 			}
-			frame.dispose();		
+					
 		}		
 	});
 	return b;
@@ -269,28 +261,25 @@ protected JButton create(){
 protected JButton search(){
 	JButton b=new JButton("Chercher");
 	b.addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent arg0) {
-					
-			String name_prof = name.getText().length()==0?null:name.getText();
-			String firstName_prof = firstName.getText().length()==0?null:firstName.getText();
-			String office_prof = office.getText().length()==0?null:office.getText();
-			String phone_prof = phone.getText().length()==0?null:phone.getText();
-			String email_prof = email.getText().length()==0?null:email.getText();
-			setInformation(new Teacher(name_prof,firstName_prof,
-					office_prof,phone_prof,email_prof));
-			System.out.println(((Teacher) getInformation()));	
+		public void actionPerformed(ActionEvent arg0) {					
+			String n = name.getText().length()==0?null:name.getText();
+			String d = description.getText().length()==0?null:description.getText();
+			String op = option.getText().length()==0?null:option.getText();
+			String m = email.getText().length()==0?null:email.getText();
+			setInformation(new Group(null,n,d,m,null,null,op));
+			System.out.println(((Group) getInformation()));	
 			Collection l=null;			
 				try {
-					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Teacher) getInformation()));
+					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Group) getInformation()));
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
-							"Le système de peut récuperer les professeurs",
+							"Le système de peut récuperer les formations",
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
 			
 			System.out.println("List:"+l);	
 			frame.setEnabled(false);
-			new ListTeacherWindow(l).OpenWindow();
+			//new ListTeacherWindow(l).OpenWindow();
 			frame.dispose();
 			
 		}		
@@ -330,7 +319,7 @@ public static void main (String[] args) throws InvalidStateException{
 	for (Iterator i=l.iterator();i.hasNext();){
 		new TeacherWindow(InformationWindow.MODIFY,((Teacher)i.next())).OpenWindow();
 	}*/
-	Teacher t=null;
-	new TeacherWindow(InformationWindow.SEARCH,t).OpenWindow();
+	Group t=null;
+	new GroupWindow(InformationWindow.CREATE,t).OpenWindow();
 }
 }
