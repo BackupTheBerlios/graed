@@ -1,8 +1,5 @@
 /*
  * Created on 3 mars 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 package graed.gui.factory;
 
@@ -13,10 +10,7 @@ import java.util.Date;
 import javax.swing.JSpinner;
 
 /**
- * @author hdesou01
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author Helder DE SOUSA
  */
 public class SpinnerFactory {
 	public static JSpinner createTimeSpinner( Date begin, Date min, Date max ) {

@@ -7,12 +7,10 @@ import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
 import graed.ressource.Ressource;
 import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Room;
 import graed.ressource.type.Teacher;
 
 import java.rmi.RemoteException;
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -21,20 +19,10 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
-import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
-import javax.swing.text.DateFormatter;
-import javax.swing.text.DefaultFormatterFactory;
-
-import com.toedter.calendar.JDateChooser;
-import com.toedter.components.JSpinField;
-
 
 import net.sf.hibernate.Criteria;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.expression.Example;
 import net.sf.hibernate.expression.Expression;
 
 /**
@@ -194,50 +182,6 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		for( Iterator i = c.iterator(); i.hasNext(); ) {
 			System.out.println(((Indisponibilite)i.next()).getRessources());
 		}
-		
-		SpinnerDateModel dateModel = new SpinnerDateModel() {
-			public Object getPreviousValue() {
-				Date value = (Date)getValue();
-				if( getCalendarField() == Calendar.HOUR_OF_DAY ) {
-					value.setTime(value.getTime()-1000*60*60);
-					return value;
-				}
-				if(getCalendarField() == Calendar.MINUTE ) {
-					value.setTime(value.getTime()-1000*60*15);
-					return value;
-				}
-				return value;
-			}
-			
-			public Object getNextValue() {
-				Date value = (Date)getValue();
-				if( getCalendarField() == Calendar.HOUR_OF_DAY ) {
-					value.setTime(value.getTime()+1000*60*60);
-					return value;
-				}
-				if(getCalendarField() == Calendar.MINUTE ) {
-					value.setTime(value.getTime()+1000*60*15);
-					return value;
-				}
-				return value;
-			}
-			
-			public Time getSQLTime() {
-				Calendar c = new GregorianCalendar();
-				c.setTime((Date)getValue());
-				return Time.valueOf(c.get(Calendar.HOUR_OF_DAY)+":"
-						+c.get(Calendar.MINUTE)+":00");
-			}
-			
-		};
-	    /*    new Date(7*60*60*1000), new Date(7*60*60*1000), new Date(18*60*60*1000), Calendar.HOUR_OF_DAY);
-	    
-		dateModel.*/
-		
-	    JFrame jf = new JFrame();
-		jf.getContentPane().add(SpinnerFactory.createTimeSpinner(new Date(7*60*60*1000), new Date(7*60*60*1000), new Date(18*60*60*1000)));
-		jf.pack();
-		jf.setVisible(true);
 		
 	}
 }

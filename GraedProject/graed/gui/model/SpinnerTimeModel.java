@@ -1,21 +1,17 @@
 /*
  * Created on 3 mars 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 package graed.gui.model;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.SpinnerDateModel;
 
 /**
- * @author hdesou01
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author Helder DE SOUSA
  */
 public class SpinnerTimeModel extends SpinnerDateModel {
 	private Date min;
@@ -63,5 +59,12 @@ public class SpinnerTimeModel extends SpinnerDateModel {
 			return value;
 		}
 		return value;
+	}
+	
+	public Time getSQLTime() {
+		Calendar c = new GregorianCalendar();
+		c.setTime((Date)getValue());
+		return Time.valueOf(c.get(Calendar.HOUR_OF_DAY)+":"
+				+c.get(Calendar.MINUTE)+":00");
 	}
 }
