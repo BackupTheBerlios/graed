@@ -9,10 +9,8 @@ package graed.gui.ressource;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.ressource.type.Room;
-import graed.ressource.type.Teacher;
 
 import java.awt.BorderLayout;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;

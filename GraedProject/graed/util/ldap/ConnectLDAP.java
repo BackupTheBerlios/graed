@@ -255,7 +255,7 @@ public class ConnectLDAP {
 		ConnectLDAP ldap=new ConnectLDAP();
 		Hashtable environnementLDAP = ldap.preparerEnvirronnement ();
 		ldap.initialiserConnexionLDAP(environnementLDAP);
-		List p= ldap.searchTeachers();
+		/*List p= ldap.searchTeachers();
 		System.out.println(p.size()+" teacher find:");
 		for (Iterator i=p.iterator();i.hasNext();){
 			Teacher t=(Teacher)i.next();
@@ -265,7 +265,7 @@ public class ConnectLDAP {
 			} catch (RemoteException e) {				
 				e.printStackTrace();
 			}
-		}/*
+		}*//*
 		List p= ldap.searchGroup();
 		System.out.println(p.size()+" groups find:");
 		for (Iterator i=p.iterator();i.hasNext();){
@@ -275,7 +275,7 @@ public class ConnectLDAP {
 			System.out.println(e.size()+" students find:");
 			for (Iterator j=e.iterator();j.hasNext();)
 				System.out.println("***"+j.next());
-			}
+			}*/
 		List p= ldap.searchRoom();
 		System.out.println(p.size()+" rooms find:");
 		for (Iterator i=p.iterator();i.hasNext();){
@@ -287,6 +287,6 @@ public class ConnectLDAP {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		}*/
+		}
 	}
 }
