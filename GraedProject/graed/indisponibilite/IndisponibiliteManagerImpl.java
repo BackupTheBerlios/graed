@@ -83,6 +83,7 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	 */
 	public void updateIndiponibilite(IndisponibiliteInterface i) throws RemoteException {
 		try {
+			System.out.println( i.getClass().getName() );
             dbm.update(i);
             fireIndisponibiliteUpdated( new IndisponibiliteEvent(i));
         } catch (DataBaseException e) {
