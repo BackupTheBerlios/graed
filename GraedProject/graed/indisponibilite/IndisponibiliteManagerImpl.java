@@ -94,28 +94,30 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 			throws RemoteException {
 		try {
 			Criteria c = dbm.createCriteria(Indisponibilite.class);
-			if( i.getDebut() != null ) c.add(Expression.ge("debut",i.getDebut()) );
+			/*if( i.getDebut() != null ) c.add(Expression.ge("debut",i.getDebut()) );
 			if( i.getFin() != null ) c.add(Expression.le("fin",i.getFin()) );
-			//if( i.getDuree() != 0 ) c.add(Expression.eq( "duree", new Integer(i.getDuree()) ) );
-			//if( i.getHdebut().equals(Time.valueOf("00:00:00")) ) c.add( Expression.eq("hdebut", i.getHdebut()) ) ;
-			if( i.getLibelle() != null ) c.add( Expression.eq("libelle", i.getLibelle()) ) ;
-			if( i.getType() != null ) c.add( Expression.eq("type", i.getType()) ) ;
+			if( i.getDuree() != 0 ) c.add(Expression.eq( "duree", new Integer(i.getDuree()) ) );
+			*/if( !i.getHdebut().equals(Time.valueOf("00:00:00")) ) c.add( Expression.eq("hdebut", i.getHdebut()) ) ;
+			if( i.getLibelle() != null ) c.add( Expression.eq("libelle", i.getLibelle()).ignoreCase() ) ;
+			if( i.getType() != null ) c.add( Expression.eq("type", i.getType()).ignoreCase() ) ;
 			if( i.getPeriodicite() != null ) c.add( Expression.eq("periodicite", i.getPeriodicite()) ) ;
 			
 			boolean first = true;
+			Criteria sub = c;
 			
 			for( Iterator ii = i.getRessources().iterator(); ii.hasNext(); ) {
 				if( first ) {
 					first = false;
-					c.createCriteria("ressources");
+					sub = c.createCriteria("ressources");
 				}
 				Ressource r = (Ressource)ii.next();
-				c.add(Expression.eq("id_ressource", r.getId_ressource()));
+				sub.add(Expression.eq("id_ressource", r.getId_ressource()));
 			}
-			System.out.println(c);
-			return c.list();
+			
+			return sub.list();
         
 		} catch (Exception e) {
+			e.printStackTrace();
         	throw new RemoteException(e.getMessage());
         }
 	}
