@@ -191,6 +191,7 @@ private void OpenWindow(){
 	frame.setIconImage(i.getImage());
 	frame.setTitle("Teacher");
 	frame.setSize(with,height);
+	frame.setResizable(false);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	JPanel p=new JPanel();
