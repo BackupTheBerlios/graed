@@ -2,7 +2,6 @@ package graed.indisponibilite;
 
 import graed.db.DataBaseManager;
 import graed.exception.DataBaseException;
-import graed.gui.factory.SpinnerFactory;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
 import graed.ressource.Ressource;
@@ -10,17 +9,11 @@ import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Teacher;
 
 import java.rmi.RemoteException;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.SpinnerDateModel;
 
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.expression.Expression;
