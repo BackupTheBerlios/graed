@@ -476,6 +476,7 @@ public class CreateMenuBar {
 		for(Iterator i = map.keySet().iterator(); i.hasNext(); ){
 		    Object key = i.next();
 			final String classe = (String)map.get(key);
+			System.out.println(key+" : "+classe);
 			boolean natif = classe.equals(UIManager.getSystemLookAndFeelClassName());
 			JRadioButtonMenuItem item = new JRadioButtonMenuItem((String) key,natif);
 			item.addActionListener(new ActionListener(){ 
