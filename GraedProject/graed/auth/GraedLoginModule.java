@@ -4,12 +4,15 @@
  */
 package graed.auth;
 
+import java.security.MessageDigest;
 import java.util.*;
 
 import javax.security.auth.*;
 import javax.security.auth.callback.*;
 import javax.security.auth.login.*;
 import javax.security.auth.spi.LoginModule;
+
+
 
 /**
  * @author tom
@@ -100,19 +103,69 @@ public class GraedLoginModule implements LoginModule {
     }
     
     public boolean commit() throws LoginException {
-        return true;
+        if (success) {
+
+        	// subject peut-être en lecture seule, ce qui empèche
+        	// de valider l'authentification
+            if (subject.isReadOnly()) {
+                throw new LoginException ("Subject est en lecture seule");
+            }
+
+            try {
+                Iterator it = tmpPrincipals.iterator();
+
+                subject.getPrincipals().addAll(tmpPrincipals);
+                subject.getPublicCredentials().addAll(tmpCredentials);
+
+                tmpPrincipals.clear();
+                tmpCredentials.clear();
+
+                return(true);
+            } catch (Exception ex) {
+                ex.printStackTrace(System.out);
+                throw new LoginException(ex.getMessage());
+            }
+        } else {
+            tmpPrincipals.clear();
+            tmpCredentials.clear();
+            return(true);
+        }
     }
     
     public boolean abort() throws LoginException {
+        tmpPrincipals.clear();
+        tmpCredentials.clear();
+
+        logout();
+    	
         return true;
     }
 
     public boolean logout() throws LoginException {
-        return true;
+        tmpPrincipals.clear();
+        tmpCredentials.clear();
+        Iterator it = subject.getPrincipals(GraedPrincipal.class).iterator();
+        while (it.hasNext()) {
+            GraedPrincipal p = (GraedPrincipal)it.next();
+            subject.getPrincipals().remove(p);
+        }
+
+        it = subject.getPublicCredentials(GraedCredential.class).iterator();
+        while (it.hasNext()) {
+            GraedCredential c = (GraedCredential)it.next();
+            subject.getPrincipals().remove(c);
+        }
+
+    	return true;
     }
 
-    private boolean validateLogin(String userName, String password){
-        return true;
+    private boolean validateLogin(String userName, String password)throws Exception{
+    	System.out.println("Je valide : "+userName+"/"+password);
+    	// on hashe le mot de passe avec MD5
+    	/*MessageDigest md = MessageDigest.getInstance("MD5");
+    	byte[] encodedPassword = md.digest(password.getBytes());
+*/
+		return true;
     }
     
 }
