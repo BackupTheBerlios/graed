@@ -28,7 +28,7 @@ public class Client {
 	private static final RessourceManager rm;
 	private static final IndisponibiliteManager im;
 	
-	private static final String host="pccop2b104-03.univ-mlv.fr";
+	private static final String host="pccop2b104-14.univ-mlv.fr";
 	
 	static {
 		try {
