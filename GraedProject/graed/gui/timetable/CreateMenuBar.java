@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -37,6 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -49,6 +51,7 @@ public class CreateMenuBar {
 	private JMenuBar barMenu;
 	private JFrame frame;
 	private JTabbedPane tp;
+	
 	/**
 	 * Constructeur
 	 *
@@ -64,6 +67,7 @@ public class CreateMenuBar {
 		barMenu.add(createMenuInd());
 		barMenu.add(createMenuLF());
 		//barMenu.add(createMenuEDT());
+		
 	}
 	/**
 	 * Renvoie la barre de menu pour la fenêtre principale
@@ -143,11 +147,6 @@ public class CreateMenuBar {
 			
 		});
 		
-		prof.setIcon(new ImageIcon(getClass().getResource("../ressource/professeur16.jpg")));
-		salle.setIcon(new ImageIcon(getClass().getResource("../ressource/classe16.gif")));
-		//materiel.setIcon(new ImageIcon(getClass().getResource("")));
-		//formation.setIcon(new ImageIcon(getClass().getResource("")));
-		
 		select.add(prof);
 		select.add(salle);
 		select.add(materiel);
@@ -223,9 +222,6 @@ public class CreateMenuBar {
 			}
 			
 		});
-		
-		prof.setIcon(new ImageIcon(getClass().getResource("../ressource/professeur16.jpg")));
-		salle.setIcon(new ImageIcon(getClass().getResource("../ressource/classe16.gif")));
 		
 		create.add(prof);
 		create.add(salle);
