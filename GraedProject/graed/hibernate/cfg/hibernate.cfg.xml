@@ -7,9 +7,11 @@
 
     <session-factory>
 		<property name="connection.driver_class">org.postgresql.Driver</property>
+		<!--
 		<property name="connection.url">jdbc:postgresql://sqletud.univ-mlv.fr:5432/maitahme</property>
 		<property name="connection.username">maitahme</property>
 		<property name="connection.password">graed</property>
+		-->
 		<property name="dialect">net.sf.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="max_fetch_depth">0</property>
 

@@ -5,6 +5,7 @@ package graed.db;
 
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Properties;
 
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
@@ -22,7 +23,22 @@ public class DataBaseUtil {
     static {
         try {
             // Crée la SessionFactory
-            sessionFactory = new Configuration().configure().buildSessionFactory();
+        	Properties p = new Properties();
+        	
+        	String url = "jdbc:postgresql://"
+        					+graed.conf.Configuration.getParamValue("database","host")
+							+":"
+							+graed.conf.Configuration.getParamValue("database","port")
+							+"/"
+							+graed.conf.Configuration.getParamValue("database","name");
+        	
+        	p.put( "hibernate.connection.url", url );
+        	p.put( "hibernate.connection.username", 
+        			graed.conf.Configuration.getParamValue("database","user"));
+        	p.put( "hibernate.connection.password", 
+        			graed.conf.Configuration.getParamValue("database","password"));
+        	
+            sessionFactory = new Configuration().addProperties(p).configure().buildSessionFactory();
         } catch (HibernateException ex) {
             throw new RuntimeException("Problème de configuration : " + ex.getMessage(), ex);
         }
