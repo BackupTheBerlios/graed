@@ -12,6 +12,7 @@ import graed.indisponibilite.Indisponibilite;
 import graed.indisponibilite.IndisponibiliteManagerImpl;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
@@ -80,6 +81,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 		
 		Object[] o={"Libelle","Début","Fin","Heure","Duree","Fréquence","Type","Ressources"};
 		table=new JTable(fill(),o);
+		table.setPreferredSize(new Dimension(600,200));
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
 		frame.getContentPane().add(table.getTableHeader(),BorderLayout.NORTH);
@@ -114,7 +116,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 							"Vous ne pouvez consulter cette ressource",
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
-				
+				frame.dispose();
 			}		
 		});
 		return b;
@@ -136,7 +138,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 							"Vous ne pouvez consulter cette ressource",
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
-				
+				frame.dispose();
 			}		
 		});
 		return b;
@@ -154,7 +156,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",
 							"Erreur",JOptionPane.WARNING_MESSAGE);
-				
+				frame.dispose();
 			}		
 		});
 		return b;

@@ -24,6 +24,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -197,6 +198,9 @@ public class IndisponibiliteWindow extends InformationWindow{
 				}				
 			}
     		});
+    	if(isSee()){
+    		select.setEnabled(false);
+    	}
     	return select;
     }
     /**
@@ -218,6 +222,9 @@ public class IndisponibiliteWindow extends InformationWindow{
 				}				
 			}
     		});
+    	if(isSee()){
+    		noselect.setEnabled(false);
+    	}
     	return noselect;
     }
     /**
@@ -273,6 +280,9 @@ public class IndisponibiliteWindow extends InformationWindow{
         JScrollPane jsp2=new JScrollPane(select_ress);
         jsp2.setPreferredSize(new Dimension(200,75));
         p.add(jsp2,c);
+        if(isSee()){
+    		jsp2.setEnabled(false);
+    	}
     	
         c.gridx = 0;
         c.gridy = 9;
@@ -292,11 +302,17 @@ public class IndisponibiliteWindow extends InformationWindow{
      * @param c constraint
      */
     private void FillComponent(){
-    	/*libelle.setText(((Indisponibilite) getInformation()).getName());
-    	firstName.setText(((Indisponibilite) getInformation()).getFirstName());
-    	office.setText(((Indisponibilite) getInformation()).getOffice());
-    	phone.setText(((Indisponibilite) getInformation()).getPhone());
-    	email.setText(((Indisponibilite) getInformation()).getEmail());*/
+    	libelle.setText(((Indisponibilite) getInformation()).getLibelle());
+    	this.date_debut.setDate(((Indisponibilite) getInformation()).getDebut());
+    	this.date_fin.setDate(((Indisponibilite) getInformation()).getFin());
+    	duree.setValue(new Date(((Indisponibilite) getInformation()).getDuree()*60000-3600000));
+    	this.hdebut.setValue(((Indisponibilite) getInformation()).getHdebut());
+    	this.periodicite.setSelectedItem(((Indisponibilite) getInformation()).getPeriodicite());
+    	this.type.setSelectedItem(((Indisponibilite) getInformation()).getType());
+    	Set s=((Indisponibilite) getInformation()).getRessources();
+    	for(Iterator i=s.iterator();i.hasNext();)
+    		((DefaultListModel)this.select_ress.getModel()).addElement((Ressource)i.next());
+    	
     	
     }
     /**
@@ -340,13 +356,27 @@ public class IndisponibiliteWindow extends InformationWindow{
     	JButton b=new JButton("Modifier");
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
-    			/*((Indisponiblite) getInformation()).setName(name.getText());
-    			((Indisponiblite) getInformation()).setFirstName(firstName.getText());
-    			((Indisponiblite) getInformation()).setOffice(office.getText());
-    			((Indisponiblite) getInformation()).setPhone(phone.getText());
-    			((Indisponiblite) getInformation()).setEmail(email.getText());
-    			System.out.println(((Indisponiblite) getInformation()));*/
-    			System.exit(0);
+    			((Indisponibilite) getInformation()).setDebut(new Date(date_debut.getDate().getTime())); 
+    			((Indisponibilite) getInformation()).setFin(new Date(date_fin.getDate().getTime()));
+    			((Indisponibilite) getInformation()).setHdebut(((SpinnerTimeModel)hdebut.getModel()).getSQLTime());
+    			((Indisponibilite) getInformation()).setDuree((int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60);
+    			((Indisponibilite) getInformation()).setPeriodicite((String)periodicite.getSelectedItem());
+    			((Indisponibilite) getInformation()).setLibelle(libelle.getText());
+    			((Indisponibilite) getInformation()).setType((String)type.getSelectedItem());
+    			Set s=((Indisponibilite) getInformation()).getRessources();
+    			s.clear();
+    			for(int i=0;i<select_ress.getModel().getSize();++i){
+    				((Indisponibilite) getInformation()).addRessource((Ressource)select_ress.getModel().getElementAt(i));
+    			}
+    			System.out.println(((Indisponibilite) getInformation()));
+    			try {
+					IndisponibiliteManagerImpl.getInstance().addIndisponibilite(((Indisponibilite) getInformation()));
+				} catch (RemoteException e) {
+					JOptionPane.showMessageDialog(frame,
+							"l'indisponibilité ne peut être modifiée ",
+							"Erreur",JOptionPane.ERROR_MESSAGE);	
+				}
+    			frame.dispose();
     		}		
     	});
     	return b;
@@ -428,7 +458,7 @@ public class IndisponibiliteWindow extends InformationWindow{
 				System.out.println("List:"+l);	
 				if(l!=null && !l.isEmpty()){
 					frame.setEnabled(false);
-					new ListIndisponibiliteWindow(l).OpenWindow();
+					new ListIndisponibiliteWindow(l).OpenWindow();					
 				}
     			frame.dispose();
     		}		

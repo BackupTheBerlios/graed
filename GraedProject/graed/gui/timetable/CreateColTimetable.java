@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -32,6 +33,7 @@ public class CreateColTimetable {
 	private Ressource r;
 	private int start;
 	private int stop;
+	private Color color;
 	String title;
 	
 	/**
@@ -43,6 +45,7 @@ public class CreateColTimetable {
 	 */
 	public CreateColTimetable(Ressource r,String title, int start, int stop){
 		this.r=r;
+		color = Color.LIGHT_GRAY;
 		jourTable=new Hashtable();
 		this.title=title;
 		this.start = start;
@@ -76,7 +79,7 @@ public class CreateColTimetable {
 		/* Table affichant les heures */
 		
 		JTable hours =new JTable(1,(stop+1-start)*4);
-		hours.setBackground(Color.LIGHT_GRAY);
+		hours.setBackground(color);
 		hours.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		hours.setCellSelectionEnabled(true);
 		hours.setEnabled(false);
@@ -96,7 +99,7 @@ public class CreateColTimetable {
 	private JTable CreateDaysTable(){
 		/* Table affichant les jours */
 		JTable days =new JTable(5,1);
-		days.setBackground(Color.LIGHT_GRAY);
+		days.setBackground(color);
 		days.setGridColor(Color.BLACK);		
 		days.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		days.setEnabled(false);
@@ -135,7 +138,7 @@ public class CreateColTimetable {
 		
 		colTimetable.setLayout(l);
 		colTimetable.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
-		colTimetable.setBackground(Color.LIGHT_GRAY);
+		colTimetable.setBackground(color);
 		GridBagConstraints c= new GridBagConstraints();
 		
 		/* Table affichant les heures */
