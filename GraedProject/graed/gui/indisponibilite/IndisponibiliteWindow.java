@@ -4,9 +4,12 @@
 package graed.gui.indisponibilite;
 
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -150,9 +153,9 @@ public class IndisponibiliteWindow {
     private void SeeOrModify(JPanel p,GridBagConstraints c){
     	String mask="UUUUUUUUUUUUUUUUUUUUUUUU";
     	c.gridy = 0;
-    	addLine(p,c,mask,name, "Nom : ", t.getName());
+    	addLine(p,c,mask,name, "Nom : ", i.getName());
     	c.gridy = 1;
-    	addLine(p,c,mask,firstName,"Prénom : ", t.getFirstName());
+    	addLine(p,c,mask,firstName,"Prénom : ", i.getFirstName());
     	
     	mask="*****";
     	c.gridy = 2;		
@@ -179,7 +182,7 @@ public class IndisponibiliteWindow {
      */
     private void OpenWindow(){
     	JFrame frame=new JFrame();
-    	Class clazz=TeacherWindow.class;
+    	Class clazz=IndisponibiliteWindow.class;
     	ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
     	frame.setIconImage(i.getImage());
     	frame.setTitle("Teacher");
@@ -287,7 +290,7 @@ public class IndisponibiliteWindow {
     public static void main (String[] args) throws InvalidStateException{
     	Indisponibilite i=new Indiponibilite("GONORD", "Nadege", 
     			"2B117", "0164022461", "nade77@neuf.fr");
-    	new TeacherWindow(TeacherWindow.SEARCH,t);
+    	new IndisponibiliteWindow(IndisponibiliteWindow.SEARCH,t);
     }
     }
 }
