@@ -41,11 +41,7 @@
 
         <set name="ressources" table="link_ir">
              <key column="id_indisponibilite"/>
-             <!--
-             <element column="ressource" type="graed.ressource.Ressource"/>
-             -->
              <many-to-many column="id_ressource" class="graed.ressource.Ressource"/>
-        	 
         </set>
 
     </class>

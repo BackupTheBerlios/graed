@@ -18,6 +18,7 @@ import java.util.List;
 
 
 import net.sf.hibernate.Criteria;
+import net.sf.hibernate.expression.Example;
 import net.sf.hibernate.expression.Expression;
 
 /**
@@ -113,6 +114,18 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		Criteria c = dbm.createCriteria(Indisponibilite.class);
 		c.add(Expression.between("debut", begin, end ));
 		try {
+			return c.list();
+		} catch(Exception e) {
+			throw new RemoteException(e.getMessage());
+		}
+	}
+	
+	public Collection getIndisponibilitesForRessource( Ressource r ) throws RemoteException {
+		try {
+			Criteria c = dbm.createCriteria(Indisponibilite.class)
+						.createCriteria("ressources")
+							.add( Example.create(r).excludeZeroes().ignoreCase().enableLike() );
+		
 			return c.list();
 		} catch(Exception e) {
 			throw new RemoteException(e.getMessage());

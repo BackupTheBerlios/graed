@@ -2,6 +2,7 @@
 package graed.indisponibilite;
 
 import graed.indisponibilite.event.IndisponibiliteListener;
+import graed.ressource.Ressource;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -38,7 +39,7 @@ public interface IndisponibiliteManager extends Remote{
      * @throws RemoteException
      */
     public Collection getIndisponibilites( Indisponibilite i ) throws RemoteException;
-    
+    public Collection getIndisponibilitesForRessource( Ressource r ) throws RemoteException;
     public Collection getIndisponibilitesBetween( Date begin, Date end ) throws RemoteException;
     /**
      * Objects can register on an implementation of the Indiponibilite manager to be notified of changes.
