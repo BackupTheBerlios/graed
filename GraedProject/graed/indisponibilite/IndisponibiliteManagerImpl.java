@@ -4,18 +4,12 @@ import graed.db.DataBaseManager;
 import graed.exception.DataBaseException;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
-import graed.ressource.Ressource;
-import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Room;
-import graed.ressource.type.Teacher;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Helder DE SOUSA
