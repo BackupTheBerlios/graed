@@ -6,7 +6,6 @@
  */
 package graed.indisponibilite;
 
-import graed.ressource.Ressource;
 import graed.ressource.RessourceInterface;
 
 import java.rmi.Remote;

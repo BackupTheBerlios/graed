@@ -7,7 +7,6 @@ package graed.gui.ressource;
 import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.ressource.RessourceManagerImpl;
 import graed.ressource.event.RessourceEvent;
 import graed.ressource.type.Materiel;
 import graed.ressource.type.MaterielInterface;

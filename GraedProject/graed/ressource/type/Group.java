@@ -23,7 +23,7 @@ public class Group extends Ressource implements GroupInterface{
 	private String description;
 	private String mail;
 	private User user;
-	private Teacher prof_responsable;
+	private TeacherInterface prof_responsable;
 	private String options;
 	/**
 	 * Constructeur vide
@@ -125,7 +125,7 @@ public class Group extends Ressource implements GroupInterface{
 	/**
 	 * @return Returns the prof_responsable.
 	 */
-	public Teacher getProf_responsable() {
+	public TeacherInterface getProf_responsable() {
 		return prof_responsable;
 	}
 	/**
@@ -150,7 +150,7 @@ public class Group extends Ressource implements GroupInterface{
 	 * @see graed.ressource.type.GroupInterface#setProf_responsable(graed.ressource.type.TeacherInterface)
 	 */
 	public void setProf_responsable(TeacherInterface prof) throws RemoteException {
-		this.prof_responsable = prof_responsable;
+		this.prof_responsable = prof;
 		
 	}
 }

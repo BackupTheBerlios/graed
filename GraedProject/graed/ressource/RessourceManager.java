@@ -2,7 +2,6 @@
 package graed.ressource;
 
 import graed.callback.Callback;
-import graed.ressource.event.RessourceListener;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
