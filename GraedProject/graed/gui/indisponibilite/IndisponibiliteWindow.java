@@ -372,30 +372,33 @@ public class IndisponibiliteWindow extends IndWindow{
     	JButton b=new JButton("Modifier");
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
-    			try {    				
-    			((IndisponibiliteInterface) getInformation()).setDebut(new Date(date_debut.getDate().getTime())); 
-    			((IndisponibiliteInterface) getInformation()).setFin(new Date(date_fin.getDate().getTime()));
-    			((IndisponibiliteInterface) getInformation()).setHdebut(((SpinnerTimeModel)hdebut.getModel()).getSQLTime());
-    			((IndisponibiliteInterface) getInformation()).setDuree((int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60);
-    			((IndisponibiliteInterface) getInformation()).setPeriodicite((String)periodicite.getSelectedItem());
-    			((IndisponibiliteInterface) getInformation()).setLibelle(libelle.getText());
-    			((IndisponibiliteInterface) getInformation()).setType((String)type.getSelectedItem());
-    			Set s=((IndisponibiliteInterface) getInformation()).getRessources();
+    			try {    
+    			IndisponibiliteInterface in=Client.getIndisponibiliteManager().createIndisponibilite();
+        		in.copy(((IndisponibiliteInterface) getInformation()));
+        		in.setDebut(new Date(date_debut.getDate().getTime())); 
+        		in.setFin(new Date(date_fin.getDate().getTime()));
+        		in.setHdebut(((SpinnerTimeModel)hdebut.getModel()).getSQLTime());
+        		in.setDuree((int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60);
+        		in.setPeriodicite((String)periodicite.getSelectedItem());
+        		in.setLibelle(libelle.getText());
+        		in.setType((String)type.getSelectedItem());
+    			Set s=in.getRessources();
     			s.clear();
     			for(int i=0;i<select_ress.getModel().getSize();++i){
-    				((IndisponibiliteInterface) getInformation()).addRessource((RessourceInterface)select_ress.getModel().getElementAt(i));
+    				in.addRessource((RessourceInterface)select_ress.getModel().getElementAt(i));
     			}   
-    			String control=((IndisponibiliteInterface) getInformation()).control();
+    			String control=in.control();
     			if(control!=null){
     				JOptionPane.showMessageDialog(frame,
 							control,
 							"Attention",JOptionPane.INFORMATION_MESSAGE);	
     				return;
     			}
-    			if(!ressource_disponible(((IndisponibiliteInterface) getInformation()))){System.out.println("bien");return;}
+    			if(!ressource_disponible(in)){System.out.println("bien");return;}
 				System.out.println("Indispo Modifiée");
-    			Client.getIndisponibiliteManager().updateIndiponibilite(((IndisponibiliteInterface) getInformation()));
-				} catch (RemoteException e) {
+				((IndisponibiliteInterface) getInformation()).copy(in);
+    			Client.getIndisponibiliteManager().updateIndiponibilite(in);				
+        		} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
 							"l'indisponibilité ne peut être modifiée ",
 							"Erreur",JOptionPane.ERROR_MESSAGE);	
