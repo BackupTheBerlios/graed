@@ -334,11 +334,11 @@ public class CreateMainFrame {
 	 */
 	public void addTimetable(RessourceInterface r,java.sql.Date dateDebut,java.sql.Date dateFin){
 		Collection c=null;
-		if(timetable_list.isEmpty()){
-			date_lib.setText("du " +dateDebut+" au "+dateFin);
-			debut=dateDebut;
-			fin=dateFin;
-		}
+		
+		debut=dateDebut;
+		fin=dateFin;
+		date_lib.setText("du " +dateDebut+" au "+dateFin);
+		
 		try {
 			c=Client.getIndisponibiliteManager().getIndisponibilites(
 					r,dateDebut,dateFin);
@@ -477,10 +477,18 @@ public class CreateMainFrame {
 	    		}
 	    });
 	    
+	    JButton logout = createButton("Deconnexion",
+				"Fermer la session utilisateur", 
+				"icons/quit24.png",
+				new ActionListener() {
+	    		public void actionPerformed( ActionEvent ae ) {}
+	    });
+
 	    
 	    buttons.put("export",exp);
 	    buttons.put("print",imp);
 	    buttons.put("refresh",ref);
+	    buttons.put("logout",logout);
 	    
 	    
 	    /** Choix de la période de l'emploi du temps **/   	   
@@ -626,7 +634,10 @@ public class CreateMainFrame {
 	    tb.addSeparator(new Dimension(8,24));
 	    tb.add(ref);
 	    tb.addSeparator(new Dimension(8,24));
+	    tp.add(logout);
+	    tb.addSeparator(new Dimension(8,24));
 	    tb.add(p);
+	    	    
 	    tb.setBorderPainted(true);
 	    tb.setFloatable(false);
 	    tb.setOpaque(true);
