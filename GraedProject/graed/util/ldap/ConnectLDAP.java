@@ -253,14 +253,14 @@ public class ConnectLDAP {
 		ConnectLDAP ldap=new ConnectLDAP();
 		Hashtable environnementLDAP = ldap.preparerEnvirronnement ();
 		ldap.initialiserConnexionLDAP(environnementLDAP);
-		List p= ldap.searchTeachers();
+		/*List p= ldap.searchTeachers();
 		System.out.println(p.size()+" teacher find:");
 		for (Iterator i=p.iterator();i.hasNext();){
 			Teacher t=(Teacher)i.next();
 			System.out.println(t);
 			DataBaseManager.getInstance().add(t);
-		}
-		/*List p= ldap.searchGroup();
+		}*/
+		List p= ldap.searchGroup();
 		System.out.println(p.size()+" groups find:");
 		for (Iterator i=p.iterator();i.hasNext();){
 			Group g=(Group) i.next();
@@ -269,10 +269,13 @@ public class ConnectLDAP {
 			System.out.println(e.size()+" students find:");
 			for (Iterator j=e.iterator();j.hasNext();)
 				System.out.println("***"+j.next());
-			}*/
+			}
 		/*List p= ldap.searchRoom();
 		System.out.println(p.size()+" rooms find:");
-		for (Iterator i=p.iterator();i.hasNext();)
-			System.out.println(i.next());*/
+		for (Iterator i=p.iterator();i.hasNext();){
+				Room r=(Room)i.next();
+				System.out.println(r);
+				DataBaseManager.getInstance().add(r);
+		}*/
 	}
 }

@@ -15,20 +15,19 @@ import graed.ressource.Ressource;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Group extends Ressource {
-	private int id;
+	private String id;
 	private String number;
 	private String name;
 	private String description;
 	private String mail;
 	private int id_utilisateur;
-	private int id_prof_responsable;
+	private Teacher prof_responsable;
 	private String options;
 	public Group(){
 		super("Formation");
 	}
 	public Group(String number,String name, String description,String mail/*Personne directeur,Secretariat s,List options */ ){
 		this();
-		id=0;
 		this.number=number;
 		this.name=name;
 		this.description=description;
@@ -36,7 +35,6 @@ public class Group extends Ressource {
 	}
 	public Group (int id, String number, String name, String description, String mail){
 		this(number,name, description,mail);
-		this.id=id;
 	}	
 	public String toString() {
 		String p="";
