@@ -5,12 +5,16 @@
 package graed.gui.timetable;
 
 import graed.exception.InvalidStateException;
+import graed.ressource.RessourceManagerImpl;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.rmi.RemoteException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -56,18 +60,33 @@ private JFormattedTextField dateFin;
  * @throws InvalidStateException
  */
 public SelectTimetable() {
+
 	String d;
 	String f;
 	
 	p=new JPanel();
 	p.setSize(with,height);
 	
-	type = new JComboBox();
-	type.addItem("Professeur");
-	type.addItem("Salle");
-	type.addItem("Formation");
-	type.addItem("Matériel");
+	RessourceManagerImpl rmi;
+	String[] ressTypes=null;
+	try {
+		rmi=RessourceManagerImpl.getInstance();
+		ressTypes=rmi.getRessourcesTypes();
+	} catch (RemoteException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
 	
+	
+	type = new JComboBox(ressTypes);
+	type.addItemListener(new ItemListener(){
+
+		public void itemStateChanged(ItemEvent e) {
+			System.out.println(type.getSelectedItem());
+			
+		}
+		
+	});
 	ressource = new JComboBox();
 	
 	ButtonGroup group=new ButtonGroup();
