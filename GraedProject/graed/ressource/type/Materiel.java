@@ -47,8 +47,8 @@ public class Materiel extends Ressource {
 	 */
 	public String toString() {
 		String p="";
-		p+="Name: "+name+" ";
-		p+="Type: "+typeMateriel;
+		p+=name+" ";
+		p+="("+typeMateriel+")";
 		return p;
 	}
 

@@ -34,10 +34,8 @@ public class Room extends Ressource {
 	
 	public String toString() {
 		String p="";
-		p+="Name: "+nom+" ";
-		p+="House: "+batiment+" ";
-		p+="Where: "+lieu+" ";
-		p+="How: "+capacite+" ";
+		p+=nom+" ";
+		p+="("+batiment+")";
 		return p;
 	}
 	/* ******************** Getter et Setter *********************** */

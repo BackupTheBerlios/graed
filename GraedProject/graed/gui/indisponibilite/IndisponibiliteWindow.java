@@ -9,6 +9,8 @@ import graed.gui.ressource.TeacherWindow;
 import graed.indisponibilite.Indisponibilite;
 import graed.ressource.RessourceManagerImpl;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,9 +18,12 @@ import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -26,9 +31,12 @@ import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
@@ -41,8 +49,8 @@ public class IndisponibiliteWindow extends InformationWindow{
      * Window
      */
     private JFrame frame=new JFrame();
-    private static int with=300;
-    private static int height=200;
+    private static int with=500;
+    private static int height=500;
     /**
      * TextField
      */
@@ -53,6 +61,8 @@ public class IndisponibiliteWindow extends InformationWindow{
 	private JComboBox periodicite;/* occ, hebdo */
 	private JComboBox type;/* Cours, TD, TP */
     private JComboBox type_ress;/* getRessType */
+    private JList list_ress;
+    private JList select_ress;
     private Hashtable ress_found;
     private Hashtable ress_select;
 	
@@ -73,7 +83,26 @@ public class IndisponibiliteWindow extends InformationWindow{
     	type = new JComboBox(fillType());/* Cours, TD, TP */
     	ress_found=new Hashtable();
         type_ress= new JComboBox(fillTypeRess());/* getRessType */
-        ress_select=new Hashtable();
+        type_ress.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				Collection coll=(Collection) ress_found.get((String) type_ress.getSelectedItem());
+				DefaultListModel dlm = (DefaultListModel)list_ress.getModel();
+				dlm.clear();
+				for( Iterator i=coll.iterator();i.hasNext();)
+					dlm.addElement(i.next());
+				frame.validate();
+				frame.repaint();
+			}
+        	});
+        ress_select=new Hashtable();      
+        Collection coll=(Collection) ress_found.get((String) type_ress.getSelectedItem());
+        list_ress=new JList();
+        list_ress.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
+        DefaultListModel dlm = new DefaultListModel();
+        for( Iterator it=coll.iterator();it.hasNext();)
+        	dlm.addElement(it.next());
+        list_ress.setModel(dlm);
+        select_ress=new JList(new DefaultListModel());
     }
     /**
      * Rempli le champs periodicite de la fenêtre
@@ -96,19 +125,19 @@ public class IndisponibiliteWindow extends InformationWindow{
      * @return tableau contenant les objets qui seront mis dans la combo
      */
     private Object[] fillTypeRess(){
-    	Object[] o={"Prof","Salle","Mat","Form"};
-		/*try {
+    	Object[] o=null;
+		try {
 			RessourceManagerImpl rmi = RessourceManagerImpl.getInstance();
 			o = rmi.getRessourcesTypes();
 			for (int i=0;i<o.length;++i){
 				ress_found.put(o[i],rmi.getRessourcesByType((String)o[i]));//Collection
-			}
+			}			
 		} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
 					"Accès concurrent: La fenêtre ne peut être affichée",
 					"Erreur",JOptionPane.ERROR_MESSAGE);
 		
-		}*/
+		}
 		return o;
     }
     /**
@@ -133,6 +162,28 @@ public class IndisponibiliteWindow extends InformationWindow{
     		tf.setEnabled(false);
     	}
     	p.add(tf,c);
+    }
+    /**
+     * Selectionner une ressource pour l'indisponibilité
+     * @return bouton de selection de ressource
+     */
+    private JButton select(){
+    	JButton select=new JButton(">");
+    	select.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				list_ress.getSelectedValue();
+				
+			}
+    		});
+    	return select;
+    }
+    /**
+     * Déselectionner une ressource pour l'indisponibilité
+     * @return bouton de déselection de ressource
+     */
+    private JButton noselect(){
+    	JButton noselect=new JButton("<");
+    	return noselect;
     }
     /**
      * Add the component for the window 
@@ -163,11 +214,31 @@ public class IndisponibiliteWindow extends InformationWindow{
         c.gridx = 0;
         c.gridwidth = 1;    
         c.weightx=0; 
-        c.gridy = 6;        
+        c.gridy = 6;     
+        
         p.add(type_ress,c);
+        
+       
+        
+        c.gridx = 0;
+        c.gridy = 7;   
+        JScrollPane jsp=new JScrollPane(list_ress);
+        jsp.setPreferredSize(new Dimension(200,75));
+        p.add(jsp,c);
     	
+        c.gridx=1; 
+        JPanel p_button=new JPanel(new BorderLayout());
+        p_button.add(select(),BorderLayout.NORTH);
+        p_button.add(noselect(),BorderLayout.SOUTH);
+        p.add(p_button,c);
+        
+        c.gridx=2;   
+        JScrollPane jsp2=new JScrollPane(select_ress);
+        jsp2.setPreferredSize(new Dimension(200,75));
+        p.add(jsp2,c);
     	
-        c.gridy = 7;
+        c.gridx = 0;
+        c.gridy = 8;
     	if(isCreate()){
     		p.add(create(),c);
     	}

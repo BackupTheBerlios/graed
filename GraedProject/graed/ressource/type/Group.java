@@ -23,9 +23,23 @@ public class Group extends Ressource {
 	private User user;
 	private Teacher prof_responsable;
 	private String options;
+	/**
+	 * Constructeur vide
+	 *
+	 */
 	public Group(){
 		super("Formation");
 	}
+	/**
+	 * Constructeur de la classe Group
+	 * @param number numéro associé à Group dans l'arbre LDAP
+	 * @param name nom de la formation
+	 * @param description description de la formation
+	 * @param mail courriel de la formation
+	 * @param user secrétaire de la formation
+	 * @param prof_responsable professeur responsable de la formation
+	 * @param options options de la formation
+	 */
 	public Group(String number,String name, String description,String mail,
 			User user, Teacher prof_responsable, String options){
 		this();
@@ -39,10 +53,8 @@ public class Group extends Ressource {
 	}		
 	public String toString() {
 		String p="";
-		p+="Number"+number+" ";
-		p+="Name: "+name+" ";
-		p+="Description: "+description+" ";
-		p+="E-Mail: "+mail;		
+		p+=name+" ";
+		p+="("+description+")";
 		return p;
 	}
 	/* ******************** Getter et Setter *********************** */

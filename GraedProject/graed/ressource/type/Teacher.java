@@ -38,11 +38,8 @@ public class Teacher extends Ressource {
 	 */
 	public String toString() {
 		String p="";
-		p+="Name: "+name+" ";
-		p+="First name: "+firstName+" ";
-		p+="Office: "+office+" ";
-		p+="Phone: "+phone+" ";
-		p+="E-Mail: "+email;		
+		p+=name+" ";
+		p+=firstName;	
 		return p;
 	}
 	/* ******************** Getter et Setter *********************** */
