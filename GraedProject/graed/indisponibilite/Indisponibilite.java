@@ -190,6 +190,9 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 		if(getPeriodicite().equals("ponctuel")){
 			libelle+=" le "+getDebut();
 		}
+		else if(getPeriodicite().equals("hebdomadaire")){
+			libelle+=" du "+getDebut()+" au "+getFin();
+		}
 		else if(getPeriodicite().equals("bihebdomadaire")){
 			libelle+=" tous les 15 jours à partir du "+getDebut();
 		}
