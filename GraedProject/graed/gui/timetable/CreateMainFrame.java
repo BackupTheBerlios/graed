@@ -218,10 +218,71 @@ public class CreateMainFrame {
 			}
 			
 		};
+		CallbackRunnable addI = new CallbackRunnable() {
+
+			public void run() {
+				try {
+					GregorianCalendar gc = new GregorianCalendar();
+					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String time = hour+":"+minute;
+					DefaultListModel dlm = (DefaultListModel)notif.getModel();
+					IndisponibiliteInterface ri = (IndisponibiliteInterface)getSource();
+					dlm.addElement(time+"    "+ri.getType()+" ajouté(e) : "+ri.print());
+					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					notif.validate();
+					notif.repaint();
+				} catch( Exception e ) {
+					e.printStackTrace();
+				}
+			}
+			
+		};
+		CallbackRunnable updateI = new CallbackRunnable() {
+
+			public void run() {
+				try {
+					GregorianCalendar gc = new GregorianCalendar();
+					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String time = hour+":"+minute;
+					DefaultListModel dlm = (DefaultListModel)notif.getModel();
+					IndisponibiliteInterface ri = (IndisponibiliteInterface)getSource();
+					dlm.addElement(time+"    "+ri.getType()+" mis(e) à jour : "+ri.print());
+					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					notif.validate();
+					notif.repaint();
+				} catch( Exception e ) {
+					e.printStackTrace();
+				}
+			}
+			
+		};
+		CallbackRunnable deleteI = new CallbackRunnable() {
+
+			public void run() {
+				try {
+					GregorianCalendar gc = new GregorianCalendar();
+					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String time = hour+":"+minute;
+					DefaultListModel dlm = (DefaultListModel)notif.getModel();
+					IndisponibiliteInterface ri = (IndisponibiliteInterface)getSource();
+					dlm.addElement(time+"    "+ri.getType()+" supprimé(e) : "+ri.print());
+					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					notif.validate();
+					notif.repaint();
+				} catch( Exception e ) {
+					e.printStackTrace();
+				}
+			}
+			
+		};
 		
 		CallbackThread t = new CallbackThread( add,delete,update, Client.getRessourceManager());
 		t.start();
-
+		CallbackThread tt = new CallbackThread( addI,deleteI,updateI, Client.getIndisponibiliteManager());
+		tt.start();
 	}
 	
 	/**

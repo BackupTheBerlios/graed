@@ -211,7 +211,6 @@ protected JButton modify(){
 				((RoomInterface) getInformation()).setBatiment(batiment.getText());
 				((RoomInterface) getInformation()).setLieu(lieu.getText());
 				((RoomInterface) getInformation()).setCapacite(Integer.parseInt(capacite.getText()));
-				System.out.println(((RoomInterface) getInformation()));
 				Client.getRessourceManager().updateRessource(((RoomInterface) getInformation()));
 			} catch (RemoteException e) {
 				JOptionPane.showMessageDialog(frame,
@@ -242,9 +241,7 @@ protected JButton create(){
 					room.setCapacite(Integer.parseInt(capacite.getText()));
 					room.setLieu(lieu.getText());
 					setInformation(room);			
-					System.out.println(((Room) getInformation()));
-				
-					
+										
 					RessourceManagerImpl.getInstance().addRessource(((Room) getInformation()));
 				} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
@@ -286,7 +283,6 @@ protected JButton search(){
 			
 			setInformation(room);
 			
-			System.out.println(((RoomInterface) getInformation()));			
 			Collection l=null;			
 				
 					l= (Collection) Client.getRessourceManager().getRessources(((RoomInterface) getInformation()));
