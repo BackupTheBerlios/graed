@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author ngonord
@@ -34,7 +35,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 	 * Window
 	 */
 	private JFrame frame;
-	private JTable table;
+	private final JTable table;
 	private static int with=300;
 	private static int height=200;
 	/**
@@ -43,7 +44,10 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 	 */
 	public ListIndisponibiliteWindow(Collection c) {
 		super(c);
-		frame=new JFrame();		
+		frame=new JFrame();	
+		Object[] o={"Libelle","Début","Fin","Heure","Duree","Fréquence","Type","Ressources"};
+		table=new JTable(new DefaultTableModel(fill(),o));
+		
 	}
 
 	/**
@@ -81,8 +85,6 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 		frame.setTitle("Liste des indisponibilités");
 		frame.setContentPane(p);
 		
-		Object[] o={"Libelle","Début","Fin","Heure","Duree","Fréquence","Type","Ressources"};
-		table=new JTable(fill(),o);
 		table.setPreferredSize(new Dimension(600,200));
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
@@ -172,9 +174,9 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				IndisponibiliteInterface t = (IndisponibiliteInterface) getInd(table.getSelectedRow());
-				table.remove(table.getSelectedRow());
-				System.out.println(table);
 				removeInd(t);
+				((DefaultTableModel)table.getModel()).removeRow(table.getSelectedRow());
+				System.out.println("nb rows:"+table.getRowCount());
 				try {
 					Client.getIndisponibiliteManager().deleteIndisponibilite(t);
 				} catch (RemoteException e) {
@@ -183,7 +185,9 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 							"Cette ressource ne peut etre supprimée",
 							"Erreur",JOptionPane.WARNING_MESSAGE);
 				}
-				frame.validate();
+				Object[] o={"Libelle","Début","Fin","Heure","Duree","Fréquence","Type","Ressources"};
+				
+				table.validate();
 				frame.repaint();
 				
 			}		
