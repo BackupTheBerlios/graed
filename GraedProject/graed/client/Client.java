@@ -7,7 +7,6 @@
 package graed.client;
 
 import graed.indisponibilite.IndisponibiliteManager;
-import graed.ressource.RessourceInterface;
 import graed.ressource.RessourceManager;
 import graed.ressource.type.TeacherInterface;
 
@@ -16,7 +15,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * @author hdesou01
@@ -28,7 +26,7 @@ public class Client {
 	private static final RessourceManager rm;
 	private static final IndisponibiliteManager im;
 	
-	private static final String host="pccop2b104-14.univ-mlv.fr";
+	private static final String host="pccop2b104-11.univ-mlv.fr";
 	
 	static {
 		try {
