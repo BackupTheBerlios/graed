@@ -22,6 +22,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.Date;
@@ -50,6 +52,8 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.hokage.swing.JBackgroundPanel;
 import com.hokage.swing.JCloseableTabbedPane;
@@ -98,6 +102,16 @@ public class CreateMainFrame {
 	    notif.setCellRenderer(new NotificationRenderer());
 	    frame=new JFrame();
 		tp=new JCloseableTabbedPane("graed/gui/timetable/icons/fond.png");
+		tp.addChangeListener(new ChangeListener(){
+			public void stateChanged(ChangeEvent e) {
+				CreateColTimetable tmp=(CreateColTimetable) tp.getSelectedComponent();
+				if (tmp!=null && !timetable_list.isEmpty()){
+					Timetable t=(Timetable) timetable_list.get(tmp);
+					if(t!=null)
+					date_lib.setText("du " +t.getDateDebut()+" au "+t.getDateFin());
+				}
+				
+			}});
 		tp.setOpaque(false);
 		frame.setTitle("Graed project");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -423,6 +437,7 @@ public class CreateMainFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		tp.setTitleAt(tp.getSelectedIndex(),time2.getTitle());
 		time2.validate();
 		time2.repaint();
 	}
@@ -490,6 +505,7 @@ public class CreateMainFrame {
 	    p.add(createButton("","Période précédente","icons/navigation/Back16.gif",
 	    		new ActionListener() {
     		public void actionPerformed( ActionEvent ae ) {  
+    			if(debut==null || fin==null)return;
     			if(jcb.getSelectedItem().equals("semaine")){ 
     				GregorianCalendar cal=new GregorianCalendar();
     				cal.setTime(debut);    				
@@ -550,6 +566,7 @@ public class CreateMainFrame {
 	    p.add(createButton("","Période suivante","icons/navigation/Forward16.gif",
 	    		new ActionListener() {
     		public void actionPerformed( ActionEvent ae ) {
+    			if(debut==null || fin==null)return;
     			if(jcb.getSelectedItem().equals("semaine")){    				
     				GregorianCalendar cal=new GregorianCalendar();
     				cal.setTime(debut);    				
