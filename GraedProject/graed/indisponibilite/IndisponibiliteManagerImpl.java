@@ -5,10 +5,8 @@ import graed.exception.DataBaseException;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
 import graed.ressource.Ressource;
-import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Teacher;
-
 import java.rmi.RemoteException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -20,10 +18,22 @@ import net.sf.hibernate.expression.Expression;
 
 /**
  * @author Helder DE SOUSA
+ * Classe permettant la gestion des indisponibilités.
+ * 
+ * Design pattern : singleton
  */
 public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
+	/**
+	 * Le gestionnaire de base de données utilisé.
+	 */
 	private DataBaseManager dbm;
+	/**
+	 * L'instance de ce manager.
+	 */
     private static IndisponibiliteManagerImpl instance;
+    /**
+     * Liste des listeners écoutants ce manager.
+     */
     private List toBeNotified;
     
     private IndisponibiliteManagerImpl() throws RemoteException {
@@ -31,6 +41,11 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
     	toBeNotified = new ArrayList();
     }
     
+    /**
+     * Récupère l'instance du manager.
+     * @return L'instance du manager.
+     * @throws RemoteException
+     */
     public static IndisponibiliteManagerImpl getInstance() throws RemoteException  {
     	if( instance == null ) instance = new IndisponibiliteManagerImpl();
     	return instance;
@@ -78,8 +93,29 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 	public Collection getIndisponibilites(Indisponibilite i)
 			throws RemoteException {
 		try {
-            return dbm.get(i);
-        } catch (DataBaseException e) {
+			Criteria c = dbm.createCriteria(Indisponibilite.class);
+			if( i.getDebut() != null ) c.add(Expression.ge("debut",i.getDebut()) );
+			if( i.getFin() != null ) c.add(Expression.le("fin",i.getFin()) );
+			if( i.getDuree() != 0 ) c.add(Expression.eq( "duree", new Integer(i.getDuree()) ) );
+			if( i.getHdebut().equals(Time.valueOf("00:00:00")) ) c.add( Expression.eq("hdebut", i.getHdebut()) ) ;
+			if( i.getLibelle() != null ) c.add( Expression.eq("libelle", i.getLibelle()) ) ;
+			if( i.getType() != null ) c.add( Expression.eq("type", i.getType()) ) ;
+			if( i.getPeriodicite() != null ) c.add( Expression.eq("periodicite", i.getPeriodicite()) ) ;
+			
+			boolean first = true;
+			
+			for( Iterator ii = i.getRessources().iterator(); ii.hasNext(); ) {
+				if( first ) {
+					first = false;
+					c.createCriteria("ressources");
+				}
+				Ressource r = (Ressource)ii.next();
+				c.add(Expression.eq("id_ressource", r.getId_ressource()));
+			}
+		
+			return c.list();
+        
+		} catch (Exception e) {
         	throw new RemoteException(e.getMessage());
         }
 	}
@@ -92,12 +128,20 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		toBeNotified.add(il);
 	}
 	
+	/**
+	 * Previent les listeners qu'une indisponibilite a été supprimée.
+	 * @param ie L'évennement à dispatcher
+	 */
 	protected void fireIndisponibiliteDeleted( IndisponibiliteEvent ie ) {
 		for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
 	           ((IndisponibiliteListener)i.next()).indisponibiliteDeleted(ie);
 	       }
 	}
 
+	/**
+	 * Previent les listeners qu'une indisponibilite a été mise à jour.
+	 * @param ie L'évennement à dispatcher
+	 */
 	protected void fireIndisponibiliteUpdated( IndisponibiliteEvent ie ) {
 		for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
 	           ((IndisponibiliteListener)i.next()).indisponibiliteUpdated(ie);
@@ -123,7 +167,9 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		}
 	}
 	
-	
+	/**
+	 * @see graed.indisponibilite.IndisponibiliteManager#getIndisponibilitesBetween(graed.ressource.Ressource)
+	 */
 	public Collection getIndisponibilites( Ressource r ) throws RemoteException {
 		
 		try {
@@ -136,6 +182,9 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		}
 	}
 	
+	/**
+	 * @see graed.indisponibilite.IndisponibiliteManager#getIndisponibilitesBetween(graed.ressource.Ressource, java.util.Date, java.util.Date)
+	 */
 	public Collection getIndisponibilites( Ressource r, Date begin, Date end ) throws RemoteException {
 		try {
 			return dbm.createCriteria(Indisponibilite.class)
@@ -147,34 +196,5 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		} catch(Exception e) {
 			throw new RemoteException(e.getMessage());
 		}
-	}
-	
-	public static void main( String[] args ) throws RemoteException {
-		/*Ressource t = new Teacher("Zipstein", "Mark", "", "", "zipstein@univ-mlv.fr");
-		Ressource u = new Teacher("Forax", "Remi", "", "", "forax@univ-mlv.fr");
-		Ressource r = new Room("2b104","Copernic","Copernic",40);
-		java.sql.Date.valueOf("2005-06-10");
-		Indisponibilite in = new Indisponibilite( 
-				java.sql.Date.valueOf("2005-06-10"),
-				java.sql.Date.valueOf("2005-06-10"),
-				java.sql.Time.valueOf("15:00:00"),
-				2, "Unique", "Réseau", "Cours");
-		in.addRessource(t);
-		in.addRessource(r);
-		
-		RessourceManagerImpl.getInstance().addRessource(t);
-		RessourceManagerImpl.getInstance().addRessource(r);
-		RessourceManagerImpl.getInstance().addRessource(u);
-		
-		IndisponibiliteManagerImpl.getInstance().addIndisponibilite(in);*/
-		
-		Ressource zip = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Zipstein", null, null, null, null)).iterator().next();
-		Ressource forax = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Forax", null, null, null, null)).iterator().next();
-		
-		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilites( zip, java.sql.Date.valueOf("2005-06-08"),java.sql.Date.valueOf("2005-06-15")  );
-		for( Iterator i = c.iterator(); i.hasNext(); ) {
-			System.out.println(((Indisponibilite)i.next()).getRessources());
-		}
-		
 	}
 }
