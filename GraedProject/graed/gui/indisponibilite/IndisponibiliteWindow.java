@@ -108,8 +108,8 @@ public class IndisponibiliteWindow extends IndWindow{
 				dlm.clear();
 				for( Iterator i=coll.iterator();i.hasNext();)
 					dlm.addElement(i.next());
-				frame.validate();
-				frame.repaint();
+				list_ress.validate();
+				list_ress.repaint();
 			}
         	});
         ress_select=new Hashtable();      
@@ -419,7 +419,7 @@ public class IndisponibiliteWindow extends IndWindow{
     			for(int j=0;j<select_ress.getModel().getSize();++j){
     				i.addRessource((RessourceInterface)select_ress.getModel().getElementAt(j));
     			}
-    			System.out.println(i);
+    			//System.out.println(i);
     			
 					Client.getIndisponibiliteManager().addIndisponibilite(i);
 				} catch (RemoteException e) {

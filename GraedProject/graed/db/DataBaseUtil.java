@@ -55,7 +55,9 @@ public class DataBaseUtil {
 	public static Object convertStub( Session session, Object stub ) {
 		try {
 			Class ori = stub.getClass();
+			
 			if( !ori.getName().endsWith("_Stub") ) return stub;
+			
 			String original = ori.getName().split("_")[0];
 			Class dest = Class.forName(original);
 			Object destObj = dest.newInstance();
