@@ -16,9 +16,9 @@
 		-->
 
 		<property name="connection.driver_class">org.postgresql.Driver</property>
-		<property name="connection.url">jdbc:postgresql://sqletud.univ-mlv.fr:5432/testHibernate</property>
-		<property name="connection.username">hdesou01</property>
-		<property name="connection.password">sAeybau3</property>
+		<property name="connection.url">jdbc:postgresql://sqletud.univ-mlv.fr:5432/maitahme</property>
+		<property name="connection.username">maitahme</property>
+		<property name="connection.password">graed</property>
 		<property name="c3p0.min_size">5</property>
 		<property name="c3p0.max_size">20</property>
 		<property name="c3p0.timeout">1800</property>
