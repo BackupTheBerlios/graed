@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.rmi.RemoteException;
 import java.sql.Date;
 import java.util.Collection;
@@ -53,6 +54,8 @@ public class TimetableColJTable extends JTable {
 	private JMenuItem consu;
 	private JMenuItem modif;
 	private JMenuItem suppr;
+	private Collection collec;
+	private Container cours; 
 	/**
 	 * Constructeur de la classe
 	 * Réalise le Drag and Drop
@@ -88,7 +91,9 @@ public class TimetableColJTable extends JTable {
 			t.setCellRenderer(new TimetableTableCellRenderer());
 			addColumn(t);
 		}
-        MouseListener listener = new MouseAdapter() {
+
+		
+		MouseListener listener = new MouseAdapter() {
         	private int rowF =0;
         	private int colF=0;
         	
@@ -97,7 +102,7 @@ public class TimetableColJTable extends JTable {
             		rowF= TimetableColJTable.this.rowAtPoint(p);
             		colF= TimetableColJTable.this.columnAtPoint(p);
             		Object k =TimetableColJTable.this.getValueAt(rowF,colF);
-            		if( k!= null){            
+            		if( k!= null){
             			TimetableColJTable.this.setCellSelectionEnabled(false);
             			TimetableColJTable.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
             		}     
@@ -150,12 +155,11 @@ public class TimetableColJTable extends JTable {
 			int col= table.columnAtPoint(p);
 			Object o=TimetableColJTable.this.getValueAt(rowF,colF);
 			if( o!= null && (col!=colF||row!=rowF||table!=TimetableColJTable.this)) {
-				 
 				int size = TimetableColJTable.this.getCellSize( rowF, colF );	
 				//On ne déplace si la taille est trop grande
 				if(size<=table.getColumnCount()-col){					
 					try {
-						Collection coll=TimetableColJTable.this.removeIndispo(colF);
+						Collection coll = TimetableColJTable.this.removeIndispo(colF);
 						for(Iterator it=coll.iterator();it.hasNext();){
 							IndisponibiliteInterface i=(IndisponibiliteInterface) it.next();
 							int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
@@ -168,6 +172,7 @@ public class TimetableColJTable extends JTable {
 						e1.printStackTrace();
 					}
 				}
+				
 				TimetableColJTable.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				table.changeSelection(row,col,false,false);
 				table.setCellSelectionEnabled(true);

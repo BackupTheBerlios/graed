@@ -179,8 +179,8 @@ public class CreateMainFrame {
 				try {
 					enableRefresh(false);
 					GregorianCalendar gc = new GregorianCalendar();
-					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
-					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String hour = (gc.get(Calendar.HOUR_OF_DAY)<10?"0":"")+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = (gc.get(Calendar.MINUTE)<10?"0":"")+gc.get(Calendar.MINUTE);
 					String time = hour+":"+minute;
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					RessourceInterface ri = (RessourceInterface)getSource();
@@ -202,8 +202,8 @@ public class CreateMainFrame {
 				try {
 					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
-					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
-					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String hour = (gc.get(Calendar.HOUR_OF_DAY)<10?"0":"")+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = (gc.get(Calendar.MINUTE)<10?"0":"")+gc.get(Calendar.MINUTE);
 					String time = hour+":"+minute;
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					RessourceInterface ri = (RessourceInterface)getSource();
@@ -225,8 +225,8 @@ public class CreateMainFrame {
 				try {
 					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
-					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
-					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String hour = (gc.get(Calendar.HOUR_OF_DAY)<10?"0":"")+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = (gc.get(Calendar.MINUTE)<10?"0":"")+gc.get(Calendar.MINUTE);
 					String time = hour+":"+minute;
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					RessourceInterface ri = (RessourceInterface)getSource();
@@ -249,8 +249,8 @@ public class CreateMainFrame {
 				try {
 					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
-					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
-					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String hour = (gc.get(Calendar.HOUR_OF_DAY)<10?"0":"")+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = (gc.get(Calendar.MINUTE)<10?"0":"")+gc.get(Calendar.MINUTE);
 					String time = hour+":"+minute;
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					IndisponibiliteInterface ri = (IndisponibiliteInterface)getSource();
@@ -273,8 +273,8 @@ public class CreateMainFrame {
 				try {
 					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
-					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
-					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String hour = (gc.get(Calendar.HOUR_OF_DAY)<10?"0":"")+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = (gc.get(Calendar.MINUTE)<10?"0":"")+gc.get(Calendar.MINUTE);
 					String time = hour+":"+minute;
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					IndisponibiliteInterface ri = (IndisponibiliteInterface)getSource();
@@ -297,8 +297,8 @@ public class CreateMainFrame {
 				try {
 					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
-					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
-					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String hour = (gc.get(Calendar.HOUR_OF_DAY)<10?"0":"")+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = (gc.get(Calendar.MINUTE)<10?"0":"")+gc.get(Calendar.MINUTE);
 					String time = hour+":"+minute;
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					IndisponibiliteInterface ri = (IndisponibiliteInterface)getSource();
