@@ -22,9 +22,21 @@ public class Materiel extends Ressource {
 	public Materiel(){
 		super("Materiel");
 	}
-	public Materiel(String nom,String type){
+	public Materiel(String name,String type){
 		this();
+		this.name = name;
+		this.type = type;
 	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		String p="";
+		p+="Name: "+name+" ";
+		p+="Type: "+type;	
+		return p;
+	}
+	/* ******************** Getter et Setter *********************** */
 	/**
 	 * @return Returns the id.
 	 */

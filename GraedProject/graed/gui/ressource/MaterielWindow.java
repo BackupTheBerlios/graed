@@ -215,7 +215,7 @@ protected JButton create(){
 	JButton b=new JButton("Creer");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			if(name.getText()!=null && type.getText()!=null){			
+			if(name.getText()!=null && type.getText()!=null){	
 				setInformation(new Materiel(name.getText(),type.getText()));			
 				System.out.println(((Materiel) getInformation()));				
 					try {
