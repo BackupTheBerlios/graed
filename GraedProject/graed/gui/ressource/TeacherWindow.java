@@ -7,6 +7,7 @@ package graed.gui.ressource;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.ressource.RessourceManagerImpl;
+import graed.ressource.event.RessourceEvent;
 import graed.ressource.type.Teacher;
 
 import java.awt.GridBagConstraints;
@@ -333,4 +334,26 @@ public static void main (String[] args) throws InvalidStateException{
 	Teacher t=null;
 	new TeacherWindow(InformationWindow.SEARCH,t).OpenWindow();
 }
+/* (non-Javadoc)
+ * @see graed.ressource.event.RessourceListener#ressourceDeleted(graed.ressource.event.RessourceEvent)
+ */
+public void ressourceDeleted(RessourceEvent re) {
+	JOptionPane.showMessageDialog(frame,
+			"La ressource a été supprimée",
+			"Erreur",JOptionPane.ERROR_MESSAGE);	
+	frame.dispose();
+	
+}
+/* (non-Javadoc)
+ * @see graed.ressource.event.RessourceListener#ressourceUpdated(graed.ressource.event.RessourceEvent)
+ */
+public void ressourceUpdated(RessourceEvent re) {
+	JOptionPane.showMessageDialog(frame,
+			"La ressource a été modifiée",
+			"Erreur",JOptionPane.ERROR_MESSAGE);	
+	frame.dispose();
+	
+}
+
+
 }

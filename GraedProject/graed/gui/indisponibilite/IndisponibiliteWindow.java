@@ -4,7 +4,7 @@
 package graed.gui.indisponibilite;
 
 import graed.exception.InvalidStateException;
-import graed.gui.InformationWindow;
+import graed.gui.IndWindow;
 import graed.gui.factory.SpinnerFactory;
 import graed.gui.model.SpinnerTimeModel;
 import graed.indisponibilite.Indisponibilite;
@@ -49,7 +49,7 @@ import com.toedter.calendar.JDateChooser;
  * Création de la fenêtre de recherche, création, consultation et modification
  * d'une indisponibilité
  */
-public class IndisponibiliteWindow extends InformationWindow{
+public class IndisponibiliteWindow extends IndWindow{
     /**
      * Window
      */
@@ -82,7 +82,7 @@ public class IndisponibiliteWindow extends InformationWindow{
     public IndisponibiliteWindow(int state, Indisponibilite i) throws InvalidStateException{
     	super(state,i);
     	libelle = new JFormattedTextField();
-    	if (state!=InformationWindow.SEARCH){
+    	if (state!=IndWindow.SEARCH){
     		date_debut = new JDateChooser("d/MMMM/yyyy",false);
     		date_fin = new JDateChooser("d/MMMM/yyyy",false);
     		hdebut = SpinnerFactory.createTimeSpinner(new Date(1000*60*60*7),new Date(1000*60*60*7),new Date(1000*60*60*18));
@@ -511,6 +511,6 @@ public class IndisponibiliteWindow extends InformationWindow{
      */
     public static void main (String[] args) throws InvalidStateException{
     	Indisponibilite i=new Indisponibilite();
-    	new IndisponibiliteWindow(InformationWindow.SEARCH,i).OpenWindow();
+    	new IndisponibiliteWindow(IndWindow.SEARCH,i).OpenWindow();
     }
 }
