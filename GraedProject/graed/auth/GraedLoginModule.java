@@ -5,6 +5,7 @@
 package graed.auth;
 
 import graed.client.Client;
+import graed.ressource.type.MaterielInterface;
 import graed.user.UserInterface;
 import graed.user.UserManager;
 
@@ -107,6 +108,7 @@ public class GraedLoginModule implements LoginModule {
             
     	}catch(Exception ex){
     	    success = false;
+    	    ex.printStackTrace();
     	    throw new LoginException(ex.getMessage());
     	}
     }
@@ -169,7 +171,6 @@ public class GraedLoginModule implements LoginModule {
     }
 
     private boolean validateLogin(String userName, String password) throws LoginException/*throws Exception*/{
-    	System.out.println("Je valide : "+userName+"/"+password);
     	// on hashe le mot de passe avec MD5
     	try{
     		MessageDigest md = MessageDigest.getInstance("MD5");
@@ -182,7 +183,16 @@ public class GraedLoginModule implements LoginModule {
     			UserInterface ui = um.createUser();
     			ui.setLogin(userName);
     			
-    			Iterator i = um.getUsers(ui).iterator();
+    			Collection col = (Collection)um.getUsers(ui);
+    			Iterator i=null;
+    			if(col != null){
+    			    i = col.iterator();
+    			}
+    			else{
+    			    System.out.println("Aucun utilisateur");
+    			    success = false;
+    			    throw new LoginException();
+    			}
     			UserInterface userToLog=null;
     			if(i.hasNext()){
     				userToLog = (UserInterface)i.next();
@@ -193,15 +203,16 @@ public class GraedLoginModule implements LoginModule {
     	
     			if(userToLog.getPassword().equals(hpassword)==false){
     				success = false;
+    				throw new LoginException("mdp ne correspond pas");
     			}
     	
-    			System.out.println("Password : "+password+" / "+hpassword);
-    			
     		}catch(RemoteException remoteEx){
     			System.out.println("pb avec RMI");
+    			remoteEx.printStackTrace();
     			throw new LoginException("Pb avec RMI");
     		}
     	}catch(NoSuchAlgorithmException algoEx){
+    	    algoEx.printStackTrace();
     		throw new LoginException("Impossible de hasher le mdp");    		
     	}
 

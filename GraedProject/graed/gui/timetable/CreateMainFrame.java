@@ -97,7 +97,7 @@ public class CreateMainFrame {
 	    
 		Subject subj = null;
 		JFrame mainFrame = new JFrame();
-		/*
+		
 		try{
 			GraedGraphicCallbackHandler cbh = new GraedGraphicCallbackHandler(frame);
 			
@@ -109,7 +109,7 @@ public class CreateMainFrame {
 		}catch(LoginException e){
 			e.printStackTrace();
 			System.exit(0);
-		}*/
+		}
 		
 	    date_lib=new JLabel();
 	    date_lib.setHorizontalAlignment(JLabel.CENTER);

@@ -86,13 +86,24 @@ public class UserManagerImpl extends UnicastRemoteObject implements UserManager{
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#getIndiponibilites(graed.indisponibilite.Indisponibilite)
 	 */
-	public Collection getUsers(UserInterface i)
-			throws RemoteException {
-		return null;
+	public Collection getUsers(UserInterface i)throws RemoteException {
+	    try {
+	        i.setId_ressource(null);
+	        return dbm.get(i);
+	    } catch (DataBaseException e) {
+	        e.printStackTrace();
+	        throw new RemoteException(e.getMessage());
+	    }
 	}
 
 	public UserInterface createUser() throws RemoteException {
-		return new User();
+	    try{
+	        return (UserInterface)new User();
+	    }
+	       catch(Exception e){
+	   			e.printStackTrace();
+	   			throw new RemoteException(e.getMessage());
+	       }
 	}
 	
 }
