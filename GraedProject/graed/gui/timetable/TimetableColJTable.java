@@ -27,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
 import java.sql.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javax.swing.JMenuItem;
@@ -115,6 +116,7 @@ public class TimetableColJTable extends JTable {
                 		} 
     				 	else{
     				 		creer.setEnabled(true);
+    				 		System.out.println("Popup: Col select "+colF+" nbr col:"+TimetableColJTable.this.getSelectedColumnCount());
             				consu.setEnabled(false);
             				modif.setEnabled(false);
             				suppr.setEnabled(false);
@@ -255,6 +257,7 @@ public class TimetableColJTable extends JTable {
 	 * @param size taille du cours (nombre de colonnes)
 	 */
 	public void addIndispo (IndisponibiliteInterface i,int col,int size){
+		col=find_col(col,size);
 		addI(i,col);
 		JTextArea j = new JTextArea();
 		//j.add(CreatePopupMenu());
@@ -299,6 +302,18 @@ public class TimetableColJTable extends JTable {
 	}
 	public IndisponibiliteInterface getI(int col){
 		return (IndisponibiliteInterface) list_ind.get(new Integer(col));
+	}
+	private int find_col(int col,int size){
+		if(list_ind!=null){
+			for(Enumeration enum=list_ind.keys();enum.hasMoreElements();){
+				int col_tmp=((Integer)enum.nextElement()).intValue();
+				if(col_tmp<col){
+					col-=tm.getCellSize(0,col_tmp);
+					if(col<0)System.out.println("Timetable error ("+col+","+size+")");
+				}
+			}
+		}		
+		return col;
 	}
 	/**
 	 * Récupère la taille du cours (nombre de colonnes)

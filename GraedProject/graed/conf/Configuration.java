@@ -43,9 +43,9 @@ public class Configuration {
 	}
 	
 	public static String getParamValue(String node, String subNode) {
-		NodeList nl = document.getElementsByTagName(subNode);
-		for( int i=nl.getLength(); i>=0; --i ) {
-			Node n = nl.item(0);
+		NodeList nl = document.getElementsByTagName(subNode);		
+		for( int i=nl.getLength(); i>=1; --i ) {
+			Node n = nl.item(i-1);
 			if( n.getParentNode().getNodeName().equals(node) )
 				return n.getTextContent().trim();
 		}
@@ -53,7 +53,7 @@ public class Configuration {
 	}
 	
 	public static void main( String[] args ) {
-		System.out.println(Configuration.getParamValue("premier-trimestre","debut"));
-		System.out.println(Configuration.getParamValue("premier-trimestre","fin"));
+		System.out.println(Configuration.getParamValue("deuxieme-trimestre","debut"));
+		System.out.println(Configuration.getParamValue("deuxieme-trimestre","fin"));
 	}
 }
