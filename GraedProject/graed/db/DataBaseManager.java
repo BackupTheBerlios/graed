@@ -161,13 +161,20 @@ public class DataBaseManager implements Serializable{
 			for( int i=0; i<ms.length; ++i ) {
 				Method m = ms[i];
 				String s = m.getName();
+				/* On s'interesse unsiquement aux setters */ 
 				if( s.startsWith( "set" )) {
+					/* on crée le getter associé au setter */
 					String r = s.replaceFirst("set", "get");
 					try {
+						/* on récupére le getter */
 						Method mm = ori.getMethod(r, null);
 						Object[] args = {mm.invoke(stub,null)};
 						m.invoke( destObj, args );
 					} catch ( NoSuchMethodException ignored ) {
+						/* Exception levée si on essaye d'invoquer une methode n'existant pas.
+						 * Dans ce cas on l'ignore tout simplement.
+						 */
+						
 					}
 				}
 			}
