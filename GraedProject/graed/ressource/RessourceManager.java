@@ -54,4 +54,6 @@ public interface RessourceManager extends Remote{
      * @return A collection of ressources of the given type
      */
     public Collection getRessourcesByType( String type ) throws RemoteException;
+    public RessourceInterface createRessource( String type ) throws RemoteException;
+    public RessourceInterface createRessource( Class type ) throws RemoteException;
 }

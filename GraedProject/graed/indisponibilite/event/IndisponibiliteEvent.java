@@ -6,15 +6,15 @@
  */
 package graed.indisponibilite.event;
 
-import java.util.EventObject;
+import graed.indisponibilite.IndisponibiliteInterface;
 
-import graed.indisponibilite.Indisponibilite;
+import java.util.EventObject;
 
 /**
  * @author Helder DE SOUSA
  */
 public class IndisponibiliteEvent extends EventObject{
-	public IndisponibiliteEvent( Indisponibilite i ) {
+	public IndisponibiliteEvent( IndisponibiliteInterface i ) {
 		super(i);
 	}
 }

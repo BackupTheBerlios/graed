@@ -159,4 +159,23 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
    		}
    }
 
+/**
+ * @see graed.ressource.RessourceManager#createRessource(java.lang.String)
+ */
+public RessourceInterface createRessource(String type) throws RemoteException {
+	return createRessource( (Class)types.get(type) );
+}
+
+/**
+ * @see graed.ressource.RessourceManager#createRessource(java.lang.Class)
+ */
+public RessourceInterface createRessource(Class type) throws RemoteException {
+	try {
+		return (RessourceInterface)type.newInstance();
+	} catch (Exception e) {
+		e.printStackTrace();
+		throw new RemoteException(e.getMessage());
+	}
+}
+
 }

@@ -5,9 +5,11 @@ import graed.exception.DataBaseException;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
 import graed.ressource.Ressource;
+import graed.ressource.RessourceInterface;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -23,7 +25,7 @@ import net.sf.hibernate.expression.Expression;
  * 
  * Design pattern : singleton
  */
-public class IndisponibiliteManagerImpl implements IndisponibiliteManager, Serializable{
+public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements IndisponibiliteManager{
 	/**
 	 * Le gestionnaire de base de données utilisé.
 	 */
@@ -55,7 +57,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager, Seria
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#addIndisponibilite(graed.indisponibilite.Indisponibilite)
 	 */
-	public void addIndisponibilite(Indisponibilite i) throws RemoteException {
+	public void addIndisponibilite(IndisponibiliteInterface i) throws RemoteException {
 		try {
             dbm.add(i);
         } catch (DataBaseException e) {
@@ -67,7 +69,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager, Seria
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#deleteIndisponibilite(graed.indisponibilite.Indisponibilite)
 	 */
-	public void deleteIndisponibilite(Indisponibilite i) throws RemoteException {
+	public void deleteIndisponibilite(IndisponibiliteInterface i) throws RemoteException {
 		try {
             dbm.delete(i);
             fireIndisponibiliteDeleted( new IndisponibiliteEvent(i));
@@ -79,7 +81,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager, Seria
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#updateIndiponibilite(graed.indisponibilite.Indisponibilite)
 	 */
-	public void updateIndiponibilite(Indisponibilite i) throws RemoteException {
+	public void updateIndiponibilite(IndisponibiliteInterface i) throws RemoteException {
 		try {
             dbm.update(i);
             fireIndisponibiliteUpdated( new IndisponibiliteEvent(i));
@@ -91,7 +93,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager, Seria
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#getIndiponibilites(graed.indisponibilite.Indisponibilite)
 	 */
-	public Collection getIndisponibilites(Indisponibilite i)
+	public Collection getIndisponibilites(IndisponibiliteInterface i)
 			throws RemoteException {
 		try {
 			Criteria c = dbm.createCriteria(Indisponibilite.class);
@@ -174,7 +176,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager, Seria
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#getIndisponibilitesBetween(graed.ressource.Ressource)
 	 */
-	public Collection getIndisponibilites( Ressource r ) throws RemoteException {
+	public Collection getIndisponibilites( RessourceInterface r ) throws RemoteException {
 		
 		try {
 			return dbm.createCriteria(Indisponibilite.class)
@@ -189,7 +191,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager, Seria
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#getIndisponibilitesBetween(graed.ressource.Ressource, java.util.Date, java.util.Date)
 	 */
-	public Collection getIndisponibilites( Ressource r, Date begin, Date end ) throws RemoteException {
+	public Collection getIndisponibilites( RessourceInterface r, Date begin, Date end ) throws RemoteException {
 		try {
 			return dbm.createCriteria(Indisponibilite.class)
 			.add(Expression.or(
@@ -200,5 +202,13 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager, Seria
 		} catch(Exception e) {
 			throw new RemoteException(e.getMessage());
 		}
+	}
+
+	/**
+	 * @see graed.indisponibilite.IndisponibiliteManager#createIndisponibilite()
+	 */
+	public IndisponibiliteInterface createIndisponibilite(Date debut, Date fin, Time hdebut, int duree, String periodicite,
+			String libelle, String type) throws RemoteException {
+		return null;
 	}
 }
