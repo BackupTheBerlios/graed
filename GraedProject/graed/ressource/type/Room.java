@@ -15,7 +15,7 @@ import graed.ressource.Ressource;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Room extends Ressource {
-	private int id;
+	private String id;
 	private String nom;
 	private String batiment;
 	private String lieu;
@@ -25,16 +25,12 @@ public class Room extends Ressource {
 	}
 	public Room(String nom, String lieu,String batiment, int capacite){
 		this();
-		this.id=0;
 		this.nom=nom;
 		this.batiment=batiment;
 		this.lieu=lieu;
 		this.capacite=capacite;
 	}
-	public Room (int id,String nom, String lieu,String batiment,int capacite){
-		this(nom, batiment, lieu, capacite);
-		this.id=id;
-	}
+	
 	public String toString() {
 		String p="";
 		p+="ID: "+id+" ";
