@@ -17,8 +17,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Collection;
+import java.util.Iterator;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -46,6 +50,7 @@ private JFormattedTextField name;
 private JFormattedTextField description;
 private JFormattedTextField email;
 private JFormattedTextField option;
+private JComboBox directeur;
 
 /**
  * Constructor which open the group window
@@ -59,6 +64,17 @@ public GroupWindow(int state, Group t) throws InvalidStateException{
 	description = new JFormattedTextField();
 	option = new JFormattedTextField();
 	email = new JFormattedTextField();
+	directeur = new JComboBox();
+	Collection c;//Collection
+	try {
+		c = RessourceManagerImpl.getInstance().getRessourcesByType("Professeur");
+		if(c!=null){
+			for( Iterator it=c.iterator();it.hasNext();)
+				directeur.addItem(it.next());		}
+	}catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+	}
 }
 /**
  * Add a label and a texfield
@@ -67,7 +83,7 @@ public GroupWindow(int state, Group t) throws InvalidStateException{
  * @param mask contrainst for the textfield
  * @param name the label
  */
-private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextField tf,String name){
+private void addLine(JPanel p,GridBagConstraints c,String mask,JComponent tf,String name){
 	c.gridx = 0;
     c.gridwidth = 1;    
     c.weightx=0; 
@@ -118,6 +134,9 @@ private void addJComponent(JPanel p,GridBagConstraints c){
 	mask="************************";
 	c.gridy ++;
 	addLine(p,c,mask,email,"Courriel : ");
+	
+	c.gridy ++;
+	addLine(p,c,mask,directeur,"Directeur formation : ");
 	
 	c.gridy ++;
 	c.gridx = 0;
