@@ -79,6 +79,7 @@ public class UserManagerImpl extends UnicastRemoteObject implements UserManager{
 			User u = (User)DataBaseUtil.convertStub(dbm.getSession(), i);
 			dbm.update(u);
         } catch (DataBaseException e) {
+            e.printStackTrace();
         	throw new RemoteException(e.getMessage());
         }
 	}

@@ -503,15 +503,23 @@ public class CreateMenuBar {
 		});
 	    
 	    JMenuItem modifyUser = new JMenuItem("Modifier un utilisateur");
-	    
-	    JMenuItem deleteUser = new JMenuItem("Supprimer un utilisateur");
-	    
-	    JMenuItem configSoft = new JMenuItem("Configurer l'application");
-	    
+	    modifyUser.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				UserInterface u=null;
+				try {					
+					new UserWindow(InformationWindow.SEARCH,u).OpenWindow();					
+				} catch (InvalidStateException e1) {
+					JOptionPane.showMessageDialog(frame,
+							"le système ne peut afficher la fenêtre de sélection",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+			
+		});
+	
 	    menu.add(newUser);
 	    menu.add(modifyUser);
-	    menu.add(deleteUser);
-	    menu.add(configSoft);
 	    return menu;
 	}
 	/***************** Test **********************/
