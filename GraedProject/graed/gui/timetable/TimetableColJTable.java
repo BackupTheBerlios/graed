@@ -186,7 +186,7 @@ public class TimetableColJTable extends JTable {
 		}
         };
         
-		addMouseListener(listener);
+		if(menu)addMouseListener(listener);
 		setMouseListener();
 		setMouseMotionListener();
 		

@@ -422,7 +422,6 @@ public class IndisponibiliteWindow extends IndWindow{
 					IndisponibiliteInterface tmp=(IndisponibiliteInterface) it.next();
 					if(i.getPeriodicite().equals(("ponctuel"))){
 						if(i.getDebut().equals(tmp.getDebut())){
-							System.out.println("meme date");
 							
 							if(compareTime(i,tmp) || compareTime(tmp,i))
 							{
@@ -434,11 +433,8 @@ public class IndisponibiliteWindow extends IndWindow{
 						}
 					}
 					if(i.getPeriodicite().equals(("hebdomadaire"))){
-						System.out.println("dispo hebdomadaire");
 						for(Date d=i.getDebut();d.before(i.getFin())||d.equals(i.getFin());d=new Date(d.getTime()+7*24*60*60*100)){
-							System.out.println("dispo "+d);
 							if(d.equals(tmp.getDebut())){
-								System.out.println("dispo meme jour");							
 								if(compareTime(i,tmp) || compareTime(tmp,i))
 								{
 									JOptionPane.showMessageDialog(frame,
