@@ -137,11 +137,11 @@ public class CreateMainFrame {
 	    JToolBar tb = new JToolBar();
 	    JButton exp = createButton("Exporter",
 	            					"Exporter au format JPEG", 
-	    							"graed/gui/timetable/icons/general/export24.gif",
+	    							"icons/general/Export24.gif",
 	    							null);
 	    JButton imp = createButton("Imprimer",
 				"Imprimer l'emploi du temps sélectionné", 
-				"graed/gui/timetable/icons/general/print24.gif",
+				"icons/general/Print24.gif",
 				null);
 	    
 	    tb.add(exp);
@@ -158,8 +158,7 @@ public class CreateMainFrame {
 	    b.setHorizontalTextPosition(SwingConstants.CENTER);
 	    b.setVerticalTextPosition(SwingConstants.BOTTOM);
 	    b.setToolTipText(toolTipText);
-	    //System.out.println(new ImageIcon( getClass().getResource(image)));
-	    b.setIcon(new ImageIcon(image));
+	    b.setIcon(new ImageIcon(getClass().getResource(image)));
 	    if( a!=null ) b.setAction(a);
 	    return b;
 	}

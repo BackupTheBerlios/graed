@@ -80,13 +80,13 @@ public SelectTimetable(CreateMainFrame main) {
 	
 	
 	String[] ressTypes=null;
-	/*try {
+	try {
 		
 		ressTypes=Client.getRessourceManager().getRessourcesTypes();
 	} catch (RemoteException e1) {
 		e1.printStackTrace();
-	}*/
-	ressTypes = new String[0];
+	}
+	//ressTypes = new String[0];
 	
 	ressource = new JComboBox();
 	ressource.setRenderer(new RessourceListRenderer());

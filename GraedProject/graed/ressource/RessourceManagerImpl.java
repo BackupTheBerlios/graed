@@ -37,7 +37,10 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
         String[] files = new File(directoryTypes).list(new FilenameFilter() {
         	public boolean accept( File dir, String name) {
         		//System.out.println(">>>> "+name+" "+!(name.endsWith("Interface.class")||name.endsWith("Stub.class")));
-        		return !(name.endsWith("Interface.class")||name.endsWith("java")||name.endsWith("Stub.class"));
+        		return (!(name.endsWith("Interface.class")
+        					||name.endsWith(".java")
+							||name.endsWith("Stub.class")
+						))&&name.endsWith(".class");							
         	}
         });
         
@@ -47,8 +50,6 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
 				files[i] = files[i].split("\\.")[0];
 				String packageType = directoryTypes.replaceAll("/",".");
 				Ressource r = (Ressource) Class.forName(packageType+"."+files[i]).newInstance();
-				
-				System.out.println( "Type : "+r.getType()+" Classe : "+r.getClass() );
 				
 				types.put( r.getType() , r.getClass() );
 			} catch (Exception e) {
@@ -87,6 +88,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     public void addRessource(RessourceInterface r) throws RemoteException {
         try {
             dbm.add(r);
+            fireRessourceAdded( r);
         } catch (DataBaseException e) {
         	throw new RemoteException(e.getMessage());
         }
@@ -131,6 +133,16 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
    	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
         try {
 			((Callback)i.next()).notify(re, Callback.UPDATE);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+    }
+   }
+   
+   protected void fireRessourceAdded( RessourceInterface re  ) {
+   	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
+        try {
+			((Callback)i.next()).notify(re, Callback.ADD);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

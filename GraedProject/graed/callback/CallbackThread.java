@@ -11,21 +11,22 @@ import graed.client.Client;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
+
 /**
- * @author hdesou01
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author Helder DE SOUSA
  */
 public class CallbackThread extends Thread {
 	private Callback ca;
 	private boolean run;
-	/*private Runnable add;
-	private Runnable delete;
-	private Runnable update;*/
+	private Hashtable runnables;
 	
-	public CallbackThread( /*Runnable add, Runnable delete, Runnable update*/ ) {
+	public CallbackThread( Runnable add, Runnable delete, Runnable update ) {
 		init();
+		runnables = new Hashtable();
+		runnables.put( new Integer(Callback.ADD), add );
+		runnables.put( new Integer(Callback.UPDATE), update );
+		runnables.put( new Integer(Callback.DELETE), delete );
 	}
 	
 	public void run() {
@@ -33,7 +34,9 @@ public class CallbackThread extends Thread {
 			try {
 				while( ca.getCause() == -1 )
 					if( run == false ) return ;
-				System.out.println("Sync : "+ca.getSource()+" "+ca.getCause());
+				CallbackRunnable cr = (CallbackRunnable)runnables.get(new Integer(ca.getCause()));
+				cr.setSource(ca.getSource());
+				new Thread( cr ).start();
 				ca.init();
 			} catch (Exception e) {
 				e.printStackTrace();

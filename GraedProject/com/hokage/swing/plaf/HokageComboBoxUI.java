@@ -166,7 +166,6 @@ public class HokageComboBoxUI extends BasicComboBoxUI {
      *
      * @deprecated As of Java 2 platform v1.4.
      */
-    @Deprecated
     protected void editablePropertyChanged( PropertyChangeEvent e ) { }
 
     protected LayoutManager createLayoutManager() {
@@ -232,7 +231,6 @@ public class HokageComboBoxUI extends BasicComboBoxUI {
      *
      * @deprecated As of Java 2 platform v1.4.
      */
-    @Deprecated
     protected void removeListeners() {
         if ( propertyChangeListener != null ) {
             comboBox.removePropertyChangeListener( propertyChangeListener );
@@ -302,8 +300,7 @@ public class HokageComboBoxUI extends BasicComboBoxUI {
      * override.
      * 
      * @deprecated As of Java 2 platform v1.4.
-     */          
-    @Deprecated
+     */
     public class HokageComboPopup extends BasicComboPopup {
 
 	public HokageComboPopup( JComboBox cBox) {

@@ -6,8 +6,10 @@
  */
 package graed.client;
 
+import graed.callback.CallbackRunnable;
 import graed.callback.CallbackThread;
 import graed.indisponibilite.IndisponibiliteManager;
+import graed.ressource.RessourceInterface;
 import graed.ressource.RessourceManager;
 import graed.ressource.type.TeacherInterface;
 
@@ -27,7 +29,7 @@ public class Client {
 	private static final RessourceManager rm;
 	private static final IndisponibiliteManager im;
 	
-	private static final String host="pccop2b104-14.univ-mlv.fr";
+	private static final String host="pccop2b104-12.univ-mlv.fr";
 	
 	static {
 		try {
@@ -53,7 +55,34 @@ public class Client {
 	}
 	
 	public static void main(String[] args) throws RemoteException {
-		CallbackThread t = new CallbackThread();
+		Runnable add = new CallbackRunnable(){ 
+			public void run() {
+			try {
+				System.out.println("Added : "+((RessourceInterface)(getSource())).print());
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}			
+		} };
+		
+		Runnable update = new CallbackRunnable(){ 
+			public void run() {
+			try {
+				System.out.println("Updated : "+((RessourceInterface)(getSource())).print());
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}			
+		} };
+		
+		Runnable delete = new CallbackRunnable(){ 
+			public void run() {
+			try {
+				System.out.println("Deleted : "+((RessourceInterface)(getSource())).print());
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}			
+		} };
+		
+		CallbackThread t = new CallbackThread(add,delete,update);
 		
 		t.start();
 		
@@ -66,11 +95,9 @@ public class Client {
 		
 		Collection c = Client.getRessourceManager().getRessources(ti);
 		
-		System.out.println(c);
 		TeacherInterface tic = (TeacherInterface)c.iterator().next();
 		rm.deleteRessource(tic);
 		
 		t.stopThread();
-		System.exit(0);
 	}
 }

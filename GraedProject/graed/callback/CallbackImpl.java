@@ -9,10 +9,7 @@ package graed.callback;
 import java.rmi.RemoteException;
 
 /**
- * @author hdesou01
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author Helder DE SOUSA
  */
 public class CallbackImpl implements Callback{
 	private Object o;
@@ -23,11 +20,19 @@ public class CallbackImpl implements Callback{
 		cause = -1;
 	}
 	
+	public CallbackImpl( Callback ca ) {
+		try {
+			o = ca.getSource();
+			cause = ca.getCause();
+		} catch (RemoteException re ) {
+			o=null;
+			cause = -1;
+		}
+	}
+	
 	public void notify(Object o, int cause) throws RemoteException {
-		System.out.println("Notified");
 		this.o = o;
 		this.cause = cause;
-		//notify();
 	}
 
 	/* (non-Javadoc)
