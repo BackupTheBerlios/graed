@@ -6,8 +6,6 @@
  */
 package graed.client;
 
-import graed.callback.Callback;
-import graed.callback.CallbackImpl;
 import graed.callback.CallbackThread;
 import graed.indisponibilite.IndisponibiliteManager;
 import graed.ressource.RessourceManager;
@@ -17,7 +15,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 
 /**
@@ -30,7 +27,7 @@ public class Client {
 	private static final RessourceManager rm;
 	private static final IndisponibiliteManager im;
 	
-	private static final String host="pccop3b115-16.univ-mlv.fr";
+	private static final String host="pccop2b104-10.univ-mlv.fr";
 	
 	static {
 		try {
