@@ -54,7 +54,7 @@ public class CreateColTimetable {
 		this.start = start;
 		this.stop = stop;
 		colTimetable=new JPanel();
-		colTimetable.setSize((stop-start)*100+60,300);
+		colTimetable.setSize((stop-start)*100+60,500);
 		CreateTables();		
 	}
 	/**

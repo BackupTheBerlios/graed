@@ -194,7 +194,7 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 			libelle+=" tous les 15 jours à partir du "+getDebut();
 		}
 		for(Iterator i=ressources.iterator();i.hasNext();)
-			libelle+=" "+((RessourceInterface)i.next()).print();
+			libelle+="\n"+((RessourceInterface)i.next()).print();
 		return libelle;
 	}
 }
