@@ -74,5 +74,6 @@ public class Client {
 		rm.deleteRessource(tic);
 		
 		t.stopThread();
+		System.exit(0);
 	}
 }

@@ -20,8 +20,11 @@ import java.rmi.server.UnicastRemoteObject;
 public class CallbackThread extends Thread {
 	private Callback ca;
 	private boolean run;
+	/*private Runnable add;
+	private Runnable delete;
+	private Runnable update;*/
 	
-	public CallbackThread() {
+	public CallbackThread( /*Runnable add, Runnable delete, Runnable update*/ ) {
 		init();
 	}
 	
