@@ -7,6 +7,7 @@
 package graed.gui.timetable;
 
 import graed.client.Client;
+import graed.gui.JSplashScreen;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
@@ -51,17 +52,19 @@ public class CreateMainFrame {
 	 *
 	 */
 	public CreateMainFrame(){
+	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
 		frame=new JFrame();
 		tp=new CloseableTabbedPane();		
 		frame.setTitle("Graed project");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(fillFrame());
-		frame.pack();
-		frame.setVisible(true);
 		icons = new Hashtable();
 		icons.put( "Salle", new ImageIcon(RoomWindow.class.getResource("classe16.gif")) );
 		icons.put( "Professeur", new ImageIcon(TeacherWindow.class.getResource("professeur16.jpg")) );
 		//icons.put( "Materiel", new ImageIcon(TeacherWindow.class.getResource("classe.gif")) );
+		splash.close();
+		frame.pack();
+		frame.setVisible(true);
 	}
 	/**
 	 * Rempli la fenêtre principale
