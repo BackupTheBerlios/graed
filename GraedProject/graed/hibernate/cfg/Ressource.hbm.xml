@@ -6,8 +6,8 @@
 <hibernate-mapping>
 
 
-<class name="Ressource" table="ressource">
-    <id name="id" type="string" unsaved-value="null" >
+<class name="graed.ressource.Ressource" table="ressource">
+    <id name="id_ressource" type="string" unsaved-value="null" >
             <column name="id_ressource" sql-type="char(32)" not-null="true"/>
             <generator class="uuid.hex"/>
     </id>
@@ -16,7 +16,8 @@
     	<column name="type" sql-type="varchar(12)" not-null="true"/>
     </property>
     
-    <joined-subclass name="Group" table="formation">
+    <!--
+    <joined-subclass name="graed.ressource.type.Group" table="formation">
         <key column="id_formation"/>
 		<property name="nom">
             <column name="nom" sql-type="varchar(12)" not-null="true"/>
@@ -34,19 +35,20 @@
         	<column name="capacite" sql-type="integer" not-null="false"/>
         </property>
     </joined-subclass>
+    -->
     
-    <joined-subclass name="Materiel" table="materiel">
+    <joined-subclass name="graed.ressource.type.Materiel" table="materiel">
         <key column="id_materiel"/>
 		<property name="name">
             <column name="nom" sql-type="varchar(30)" not-null="true"/>
         </property>
 
-        <property name="type">
-        	<column name="type" sql-type="varchar(30)" not-null="true"/>
+        <property name="typeMateriel">
+        	<column name="typeMateriel" sql-type="varchar(30)" not-null="true"/>
         </property>
     </joined-subclass>
     
-    <joined-subclass name="Teacher" table="professeur">
+    <joined-subclass name="graed.ressource.type.Teacher" table="professeur">
         <key column="id_professeur"/>
 		<property name="name">
             <column name="nom" sql-type="varchar(32)" not-null="true"/>
@@ -69,7 +71,7 @@
         </property>
     </joined-subclass>
     
-    <joined-subclass name="Room" table="salle">
+    <joined-subclass name="graed.ressource.type.Room" table="salle">
         <key column="id_salle"/>
 		<property name="nom">
             <column name="nom" sql-type="varchar(12)" not-null="true"/>
