@@ -39,7 +39,7 @@ public class SelectTimetable {
  * Window
  */
 private JPanel p;
-private static int with=200;
+private static int with=150;
 private static int height=200;
 /**
  * Champs contenus dans la fenêtre de sélection
