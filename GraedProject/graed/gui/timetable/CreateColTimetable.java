@@ -74,6 +74,12 @@ public class CreateColTimetable extends JBackgroundPanel{
 	}
 
 	/**
+	 * @param title The title to set.
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	/**
 	 * Creation de la table affichant les heures
 	 * @param start heure de depart
 	 * @param stop heure de fin
@@ -257,5 +263,29 @@ public class CreateColTimetable extends JBackgroundPanel{
 		/* Affichage de l'interface */
 		f.pack();
 		f.setVisible(true);
+	}
+	/**
+	 * @return Returns the start.
+	 */
+	public int getStart() {
+		return start;
+	}
+	/**
+	 * @param start The start to set.
+	 */
+	public void setStart(int start) {
+		this.start = start;
+	}
+	/**
+	 * @return Returns the stop.
+	 */
+	public int getStop() {
+		return stop;
+	}
+	/**
+	 * @param stop The stop to set.
+	 */
+	public void setStop(int stop) {
+		this.stop = stop;
 	}
 }

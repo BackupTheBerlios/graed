@@ -9,12 +9,12 @@ package graed.gui.timetable;
 import graed.callback.CallbackRunnable;
 import graed.callback.CallbackThread;
 import graed.client.Client;
+import graed.conf.Configuration;
 import graed.exception.ExportException;
 import graed.export.Exporter;
 import graed.gui.renderer.NotificationRenderer;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
-import graed.gui.timetable.CreateMenuBar;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceInterface;
 
@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.sql.Date;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Comparator;
@@ -41,7 +42,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -50,8 +50,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.CompoundBorder;
-import javax.swing.plaf.basic.BasicBorders;
 
 import com.hokage.swing.JBackgroundPanel;
 import com.hokage.swing.JCloseableTabbedPane;
@@ -71,7 +69,9 @@ public class CreateMainFrame {
 	private final JList notif;
 	private Hashtable timetable_list;
 	private Hashtable buttons;
-	final JLabel date_lib;
+	Date debut;
+	Date fin;
+	private JLabel date_lib;
 	private int start=8;
 	private int stop=15;
 	/**
@@ -84,6 +84,9 @@ public class CreateMainFrame {
 	 */
 	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
+	    date_lib=new JLabel();	
+	    debut=null;
+		fin=null;
 	    
 	    date_lib=new JLabel();
 	    date_lib.setHorizontalAlignment(JLabel.CENTER);
@@ -330,7 +333,11 @@ public class CreateMainFrame {
 	 */
 	public void addTimetable(RessourceInterface r,java.sql.Date dateDebut,java.sql.Date dateFin){
 		Collection c=null;
-		if(timetable_list.isEmpty())date_lib.setText("du " +dateDebut+" au "+dateFin);
+		if(timetable_list.isEmpty()){
+			date_lib.setText("du " +dateDebut+" au "+dateFin);
+			debut=dateDebut;
+			fin=dateFin;
+		}
 		try {
 			c=Client.getIndisponibiliteManager().getIndisponibilites(
 					r,dateDebut,dateFin);
@@ -387,20 +394,37 @@ public class CreateMainFrame {
 		Timetable t=(Timetable) timetable_list.get(time2);
 		t.setDateDebut(dateDebut);
 		t.setDateFin(dateFin);
+		time2.clear();
 		Collection c=null;
 		try {
 			c=Client.getIndisponibiliteManager().getIndisponibilites(
 					t.getR(),dateDebut,dateFin);
+			TreeSet trie=new TreeSet(new Comparator(){
+				public int compare(Object o1, Object o2){
+					if (o1 instanceof IndisponibiliteInterface && o2 instanceof IndisponibiliteInterface)
+						try {
+							return ((IndisponibiliteInterface)o1).getHdebut().compareTo(((IndisponibiliteInterface)o2).getHdebut());
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					return 0;
+				}
+				
+			});
+			trie.addAll(c);
+			String title="<html>"+t.getR().getType()+": "+t.getR().print()+"<br>du "+dateDebut+" au "+dateFin+"</html>";
+			time2.setTitle(title);
 			if(c!=null){
-				for(Iterator i=c.iterator();i.hasNext();)
+				for(Iterator i=trie.iterator();i.hasNext();)
 					time2.addIndispo((IndisponibiliteInterface)i.next());
 			}
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(c);
-		addTimetable(t.getR(),t.getDateDebut(),t.getDateFin());
+		time2.validate();
+		time2.repaint();
 	}
 	/**
 	 * Création de la barre de menu de la fenêtre principale
@@ -461,24 +485,123 @@ public class CreateMainFrame {
 	    JBackgroundPanel p = new JBackgroundPanel();
 	    p.setOpaque(false);
 	    p.setBorder(BorderFactory.createTitledBorder("Navigation"));
-	    p.add(createButton("","Période précédente","icons/navigation/Back16.gif",
-	    		new ActionListener() {
-    		public void actionPerformed( ActionEvent ae ) {
-    		}
-    		}));
 	    Object[] o={"semaine","mois","trimestre"};
 	    final JComboBox jcb=new JComboBox(o);
+	    p.add(createButton("","Période précédente","icons/navigation/Back16.gif",
+	    		new ActionListener() {
+    		public void actionPerformed( ActionEvent ae ) {  
+    			if(jcb.getSelectedItem().equals("semaine")){ 
+    				GregorianCalendar cal=new GregorianCalendar();
+    				cal.setTime(debut);    				
+    				if(cal.get(GregorianCalendar.DAY_OF_WEEK)>GregorianCalendar.MONDAY){
+    					debut=new Date(debut.getTime()-
+							(cal.get(GregorianCalendar.DAY_OF_WEEK)-GregorianCalendar.MONDAY)
+							*1000*60*60*24);
+    					fin=new Date(debut.getTime()+6*1000*60*60*24);    					
+    				}
+    				else {
+    					debut=new Date(debut.getTime()-
+							(cal.get(GregorianCalendar.DAY_OF_WEEK)-GregorianCalendar.MONDAY)
+							*1000*60*60*24-7*1000*60*60*24);
+    					fin=new Date(debut.getTime()+6*1000*60*60*24);  
+    				}
+    			}
+    			else if(jcb.getSelectedItem().equals("mois")){ 
+    				GregorianCalendar d=new GregorianCalendar();
+    				d.setTime(debut);    				
+    				if(d.get(GregorianCalendar.DAY_OF_MONTH)!=1){
+    					d.set(d.get(GregorianCalendar.YEAR),d.get(GregorianCalendar.MONTH),1);
+    				}
+    				else {
+    					d.set(d.get(GregorianCalendar.YEAR),d.get(GregorianCalendar.MONTH)-1,1);
+    					
+    				}
+					debut=new Date(d.getTime().getTime());
+    				d.set(d.get(GregorianCalendar.YEAR),d.get(GregorianCalendar.MONTH),31);
+					fin=new Date(d.getTime().getTime());
+    				if (fin.getMonth()!=debut.getMonth()){
+    					fin.setTime(fin.getTime()-d.get(GregorianCalendar.DAY_OF_MONTH)*24*60*60*1000);
+    				}
+    			}
+				else if(jcb.getSelectedItem().equals("trimestre")){    
+    				Date un=new Date((new java.util.Date(Configuration.getParamValue("premier-trimestre","debut"))).getTime());					
+					Date deux=new Date((new java.util.Date(Configuration.getParamValue("deuxieme-trimestre","debut"))).getTime());
+					Date trois=new Date((new java.util.Date(Configuration.getParamValue("troisieme-trimestre","debut"))).getTime());
+					if(debut.after(trois)){
+						debut=trois;
+						fin=new Date((new java.util.Date(Configuration.getParamValue("troisieme-trimestre","fin"))).getTime());   					
+					}
+					else if(debut.after(deux)){
+						debut=deux;
+						fin=new Date((new java.util.Date(Configuration.getParamValue("deuxieme-trimestre","fin"))).getTime());   					
+					}
+					else{
+						debut=un;
+						fin=new Date((new java.util.Date(Configuration.getParamValue("premier-trimestre","fin"))).getTime());   					
+					}
+    				   				
+    			}
+				date_lib.setText("du "+debut.toString()+" au "+fin.toString());
+    		}
+    		}));
+	    
 	    p.add(jcb);
+	    
 	    p.add(createButton("","Période suivante","icons/navigation/Forward16.gif",
 	    		new ActionListener() {
     		public void actionPerformed( ActionEvent ae ) {
-    			if(jcb.getSelectedItem().equals("semaine")){
-    				Timetable t=(Timetable) timetable_list.get(tp.getSelectedComponent());
+    			if(jcb.getSelectedItem().equals("semaine")){    				
     				GregorianCalendar cal=new GregorianCalendar();
-    				cal.setTime(t.getDateDebut());
-    				if(cal.DAY_OF_WEEK!=GregorianCalendar.MONDAY){}
-    				date_lib.setText("du "+t.getDateDebut().toString()+" au "+t.getDateFin().toString());
+    				cal.setTime(debut);    				
+    				if(cal.get(GregorianCalendar.DAY_OF_WEEK)>GregorianCalendar.MONDAY){
+    					debut=new Date(debut.getTime()-
+    							(cal.get(GregorianCalendar.DAY_OF_WEEK)-GregorianCalendar.MONDAY)
+								*1000*60*60*24);
+    					fin=new Date(debut.getTime()+6*1000*60*60*24);    					
+    				}
+    				else {
+    					debut=new Date(debut.getTime()-
+    							(cal.get(GregorianCalendar.DAY_OF_WEEK)-GregorianCalendar.MONDAY)
+								*1000*60*60*24+7*1000*60*60*24);
+    					fin=new Date(debut.getTime()+6*1000*60*60*24);  
+    				}    				
     			}
+    			else if(jcb.getSelectedItem().equals("mois")){ 
+    				GregorianCalendar d=new GregorianCalendar();
+    				d.setTime(debut);    				
+    				if(d.get(GregorianCalendar.DAY_OF_MONTH)!=1){
+    					d.set(d.get(GregorianCalendar.YEAR),d.get(GregorianCalendar.MONTH),1);
+    				}
+    				else {
+    					d.set(d.get(GregorianCalendar.YEAR),d.get(GregorianCalendar.MONTH)+1,1);
+    				}
+					debut=new Date(d.getTime().getTime());
+    				d.set(d.get(GregorianCalendar.YEAR),d.get(GregorianCalendar.MONTH),31);
+    				fin=new Date(d.getTime().getTime());
+    				if (fin.getMonth()!=debut.getMonth()){
+    					fin.setTime(fin.getTime()-d.get(d.DAY_OF_MONTH)*24*60*60*1000);
+    				}
+    				
+    			}
+    			else if(jcb.getSelectedItem().equals("trimestre")){    
+    				Date un=new Date((new java.util.Date(Configuration.getParamValue("premier-trimestre","debut"))).getTime());					
+					Date deux=new Date((new java.util.Date(Configuration.getParamValue("deuxieme-trimestre","debut"))).getTime());
+					Date trois=new Date((new java.util.Date(Configuration.getParamValue("troisieme-trimestre","debut"))).getTime());
+					if(debut.after(trois) || debut.equals(trois) || debut.equals(deux)){
+						debut=trois;
+						fin=new Date((new java.util.Date(Configuration.getParamValue("troisieme-trimestre","fin"))).getTime());   					
+					}
+					else if(debut.after(deux) || debut.equals(un)){
+						debut=deux;
+						fin=new Date((new java.util.Date(Configuration.getParamValue("deuxieme-trimestre","fin"))).getTime());   					
+					}
+					else{
+						debut=un;
+						fin=new Date((new java.util.Date(Configuration.getParamValue("premier-trimestre","fin"))).getTime());   					
+					}
+    				 				
+    			}
+    			date_lib.setText("du "+debut.toString()+" au "+fin.toString());
     		}	
     		}));
 	    date_lib.setPreferredSize(new Dimension(230,40));
@@ -486,6 +609,9 @@ public class CreateMainFrame {
 	    p.add(createButton("","Voir","icons/general/Zoom16.gif",
 	    		new ActionListener() {
     		public void actionPerformed( ActionEvent ae ) {
+    			if(debut!=null && fin!=null){
+    				modify((CreateColTimetable) tp.getSelectedComponent(),debut,fin);
+    			}
     		}	
     		}));
 	    p.setMaximumSize(new Dimension(530,75));

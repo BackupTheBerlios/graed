@@ -409,6 +409,8 @@ public class TimetableColJTable extends JTable {
 	 *
 	 */
 	public void clear(){
+		for(Enumeration en=list_ind.keys();en.hasMoreElements();)
+			removeIndispo (((Integer)en.nextElement()).intValue());
 		tm.clear();
 		list_ind.clear();
 	}

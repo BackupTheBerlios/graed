@@ -19,6 +19,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -29,6 +32,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
@@ -139,11 +143,10 @@ public SelectTimetable(CreateMainFrame main) {
 	
 	
 	/** Listener **/
-	
 	addSelectedListener(semestre1,new Date(Configuration.getParamValue("premier-trimestre","debut")),new Date(Configuration.getParamValue("premier-trimestre","fin")));
 	addSelectedListener(semestre2,new Date(Configuration.getParamValue("deuxieme-trimestre","debut")),new Date(Configuration.getParamValue("deuxieme-trimestre","fin")));
 	addSelectedListener(semestre3,new Date(Configuration.getParamValue("troisieme-trimestre","debut")),new Date(Configuration.getParamValue("troisieme-trimestre","fin")));
-	
+		
 	autre.addChangeListener(new ChangeListener(){
 
 		public void stateChanged(ChangeEvent e) {
