@@ -40,6 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 import com.toedter.calendar.JDateChooser;
@@ -104,14 +105,16 @@ public class IndisponibiliteWindow extends IndWindow{
         type_ress.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				Collection coll=(Collection) ress_found.get((String) type_ress.getSelectedItem());
-				DefaultListModel dlm = (DefaultListModel)list_ress.getModel();
-				dlm.clear();
-				for( Iterator i=coll.iterator();i.hasNext();)
+				DefaultListModel dlm = new DefaultListModel();
+				int cpt=0;
+				for( Iterator i=coll.iterator();i.hasNext();) {
 					dlm.addElement(i.next());
+				}
+				list_ress.setModel(dlm);
 				list_ress.validate();
 				list_ress.repaint();
-			}
-        	});
+					}
+			});
         ress_select=new Hashtable();      
         Collection coll=(Collection) ress_found.get((String) type_ress.getSelectedItem());
         list_ress=new JList();
