@@ -7,6 +7,7 @@ package graed.gui.ressource;
 import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.gui.renderer.RessourceListRenderer;
 import graed.ressource.event.RessourceEvent;
 import graed.ressource.type.GroupInterface;
 import graed.ressource.type.TeacherInterface;
@@ -42,7 +43,7 @@ public class GroupWindow extends InformationWindow{
  * Window
  */
 private JFrame frame;
-private static int with=300;
+private static int with=400;
 private static int height=200;
 /**
  * TextField
@@ -66,6 +67,7 @@ public GroupWindow(int state, GroupInterface t) throws InvalidStateException{
 	option = new JFormattedTextField();
 	email = new JFormattedTextField();
 	directeur = new JComboBox();
+	directeur.setRenderer(new RessourceListRenderer());
 	directeur.addItem("");
 	Collection c;//Collection
 	try {
@@ -125,6 +127,7 @@ private void addLine(JPanel p,GridBagConstraints c,String mask,JComponent tf,Str
 private void addJComponent(JPanel p,GridBagConstraints c){
 	String mask="UUUUUUUUUUUUUUUUUUUUUUUU";
 	c.gridy = 0;
+	c.gridx = 0;
 	addLine(p,c,mask,name, "Nom : ");
 	c.gridy ++;
 	addLine(p,c,mask,description,"Description : ");
@@ -214,7 +217,8 @@ public void OpenWindow(){
 	p.add(stop(),c);	
 	
 	/** Affichage de la fenêtre **/
-	frame.setContentPane(p);	
+	frame.setContentPane(p);
+	frame.pack();
 	frame.setVisible(true);
 	
 }
