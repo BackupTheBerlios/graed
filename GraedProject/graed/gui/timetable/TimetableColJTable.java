@@ -10,6 +10,9 @@
 package graed.gui.timetable;
 
 import graed.client.Client;
+import graed.exception.InvalidStateException;
+import graed.gui.InformationWindow;
+import graed.gui.indisponibilite.IndisponibiliteWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
 
 import java.awt.Component;
@@ -17,6 +20,8 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -24,6 +29,10 @@ import java.rmi.RemoteException;
 import java.sql.Date;
 import java.util.Hashtable;
 
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.TableColumn;
@@ -46,6 +55,7 @@ public class TimetableColJTable extends JTable {
 	 */
 	public TimetableColJTable(TimetableDefaultTableModel arg0,TimetableDefaultListSelectionModel l) {
 		super(arg0);
+		this.setComponentPopupMenu(CreatePopupMenu());
 		list_ind = new Hashtable(); 
 		tm=arg0;
 		/**
@@ -79,11 +89,24 @@ public class TimetableColJTable extends JTable {
             		if( k!= null){            
             			TimetableColJTable.this.setCellSelectionEnabled(false);
             			TimetableColJTable.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
-            		}            		
+            		}     
+            		if(e.getButton() == MouseEvent.BUTTON3 ){
+    				 	JPopupMenu pop=TimetableColJTable.this.getComponentPopupMenu();
+    				 	if( k!= null){            
+                			try {
+								System.out.println("\nPopUp: "+getI(colF).print());
+							} catch (RemoteException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+                		} 
+    				 	if(pop!=null)pop.show(TimetableColJTable.this, e.getX(),e.getY());
+    				 	return;
+    				 }
 		}
 		
-		public void mouseReleased(MouseEvent e){
-			//if( e.getButton() == MouseEvent.BUTTON1 ) System.out.println("Déplace");
+		public void mouseReleased(MouseEvent e){			
+			if( e.getButton() == MouseEvent.BUTTON3 ) return;
 			Container ct = TimetableColJTable.this.getParent();
 			Point p=ct.getMousePosition(true);
 			Component c = TimetableColJTable.this.getParent().getComponentAt(p);
@@ -94,6 +117,7 @@ public class TimetableColJTable extends JTable {
 			int col= table.columnAtPoint(p);
 			Object o=TimetableColJTable.this.getValueAt(rowF,colF);
 			if( o!= null) {
+				 
 				int size = TimetableColJTable.this.getCellSize( rowF, colF );	
 				//On ne déplace si la taille est trop grande
 				if(size<=table.getColumnCount()-col){					
@@ -139,6 +163,34 @@ public class TimetableColJTable extends JTable {
 	public Object getValueAt(int row, int column) {
 		return tm.getValueAt(row, column);
 	}
+	
+	/**
+	 * Création d'une Popup menu 
+	 * @return Popup menu
+	 */
+	private JPopupMenu CreatePopupMenu(){
+		JPopupMenu p= new JPopupMenu();		
+		/* Créer une indisponibilite */
+		JMenuItem creer=new JMenuItem("Creer");
+		creer.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				IndisponibiliteInterface t=null;
+				try {					
+					new IndisponibiliteWindow(InformationWindow.CREATE,t).OpenWindow();					
+				} catch (InvalidStateException e1) {
+					JOptionPane.showMessageDialog(null,
+							"le système ne peut afficher la fenêtre de création",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+				
+			}
+			
+		});
+		p.add(creer);
+		return p;
+	}
 	/**
 	 * Ajoute un nouveau cours (du texte obligatoirement)
 	 * Insère un JTextArea dans la table
@@ -149,6 +201,7 @@ public class TimetableColJTable extends JTable {
 	public void addIndispo (IndisponibiliteInterface i,int col,int size){
 		addI(i,col);
 		JTextArea j = new JTextArea();
+		//j.add(CreatePopupMenu());
 		try {
 			j.setText(i.print());	
 		} catch (RemoteException e) {
@@ -183,6 +236,9 @@ public class TimetableColJTable extends JTable {
 	}
 	public void addI(IndisponibiliteInterface i,int col){
 		list_ind.put(new Integer(col), i);
+	}
+	public IndisponibiliteInterface getI(int col){
+		return (IndisponibiliteInterface) list_ind.get(new Integer(col));
 	}
 	/**
 	 * Récupère la taille du cours (nombre de colonnes)

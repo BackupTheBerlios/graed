@@ -67,8 +67,8 @@ public class CreateMainFrame {
 		icons.put( "Professeur", new ImageIcon(TeacherWindow.class.getResource("professeur16.jpg")) );
 		//icons.put( "Materiel", new ImageIcon(TeacherWindow.class.getResource("classe.gif")) );
 		
-        UIManager.setLookAndFeel("com.hokage.swing.plaf.HokageLookAndFeel");
-        SwingUtilities.updateComponentTreeUI(frame);
+        //UIManager.setLookAndFeel("com.hokage.swing.plaf.HokageLookAndFeel");
+        //SwingUtilities.updateComponentTreeUI(frame);
 		
         splash.close();
 		frame.pack();
