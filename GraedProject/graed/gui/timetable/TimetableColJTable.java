@@ -141,7 +141,7 @@ public class TimetableColJTable extends JTable {
 		if(size>tm.getColumnCount()-col)size=tm.getColumnCount()-col;
         tm.setValueAt(j,col,size);
 		TableColumn c=getColumnModel().getColumn(col);
-		c.setPreferredWidth(size*c.getPreferredWidth());
+		c.setPreferredWidth(size*c.getPreferredWidth()+size-1);
 	}
 	/**
 	 * Supprime la donnée à la colonne indiquée

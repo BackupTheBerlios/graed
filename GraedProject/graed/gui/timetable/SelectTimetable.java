@@ -48,6 +48,7 @@ public class SelectTimetable {
 private JPanel p;
 private static int with=150;
 private static int height=200;
+private CreateMainFrame main;
 /**
  * Champs contenus dans la fenêtre de sélection
  */
@@ -66,7 +67,8 @@ private JDateChooser dateFin;
  * @param t the teacher
  * @throws InvalidStateException
  */
-public SelectTimetable() {
+public SelectTimetable(CreateMainFrame main) {
+	this.main=main;
 	
 	Date d=new Date();
 	Date f=new Date();
@@ -275,17 +277,21 @@ protected JButton search(){
 	JButton b=new JButton("Chercher");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			Collection c=null;
+			/*Collection c=null;
 			try {
 				c=IndisponibiliteManagerImpl.getInstance().getIndisponibilites(
 						(Ressource)ressource.getSelectedItem(),
 						new java.sql.Date(dateDebut.getDate().getTime()),
 						new java.sql.Date(dateFin.getDate().getTime()));
+				
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(c);
+			System.out.println(c);*/
+			main.addTimetable((Ressource)ressource.getSelectedItem(),
+						new java.sql.Date(dateDebut.getDate().getTime()),
+						new java.sql.Date(dateFin.getDate().getTime()));
 			}		
 	});
 	return b;
@@ -302,7 +308,7 @@ public static void main (String[] args) throws InvalidStateException{
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	/** Affichage de la fenêtre **/
-	frame.setContentPane(new SelectTimetable().OpenWindow());	
+	//frame.setContentPane(new SelectTimetable().OpenWindow());	
 	frame.pack();
 	frame.setVisible(true);
 }

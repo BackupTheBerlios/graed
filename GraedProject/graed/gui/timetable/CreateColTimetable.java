@@ -2,6 +2,7 @@
 package graed.gui.timetable;
 
 
+import graed.indisponibilite.Indisponibilite;
 import graed.ressource.Ressource;
 
 import java.awt.Color;
@@ -10,12 +11,15 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.util.GregorianCalendar;
+import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+
 
 /**
  * @author Nadège GONORD
@@ -24,7 +28,10 @@ import javax.swing.JTable;
  */
 public class CreateColTimetable {
 	private final JPanel colTimetable;
+	private Hashtable jourTable;
 	private Ressource r;
+	private int start;
+	private int stop;
 	String title;
 	
 	/**
@@ -36,10 +43,13 @@ public class CreateColTimetable {
 	 */
 	public CreateColTimetable(Ressource r,String title, int start, int stop){
 		this.r=r;
+		jourTable=new Hashtable();
 		this.title=title;
+		this.start = start;
+		this.stop = stop;
 		colTimetable=new JPanel();
 		colTimetable.setSize((stop-start)*100+60,300);
-		CreateTables(start,stop);		
+		CreateTables();		
 	}
 	/**
 	 * Recupère le Jpanel contenant l'emploi du temps de la ressource
@@ -62,7 +72,7 @@ public class CreateColTimetable {
 	 * @param stop heure de fin
 	 * @return la table nouvellement crée
 	 */
-	private JTable CreateHoursTable(int start, int stop){
+	private JTable CreateHoursTable(){
 		/* Table affichant les heures */
 		
 		JTable hours =new JTable(1,(stop+1-start)*4);
@@ -107,12 +117,12 @@ public class CreateColTimetable {
 	 * @param stop heure de fin
 	 * @return table correspondant à un jour de la semaine
 	 */
-	private TimetableColJTable CreateIndispoTable(String name, TimetableDefaultListSelectionModel mdl, int start, int stop){
+	private TimetableColJTable CreateIndispoTable(String name, TimetableDefaultListSelectionModel mdl){
 		TimetableColJTable t= new TimetableColJTable(new TimetableDefaultTableModel(stop-start+1,name ),mdl);
 		t.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		t.setPreferredSize( new Dimension( (stop-start)*100,colTimetable.getHeight()/6 ));
 		t.setRowHeight(colTimetable.getHeight()/6);
-		
+		jourTable.put(name,t);
 		return t;
 	}
 	/**
@@ -120,7 +130,7 @@ public class CreateColTimetable {
 	 * @param start heure de début
 	 * @param stop heure de fin
 	 */
-	private void CreateTables(int start, int stop){
+	private void CreateTables(){
 		GridBagLayout l=new GridBagLayout();
 		
 		colTimetable.setLayout(l);
@@ -129,7 +139,7 @@ public class CreateColTimetable {
 		GridBagConstraints c= new GridBagConstraints();
 		
 		/* Table affichant les heures */
-		JTable heure =CreateHoursTable(start, stop);	
+		JTable heure =CreateHoursTable();	
 		c.gridx = 1;
 	    c.gridy = 0;
 	    c.gridwidth = 1;
@@ -158,26 +168,26 @@ public class CreateColTimetable {
 		TimetableDefaultListSelectionModel mdl=new TimetableDefaultListSelectionModel();
 		
 		   
-		TimetableColJTable t1= CreateIndispoTable("lundi", mdl, start, stop);
-		t1.addIndispo("bla1",1,15);
+		TimetableColJTable t1= CreateIndispoTable(GregorianCalendar.MONDAY+"", mdl);
+		//t1.addIndispo("bla1",1,15);
 		col.add(t1);
 		
-		TimetableColJTable t2= CreateIndispoTable("mardi", mdl, start, stop);
-		t2.addIndispo("bla2",5,1);
+		TimetableColJTable t2= CreateIndispoTable(GregorianCalendar.TUESDAY+"", mdl);
+		//t2.addIndispo("bla2",5,1);
 		col.add(t2);
 	
-		TimetableColJTable t3= CreateIndispoTable("mercredi", mdl, start, stop);
-		t3.addIndispo("bla3",10,7);
+		TimetableColJTable t3= CreateIndispoTable(GregorianCalendar.WEDNESDAY+"", mdl);
+		//t3.addIndispo("bla3",10,7);
 		col.add(t3);
 		
-		TimetableColJTable t4= CreateIndispoTable("jeudi", mdl, start, stop);
-		t4.addIndispo("toto aime titi qui aime tata mais tutu n'est pas là",2,7);
+		TimetableColJTable t4= CreateIndispoTable(GregorianCalendar.THURSDAY+"", mdl);
+		//t4.addIndispo("toto aime titi qui aime tata mais tutu n'est pas là",2,7);
 		col.add(t4);
 		
-		TimetableColJTable t5= CreateIndispoTable("vendredi", mdl, start, stop);
-		t5.addIndispo("bla5",5,7);
-		t5.addIndispo("bla6",4,3);
-		t5.removeIndispo(4);
+		TimetableColJTable t5= CreateIndispoTable(GregorianCalendar.FRIDAY+"", mdl);
+		//t5.addIndispo("bla5",5,7);
+		//t5.addIndispo("bla6",4,3);
+		//t5.removeIndispo(4);
 		col.add(t5);
 		
 		
@@ -190,7 +200,7 @@ public class CreateColTimetable {
 	    colTimetable.add(col,c);
 		
 		/* Table affichant les heures */
-		JTable heure2 =CreateHoursTable(start, stop);
+		JTable heure2 =CreateHoursTable();
 		c.gridx = 1;
 	    c.gridy = 2;
 	    c.gridwidth = 1;
@@ -198,6 +208,20 @@ public class CreateColTimetable {
 	    c.fill = GridBagConstraints.BOTH;
 	    colTimetable.add(heure2,c);
 		
+	}
+	/**
+	 * Ajouter une indisponibilité à l'emploi du temps de la ressource
+	 * @param i l'indisponibilitée à ajouter
+	 */
+	public void addIndispo(Indisponibilite i){
+		GregorianCalendar gcal=new GregorianCalendar();
+		gcal.setTime(i.getDebut());
+		System.out.println(gcal.get(GregorianCalendar.DAY_OF_WEEK));
+		int celldebut =(i.getHdebut().getHours()-start)*4+(i.getHdebut().getMinutes()/15);
+		int nbcell=i.getDuree()/15;
+		System.out.println("("+celldebut+","+nbcell+")");
+		((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(
+				i.getLibelle(),celldebut,nbcell);
 	}
 	/**
 	 * Test

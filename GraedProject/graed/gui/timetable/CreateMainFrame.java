@@ -6,7 +6,14 @@
  */
 package graed.gui.timetable;
 
+import graed.indisponibilite.Indisponibilite;
+import graed.indisponibilite.IndisponibiliteManagerImpl;
+import graed.ressource.Ressource;
+
 import java.awt.BorderLayout;
+import java.rmi.RemoteException;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -51,7 +58,7 @@ public class CreateMainFrame {
 	 */
 	private JSplitPane timetable(){
 		JSplitPane sp=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		sp.setLeftComponent(new SelectTimetable().OpenWindow());
+		sp.setLeftComponent(new SelectTimetable(this).OpenWindow());
 		
 		/* Affichage graphique d'un emploi du temps */		
 		CreateColTimetable time1=new CreateColTimetable(null,"Emploi du temps n°1",8,15);
@@ -61,6 +68,31 @@ public class CreateMainFrame {
 		sp.setRightComponent(tp);
 		
 		return sp;
+	}
+	/**
+	 * Ajouter l'emploi du temps d'une ressource
+	 * @param r
+	 * @param dateDebut
+	 * @param dateFin
+	 */
+	public void addTimetable(Ressource r,java.sql.Date dateDebut,java.sql.Date dateFin){
+		Collection c=null;
+		try {
+			c=IndisponibiliteManagerImpl.getInstance().getIndisponibilites(
+					r,dateDebut,dateFin);
+			CreateColTimetable time2=new CreateColTimetable(null,r.getType()+": "+r,8,15);
+			tp.add(time2.getTitle(),time2.getTimetable());
+			if(c!=null){
+				for(Iterator i=c.iterator();i.hasNext();)
+					time2.addIndispo((Indisponibilite)i.next());
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(c);
+				
+		
 	}
 	/** test ****/
 	public static void main(String[] args) {

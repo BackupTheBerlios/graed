@@ -355,6 +355,9 @@ public class IndisponibiliteWindow extends InformationWindow{
 						(String)periodicite.getSelectedItem(),
     					libelle.getText(),
 						(String)type.getSelectedItem()));
+    			for(int i=0;i<select_ress.getModel().getSize();++i){
+    				((Indisponibilite) getInformation()).addRessource((Ressource)select_ress.getModel().getElementAt(i));
+    			}
     			System.out.println(((Indisponibilite) getInformation()));
     			try {
 					IndisponibiliteManagerImpl.getInstance().addIndisponibilite(((Indisponibilite) getInformation()));
