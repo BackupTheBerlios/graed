@@ -28,8 +28,7 @@ import java.util.Collection;
 public class Client {
 	private static final RessourceManager rm;
 	private static final IndisponibiliteManager im;
-	private static final String host="pccop2b104-15.univ-mlv.fr";
-	
+	private static final String host="pccop2b104-14.univ-mlv.fr";
 	static {
 		try {
 			//Récupération du registry de la machine dusk sur le port 6666

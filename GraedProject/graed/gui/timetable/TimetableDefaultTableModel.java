@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TimetableDefaultTableModel extends DefaultTableModel {
 	private int nbcells;
+	private int nbhours;
 	private String tableName;
 	private Hashtable value;
 	private final ArrayList listenerTab;
@@ -28,10 +29,19 @@ public class TimetableDefaultTableModel extends DefaultTableModel {
 	 */
 	public TimetableDefaultTableModel(int nbhours,String tableName){
 		nbcells=4*nbhours;
+		this.nbhours=nbhours;
 		this.tableName=tableName;
 		value = new Hashtable();
 		listenerTab=new ArrayList();
 		
+	}
+	/**
+	 * Vide l'emploi du temps
+	 *
+	 */
+	public void clear(){
+		nbcells=4*nbhours;
+		value.clear();
 	}
 	/**
 	 * Récupère le jour associé à la table

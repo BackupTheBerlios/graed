@@ -395,6 +395,13 @@ public class TimetableColJTable extends JTable {
 		l.clearAllTables();
 		super.changeSelection(arg0, arg1, arg2, arg3);
 	}
-	
+	/**
+	 * Vide l'emploi du temps
+	 *
+	 */
+	public void clear(){
+		tm.clear();
+		list_ind.clear();
+	}
 	
 }

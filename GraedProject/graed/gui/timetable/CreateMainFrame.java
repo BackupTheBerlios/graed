@@ -22,17 +22,14 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -45,7 +42,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -65,6 +61,7 @@ public class CreateMainFrame {
 	private JCloseableTabbedPane tp;
 	private Hashtable icons;
 	private final JList notif;
+	private Hashtable timetable_list;
 	private Hashtable buttons;
 	/**
 	 * Constructeur
@@ -79,6 +76,7 @@ public class CreateMainFrame {
 	    
 	    buttons = new Hashtable();
 	    notif = new JList();
+	    timetable_list=new Hashtable();
 	    notif.setModel(new DefaultListModel());
 	    notif.setCellRenderer(new NotificationRenderer());
 	    frame=new JFrame();
@@ -136,7 +134,10 @@ public class CreateMainFrame {
 		
 		return sp;
 	}
-	
+	/**
+	 * Création de la zone de notification des changements
+	 * @return panel de zone de notification
+	 */
 	private JPanel createNotificationZone() {
 		JPanel notification = new JPanel();
 		/*DefaultListModel dlm = new DefaultListModel();
@@ -152,7 +153,10 @@ public class CreateMainFrame {
 		return notification;
 	}
 	
-	
+	/**
+	 * Prévenir l'utilistauer des modifications
+	 *
+	 */
 	private void runCallback() {
 		CallbackRunnable add = new CallbackRunnable() {
 
@@ -237,13 +241,56 @@ public class CreateMainFrame {
 				for(Iterator i=c.iterator();i.hasNext();)
 					time2.addIndispo((IndisponibiliteInterface)i.next());
 			}
+			timetable_list.put(time2,new Timetable(r,dateDebut,dateFin));
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(c);
 	}
-	
+	/**
+	 * Mise à jour de tous les emploi du temps
+	 *
+	 */
+	public void refresh(){
+		tp.removeAll();
+		for (Iterator it=timetable_list.values().iterator();it.hasNext();)
+			refresh((Timetable) it.next());
+	}
+	/**
+	 * Mise à jour de l'emploi du temps
+	 * @param t Données concernant l'emploi du temps
+	 */
+	public void refresh(Timetable t){
+		addTimetable(t.getR(),t.getDateDebut(),t.getDateFin());
+	}
+	/**
+	 * Mise à jour de l'emploi du temps
+	 * @param t Données concernant l'emploi du temps
+	 */
+	public void modify(CreateColTimetable time2,java.sql.Date dateDebut,java.sql.Date dateFin){
+		Timetable t=(Timetable) timetable_list.get(time2);
+		t.setDateDebut(dateDebut);
+		t.setDateFin(dateFin);
+		Collection c=null;
+		try {
+			c=Client.getIndisponibiliteManager().getIndisponibilites(
+					t.getR(),dateDebut,dateFin);
+			if(c!=null){
+				for(Iterator i=c.iterator();i.hasNext();)
+					time2.addIndispo((IndisponibiliteInterface)i.next());
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(c);
+		addTimetable(t.getR(),t.getDateDebut(),t.getDateFin());
+	}
+	/**
+	 * Création de la barre de menu de la fenêtre principale
+	 * @return la barre de menu
+	 */
 	protected JToolBar createToolBar() {
 	    JToolBar tb = new JToolBar();
 	    JButton exp = createButton("Exporter",
@@ -301,7 +348,14 @@ public class CreateMainFrame {
 	    tb.setOpaque(true);
 	    return tb;
 	}
-	
+	/**
+	 * Creer un bouton pour la fenêtre principale
+	 * @param name nom du bouton
+	 * @param toolTipText infobulle
+	 * @param image l'image du bouton
+	 * @param a l'action associée
+	 * @return le nouveau bouton créé
+	 */
 	protected JButton createButton( String name, String toolTipText, String image, ActionListener a ) {
 	    JButton b = new JButton( name );
 	    b.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -312,6 +366,69 @@ public class CreateMainFrame {
 	    return b;
 	}
 	
+	/**
+	 * Classe permettant de recalculer un emploi du temps
+	 * @author ngonord
+	 * 
+	 */
+	private class Timetable{
+		/** Champs privés de la classe **/
+		private RessourceInterface r;
+		private java.sql.Date dateDebut;
+		private java.sql.Date dateFin;
+		
+		
+		/**
+		 * Constructeur
+		 * @param r la ressource concernée par l'emploi du temps
+		 * @param dateDebut date de début de l'emploi du temps
+		 * @param dateFin date de fin de l'emploi du temps
+		 */
+		public Timetable(RessourceInterface r, java.sql.Date dateDebut,
+				java.sql.Date dateFin) {
+			super();
+			this.r = r;
+			this.dateDebut = dateDebut;
+			this.dateFin = dateFin;
+		}
+		/**
+		 * @return Returns the dateDebut.
+		 */
+		public java.sql.Date getDateDebut() {
+			return dateDebut;
+		}
+		/**
+		 * @param dateDebut The dateDebut to set.
+		 */
+		public void setDateDebut(java.sql.Date dateDebut) {
+			this.dateDebut = dateDebut;
+		}
+		/**
+		 * @return Returns the dateFin.
+		 */
+		public java.sql.Date getDateFin() {
+			return dateFin;
+		}
+		/**
+		 * @param dateFin The dateFin to set.
+		 */
+		public void setDateFin(java.sql.Date dateFin) {
+			this.dateFin = dateFin;
+		}
+		/**
+		 * @return Returns the r.
+		 */
+		public RessourceInterface getR() {
+			return r;
+		}
+		/**
+		 * @param r The r to set.
+		 */
+		public void setR(RessourceInterface r) {
+			this.r = r;
+		}
+	}
+
 	protected void enableRefresh(boolean b) {
 		((JButton)buttons.get("ref")).setEnabled(b);
 	}

@@ -13,10 +13,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.rmi.RemoteException;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -182,25 +182,18 @@ public class CreateColTimetable {
 		
 		   
 		TimetableColJTable t1= CreateIndispoTable(GregorianCalendar.MONDAY+"", mdl);
-		//t1.addIndispo("bla1",1,15);
 		col.add(t1);
 		
 		TimetableColJTable t2= CreateIndispoTable(GregorianCalendar.TUESDAY+"", mdl);
-		//t2.addIndispo("bla2",5,1);
 		col.add(t2);
 	
 		TimetableColJTable t3= CreateIndispoTable(GregorianCalendar.WEDNESDAY+"", mdl);
-		//t3.addIndispo("bla3",10,7);
 		col.add(t3);
 		
 		TimetableColJTable t4= CreateIndispoTable(GregorianCalendar.THURSDAY+"", mdl);
-		//t4.addIndispo("toto aime titi qui aime tata mais tutu n'est pas là",2,7);
 		col.add(t4);
 		
 		TimetableColJTable t5= CreateIndispoTable(GregorianCalendar.FRIDAY+"", mdl);
-		//t5.addIndispo("bla5",5,7);
-		//t5.addIndispo("bla6",4,3);
-		//t5.removeIndispo(4);
 		col.add(t5);
 		
 		
@@ -229,31 +222,25 @@ public class CreateColTimetable {
 	public void addIndispo(IndisponibiliteInterface i){
 		try {
 			GregorianCalendar gcal=new GregorianCalendar();
-			String libelle;		
 			gcal.setTime(i.getDebut());		
 			
 			int celldebut =(i.getHdebut().getHours()-start)*4+(i.getHdebut().getMinutes()/15);
-			int nbcell=i.getDuree()/15;
-			libelle=i.getLibelle();
-			if(i.getPeriodicite().equals("ponctuel")){
-				libelle+=" le "+i.getDebut();
-			}
-			else if(i.getPeriodicite().equals("bihebdomadaire")){
-				libelle+=" tous les 15 jours à partir du "+i.getDebut();
-			}
+			int nbcell=i.getDuree()/15;						
 			
-			Set s=i.getRessources();
-			for(Iterator it=s.iterator();it.hasNext();){			
-				RessourceInterface tmp=(RessourceInterface)it.next();
-				if (this.r!=tmp)
-					libelle+=" "+tmp;
-			}
 			if(((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+""))!=null)
 			((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(i,
 				celldebut,nbcell);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+	}
+	/**
+	 * Vide l'emploi du temps
+	 *
+	 */
+	public void clear(){
+		for(Iterator it=jourTable.values().iterator();it.hasNext();)
+			((TimetableColJTable) it.next()).clear();
 	}
 	/**
 	 * Test
