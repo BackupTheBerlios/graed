@@ -65,7 +65,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
             try {
                 return dbm.get(r);
             } catch (DataBaseException e) {
-                throw (RemoteException)new RemoteException().initCause(e);
+            	throw new RemoteException(e.getMessage());
             }
     }
 
@@ -83,7 +83,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
         try {
             dbm.add(r);
         } catch (DataBaseException e) {
-            throw (RemoteException)new RemoteException().initCause(e);
+        	throw new RemoteException(e.getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
             dbm.delete(r);
             fireRessourceDeleted( new RessourceEvent(r));
         } catch (DataBaseException e) {
-            throw (RemoteException)new RemoteException().initCause(e);
+        	throw new RemoteException(e.getMessage());
         }
     }
 
@@ -137,8 +137,22 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     * @see graed.ressource.RessourceManager#getRessourcesByType(java.lang.String)
     */
    public Collection getRessourcesByType(String type) throws RemoteException {
-   		
-   		return null;
+   		try {
+   			System.out.println(types);
+			return dbm.get(((Class)types.get(type)).newInstance());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RemoteException(e.getMessage());
+		}
+   }
+   
+   public static void main( String[] args ) throws RemoteException {
+   		RessourceManager rm = new RessourceManagerImpl();
+   		rm.getRessourcesTypes();
+   		Collection c = rm.getRessourcesByType("Salle");
+   		for( Iterator i=c.iterator(); i.hasNext(); ) {
+   			System.out.println(i.next());
+   		}
    }
 
 }

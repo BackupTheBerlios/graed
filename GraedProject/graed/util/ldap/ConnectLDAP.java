@@ -259,7 +259,7 @@ public class ConnectLDAP {
 			Teacher t=(Teacher)i.next();
 			System.out.println(t);
 			DataBaseManager.getInstance().add(t);
-		}*/
+		}
 		List p= ldap.searchGroup();
 		System.out.println(p.size()+" groups find:");
 		for (Iterator i=p.iterator();i.hasNext();){
@@ -269,13 +269,13 @@ public class ConnectLDAP {
 			System.out.println(e.size()+" students find:");
 			for (Iterator j=e.iterator();j.hasNext();)
 				System.out.println("***"+j.next());
-			}
-		/*List p= ldap.searchRoom();
+			}*/
+		List p= ldap.searchRoom();
 		System.out.println(p.size()+" rooms find:");
 		for (Iterator i=p.iterator();i.hasNext();){
 				Room r=(Room)i.next();
-				System.out.println(r);
+				//System.out.println(r);
 				DataBaseManager.getInstance().add(r);
-		}*/
+		}
 	}
 }

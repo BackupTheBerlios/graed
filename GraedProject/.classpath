@@ -19,5 +19,5 @@
 	<classpathentry kind="lib" path="graed/lib/xerces-2.4.0.jar"/>
 	<classpathentry kind="lib" path="graed/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="graed/lib/postgresql-8.0-310.jdbc3.jar"/>
-	<classpathentry kind="output" path="build"/>
+	<classpathentry kind="output" path=""/>
 </classpath>
