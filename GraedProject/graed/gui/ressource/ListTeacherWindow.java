@@ -9,7 +9,6 @@ package graed.gui.ressource;
 import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.TeacherInterface;
 
 import java.awt.BorderLayout;

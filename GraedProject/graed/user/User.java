@@ -1,5 +1,6 @@
 package graed.user;
 
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -166,4 +167,46 @@ public class User extends UnicastRemoteObject implements UserInterface{
 	public void setPhone(String phone)  throws RemoteException{
 		this.phone = phone;
 	}
+    /* (non-Javadoc)
+     * @see graed.ressource.RessourceInterface#setType(java.lang.String)
+     */
+    public void setType(String type) throws RemoteException {
+        // TODO Auto-generated method stub
+        
+    }
+    /* (non-Javadoc)
+     * @see graed.ressource.RessourceInterface#getType()
+     */
+    public String getType() throws RemoteException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    /* (non-Javadoc)
+     * @see graed.ressource.RessourceInterface#getId_ressource()
+     */
+    public String getId_ressource() throws RemoteException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    /* (non-Javadoc)
+     * @see graed.ressource.RessourceInterface#setId_ressource(java.lang.String)
+     */
+    public void setId_ressource(String id_ressource) throws RemoteException {
+        // TODO Auto-generated method stub
+        
+    }
+    /* (non-Javadoc)
+     * @see graed.ressource.RessourceInterface#print()
+     */
+    public String print() throws RemoteException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    /* (non-Javadoc)
+     * @see graed.user.UserInterface#control()
+     */
+    public String control() throws RemoteException{
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

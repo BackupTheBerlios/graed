@@ -6,6 +6,8 @@
  */
 package graed.user;
 
+import graed.ressource.RessourceInterface;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -15,7 +17,7 @@ import java.rmi.RemoteException;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public interface UserInterface extends Remote{
+public interface UserInterface extends Remote, RessourceInterface{
 	/**
 	 * @return Returns the email.
 	 */
@@ -88,4 +90,8 @@ public interface UserInterface extends Remote{
 	 * @param phone The phone to set.
 	 */
 	public void setPhone(String phone) throws RemoteException;
+    /**
+     * @return
+     */
+    public String control() throws RemoteException;
 }

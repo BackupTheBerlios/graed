@@ -44,4 +44,6 @@ public interface UserManager extends Remote{
      * @throws RemoteException
      */
     public Collection getUsers( UserInterface u ) throws RemoteException;
+    
+    public UserInterface createUser() throws RemoteException;
 }

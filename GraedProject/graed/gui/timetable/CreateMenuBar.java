@@ -15,6 +15,8 @@ import graed.ressource.type.GroupInterface;
 import graed.ressource.type.MaterielInterface;
 import graed.ressource.type.RoomInterface;
 import graed.ressource.type.TeacherInterface;
+import graed.user.UserInterface;
+import graed.user.UserWindow;
 import graed.util.ldap.ConnectLDAP;
 
 import java.awt.BorderLayout;
@@ -68,6 +70,7 @@ public class CreateMenuBar {
 		barMenu.add(createMenuImport());
 		barMenu.add(createMenuInd());
 		barMenu.add(createMenuLF());
+		barMenu.add(createMenuConf());
 		//barMenu.add(createMenuEDT());
 		
 	}
@@ -453,6 +456,64 @@ public class CreateMenuBar {
 		edt.add(print);
 		return edt;
 	}
+
+	/************ Apparence ************************/
+	private JMenu createMenuLF() {
+	    JMenu menu = new JMenu("Apparence");
+		ButtonGroup bg = new ButtonGroup();
+		Map map = getLookAndFeelsMap();
+		for(Iterator i = map.keySet().iterator(); i.hasNext(); ){
+		    Object key = i.next();
+			final String classe = (String)map.get(key);
+			System.out.println(key+" : "+classe);
+			boolean set = classe.equals(HokageLookAndFeel.class.getName());
+			JRadioButtonMenuItem item = new JRadioButtonMenuItem((String) key,set);
+			item.addActionListener(new ActionListener(){ 
+				public void actionPerformed(ActionEvent ae){ 
+					try{ 
+						UIManager.setLookAndFeel(classe); 
+					}catch(Exception e){
+						e.printStackTrace();	
+					} 
+					SwingUtilities.updateComponentTreeUI(frame); 
+				} 
+			}); 
+			bg.add(item); 
+			menu.add(item);  	
+		}
+		return menu;
+	}
+	
+	/*****************Configuration **************/
+	private JMenu createMenuConf(){
+	    JMenu menu = new JMenu("Configuration");
+	    JMenuItem newUser = new JMenuItem("Créer un utilisateur");
+		newUser.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				UserInterface t=null;
+				try {					
+					new UserWindow(InformationWindow.CREATE,t).OpenWindow();					
+				} catch (InvalidStateException e1) {
+					JOptionPane.showMessageDialog(frame,
+							"le système ne peut afficher la fenêtre de création",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
+	    
+	    JMenuItem modifyUser = new JMenuItem("Modifier un utilisateur");
+	    
+	    JMenuItem deleteUser = new JMenuItem("Supprimer un utilisateur");
+	    
+	    JMenuItem configSoft = new JMenuItem("Configurer l'application");
+	    
+	    menu.add(newUser);
+	    menu.add(modifyUser);
+	    menu.add(deleteUser);
+	    menu.add(configSoft);
+	    return menu;
+	}
 	/***************** Test **********************/
 	public static void main(String[] args) {
 		JFrame frame=new JFrame();
@@ -479,29 +540,4 @@ public class CreateMenuBar {
 		return map;	
 	}
 	
-	private JMenu createMenuLF() {
-	    JMenu menu = new JMenu("Apparence");
-		ButtonGroup bg = new ButtonGroup();
-		Map map = getLookAndFeelsMap();
-		for(Iterator i = map.keySet().iterator(); i.hasNext(); ){
-		    Object key = i.next();
-			final String classe = (String)map.get(key);
-			System.out.println(key+" : "+classe);
-			boolean set = classe.equals(HokageLookAndFeel.class.getName());
-			JRadioButtonMenuItem item = new JRadioButtonMenuItem((String) key,set);
-			item.addActionListener(new ActionListener(){ 
-				public void actionPerformed(ActionEvent ae){ 
-					try{ 
-						UIManager.setLookAndFeel(classe); 
-					}catch(Exception e){
-						e.printStackTrace();	
-					} 
-					SwingUtilities.updateComponentTreeUI(frame); 
-				} 
-			}); 
-			bg.add(item); 
-			menu.add(item);  	
-		}
-		return menu;
-	}
 }
