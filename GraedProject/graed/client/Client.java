@@ -55,10 +55,9 @@ public class Client {
 	
 	public static void main(String[] args) throws RemoteException {
 		IndisponibiliteManager im = Client.getIndisponibiliteManager();
-		RessourceManager rm = Client.getRessourceManager();
-		TeacherInterface ti = (TeacherInterface)rm.createRessource("Professeur");
+		TeacherInterface ti = (TeacherInterface)Client.getRessourceManager().createRessource("Professeur");
 		ti.setName("Forax");
-		Collection c = rm.getRessources(ti);
+		Collection c = Client.getRessourceManager().getRessources(ti);
 		System.out.println(c);
 		//TeacherInterface tic = (TeacherInterface)c.iterator().next();
 		//rm.deleteRessource(tic);
