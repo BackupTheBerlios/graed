@@ -1,6 +1,8 @@
 
 package graed.indisponibilite;
 
+import graed.callback.Callback;
+import graed.callback.CallbackSender;
 import graed.indisponibilite.event.IndisponibiliteListener;
 import graed.ressource.RessourceInterface;
 
@@ -15,7 +17,7 @@ import java.sql.Date;
  * @author Helder DE SOUSA
  * Interface définissant le fonctionnement d'un gestionnaire d'indisponibilité.
  */
-public interface IndisponibiliteManager extends Remote{
+public interface IndisponibiliteManager extends CallbackSender, Remote{
     /**
      * Ajoute une indisponibilite.
      * @param r L'indisponibilité à ajouter.
@@ -71,8 +73,7 @@ public interface IndisponibiliteManager extends Remote{
      * @param il Le listener voulant s'enregister.
      * @throws RemoteException
      */
-    public void registerForNotification( IndisponibiliteListener il ) throws RemoteException;
-    public IndisponibiliteInterface createIndisponibilite(Date debut, Date fin, Time hdebut, int duree, String periodicite,
+	public IndisponibiliteInterface createIndisponibilite(Date debut, Date fin, Time hdebut, int duree, String periodicite,
 			String libelle, String type) throws RemoteException;
     public IndisponibiliteInterface createIndisponibilite() throws RemoteException;
 }

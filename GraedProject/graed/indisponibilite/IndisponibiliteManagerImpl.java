@@ -1,5 +1,6 @@
 package graed.indisponibilite;
 
+import graed.callback.Callback;
 import graed.db.DataBaseManager;
 import graed.db.DataBaseUtil;
 import graed.exception.DataBaseException;
@@ -72,6 +73,7 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 			in.getRessources().clear();
 			in.setRessources(s);
             dbm.add(in);
+            fireIndisponibiliteAdded( i);
         } catch (DataBaseException e) {
         	e.printStackTrace();
         	throw new RemoteException(e.getMessage());
@@ -84,7 +86,7 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	public void deleteIndisponibilite(IndisponibiliteInterface i) throws RemoteException {
 		try {
             dbm.delete(i);
-            fireIndisponibiliteDeleted( new IndisponibiliteEvent(i));
+            fireIndisponibiliteDeleted( i);
         } catch (DataBaseException e) {
         	throw new RemoteException(e.getMessage());
         }
@@ -95,9 +97,8 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	 */
 	public void updateIndiponibilite(IndisponibiliteInterface i) throws RemoteException {
 		try {
-			System.out.println( i.getClass().getName() );
-            dbm.update(i);
-            fireIndisponibiliteUpdated( new IndisponibiliteEvent(i));
+			dbm.update(i);
+            fireIndisponibiliteUpdated( i);
         } catch (DataBaseException e) {
         	throw new RemoteException(e.getMessage());
         }
@@ -139,34 +140,6 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
         }
 	}
 
-	/**
-	 * @see graed.indisponibilite.IndisponibiliteManager#registerForNotification(graed.indisponibilite.event.IndisponibiliteListener)
-	 */
-	public void registerForNotification(IndisponibiliteListener il)
-			throws RemoteException {
-		toBeNotified.add(il);
-	}
-	
-	/**
-	 * Previent les listeners qu'une indisponibilite a été supprimée.
-	 * @param ie L'évennement à dispatcher
-	 */
-	protected void fireIndisponibiliteDeleted( IndisponibiliteEvent ie ) {
-		for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-	           ((IndisponibiliteListener)i.next()).indisponibiliteDeleted(ie);
-	       }
-	}
-
-	/**
-	 * Previent les listeners qu'une indisponibilite a été mise à jour.
-	 * @param ie L'évennement à dispatcher
-	 */
-	protected void fireIndisponibiliteUpdated( IndisponibiliteEvent ie ) {
-		for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-	           ((IndisponibiliteListener)i.next()).indisponibiliteUpdated(ie);
-	       }
-	}
-	
 	protected Criteria getCriteriaBetween( Date begin, Date end ) {
 		return dbm.createCriteria(Indisponibilite.class)
 			.add(Expression.or(
@@ -229,4 +202,48 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	public IndisponibiliteInterface createIndisponibilite() throws RemoteException {
 		return new Indisponibilite();
 	}
+	
+	/**
+	 * @see graed.ressource.RessourceManager#unregister(graed.callback.Callback)
+	 */
+	public void unregister(Callback c) throws RemoteException {
+		toBeNotified.remove(c);
+	}
+	
+	/**
+     * @see graed.ressource.RessourceManager#registerForNotification(java.lang.Object)
+     */
+    public void registerForNotification(Callback c) throws RemoteException {
+        toBeNotified.add(c);
+    }
+    
+    protected void fireIndisponibiliteDeleted( IndisponibiliteInterface in  ) {
+        for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
+            try {
+ 			((Callback)i.next()).notify(in, Callback.DELETE);
+ 		} catch (RemoteException e) {
+ 			e.printStackTrace();
+ 		}
+        }
+    }
+    
+    protected void fireIndisponibiliteUpdated( IndisponibiliteInterface in  ) {
+    	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
+         try {
+ 			((Callback)i.next()).notify(in, Callback.UPDATE);
+ 		} catch (RemoteException e) {
+ 			e.printStackTrace();
+ 		}
+     }
+    }
+    
+    protected void fireIndisponibiliteAdded( IndisponibiliteInterface in  ) {
+    	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
+         try {
+ 			((Callback)i.next()).notify(in, Callback.ADD);
+ 		} catch (RemoteException e) {
+ 			e.printStackTrace();
+ 		}
+     }
+    }
 }

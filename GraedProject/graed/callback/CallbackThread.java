@@ -21,7 +21,7 @@ public class CallbackThread extends Thread {
 	private boolean run;
 	private Hashtable runnables;
 	
-	public CallbackThread( Runnable add, Runnable delete, Runnable update ) {
+	public CallbackThread( Runnable add, Runnable delete, Runnable update,  ) {
 		init();
 		runnables = new Hashtable();
 		runnables.put( new Integer(Callback.ADD), add );
