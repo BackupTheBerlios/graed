@@ -21,7 +21,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -44,14 +43,8 @@ private static int height=200;
 private JComboBox type;
 private JComboBox ressource;
 private JRadioButton semestre1;
-private String dateDebutS1;
-private String dateFinS1;
 private JRadioButton semestre2; 
-private String dateDebutS2;
-private String dateFinS2;
 private JRadioButton semestre3;
-private String dateDebutS3;
-private String dateFinS3;
 private JRadioButton autre;
 private JFormattedTextField dateDebut;
 private JFormattedTextField dateFin;
@@ -63,6 +56,9 @@ private JFormattedTextField dateFin;
  * @throws InvalidStateException
  */
 public SelectTimetable() {
+	String d;
+	String f;
+	
 	p=new JPanel();
 	p.setSize(with,height);
 	
@@ -77,18 +73,18 @@ public SelectTimetable() {
 	ButtonGroup group=new ButtonGroup();
 	
 	semestre1 = new JRadioButton("1er semestre");
-	dateDebutS1="Deb s1";
-	dateFinS1="Fin s1";
+	d="Deb s1";
+	f="Fin s1";
 	group.add(semestre1);
 	
 	semestre2 = new JRadioButton("2ème semestre"); 
-	dateDebutS2="Deb s2";
-	dateFinS2="Fin s2";
+	d="Deb s2";
+	f="Fin s2";
 	group.add(semestre2);
 	
 	semestre3 = new JRadioButton("3ème semestre");
-	dateDebutS3="Deb s3";
-	dateFinS3="Fin s3";
+	d="Deb s3";
+	f="Fin s3";
 	group.add(semestre3);
 	
 	autre = new JRadioButton("autre");  
@@ -99,36 +95,10 @@ public SelectTimetable() {
 	
 	
 	/** Listener **/
-	semestre1.addChangeListener(new ChangeListener(){
-
-		public void stateChanged(ChangeEvent e) {
-			if(semestre1.isSelected()){
-				dateDebut.setText(dateDebutS1);
-				dateFin.setText(dateFinS1);
-			}
-		}
-		
-	});
-	semestre2.addChangeListener(new ChangeListener(){
-
-		public void stateChanged(ChangeEvent e) {
-			if(semestre2.isSelected()){
-				dateDebut.setText(dateDebutS2);
-				dateFin.setText(dateFinS2);
-			}
-		}
-		
-	});
-	semestre3.addChangeListener(new ChangeListener(){
-
-		public void stateChanged(ChangeEvent e) {
-			if(semestre3.isSelected()){
-				dateDebut.setText(dateDebutS3);
-				dateFin.setText(dateFinS3);
-			}
-		}
-		
-	});
+	addSelectedListener(semestre1,d,f);
+	addSelectedListener(semestre2,d,f);
+	addSelectedListener(semestre3,d,f);
+	
 	autre.addChangeListener(new ChangeListener(){
 
 		public void stateChanged(ChangeEvent e) {
@@ -139,6 +109,26 @@ public SelectTimetable() {
 				dateFin.setText("");
 			}
 			else{
+				dateDebut.setEnabled(false);
+				dateFin.setEnabled(false);
+			}
+		}
+		
+	});
+}
+/**
+ * Affiche les dates du semestre sélectionné
+ * @param jrb bouton radio sélectionné
+ * @param d date de début du semestre
+ * @param f date de fin du semestre
+ */
+private void addSelectedListener( final JRadioButton jrb,final String d,final String f){
+	jrb.addChangeListener(new ChangeListener(){
+
+		public void stateChanged(ChangeEvent e) {
+			if(jrb.isSelected()){
+				dateDebut.setText(d);
+				dateFin.setText(f);
 				dateDebut.setEnabled(false);
 				dateFin.setEnabled(false);
 			}
