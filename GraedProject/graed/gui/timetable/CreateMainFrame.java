@@ -124,7 +124,7 @@ public class CreateMainFrame {
 		System.setProperties(p);
 		
 		Subject subj = null;
-		/*try{
+		try{
 			GraedGraphicCallbackHandler cbh = new GraedGraphicCallbackHandler(frame);
 			
 			LoginContext lc = new LoginContext("GraedAuth",cbh);
@@ -143,7 +143,7 @@ public class CreateMainFrame {
 		}catch(LoginException e){
 			e.printStackTrace();
 			System.exit(0);
-		}*/
+		}
 	    
 		/* Ecran de démarrage */
 	    	    
