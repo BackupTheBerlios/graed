@@ -14,6 +14,9 @@
 	<copy todir="${build}">
 		 <fileset dir="${src}">
 		     <include name="**/*.java"/>
+		 	 <include name="**/*.png"/>
+		 	 <include name="**/*.gif"/>
+		     <include name="**/*.jpg"/>
 		 </fileset>
 	</copy>
 	
@@ -26,7 +29,7 @@
 	<!-- Ajout des librairies externes utilisées -->
 	<!--<unjar dest="${build}">
 		<fileset dir="${lib}">
-			<exclude name"**/graed*.jar"/>
+			<exclude name="**/graed*.jar"/>
 			<include name="**/*.jar"/>
 		</fileset>
 	</unjar>-->
