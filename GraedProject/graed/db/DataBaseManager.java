@@ -152,10 +152,8 @@ public class DataBaseManager implements Serializable{
 	private Object convertStub( Object stub ) {
 		try {
 			Class ori = stub.getClass();
-			System.out.println(ori);
 			if( !ori.getName().endsWith("_Stub") ) return stub;
 			String original = ori.getName().split("_")[0];
-			//System.out.println(ori.getName()+" "+original);
 			Class dest = Class.forName(original);
 			Object destObj = dest.newInstance();
 			Method[] ms = dest.getMethods();
@@ -184,8 +182,6 @@ public class DataBaseManager implements Serializable{
 			Criteria c = session.createCriteria(destObj.getClass());
 			c.add( Example.create(destObj).excludeZeroes().ignoreCase().enableLike());
 			List l = c.list();
-			System.out.println(l);
-			System.out.println(destObj);
 			if( l.size() > 0 ) return l.get(0);
 			return destObj;
 						
