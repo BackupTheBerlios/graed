@@ -419,12 +419,13 @@ public class IndisponibiliteWindow extends InformationWindow{
     			try {
     				l= (Collection) IndisponibiliteManagerImpl.getInstance().getIndisponibilites(((Indisponibilite) getInformation()));
 				} catch (RemoteException e) {
+					e.printStackTrace();
 					JOptionPane.showMessageDialog(frame,
 							"Le système de peut récuperer les indisponibilités",
 							"Erreur",JOptionPane.ERROR_MESSAGE);	
 				}
 				System.out.println("List:"+l);	
-				if(!l.isEmpty()){
+				if(l!=null && !l.isEmpty()){
 					frame.setEnabled(false);
 					new ListIndisponibiliteWindow(l).OpenWindow();
 				}
@@ -454,6 +455,6 @@ public class IndisponibiliteWindow extends InformationWindow{
      */
     public static void main (String[] args) throws InvalidStateException{
     	Indisponibilite i=new Indisponibilite();
-    	new IndisponibiliteWindow(InformationWindow.CREATE,i).OpenWindow();
+    	new IndisponibiliteWindow(InformationWindow.SEARCH,i).OpenWindow();
     }
 }

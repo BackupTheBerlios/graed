@@ -2,9 +2,11 @@ package graed.gui.timetable;
 
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.gui.indisponibilite.IndisponibiliteWindow;
 import graed.gui.ressource.MaterielWindow;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
+import graed.indisponibilite.Indisponibilite;
 import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Group;
 import graed.ressource.type.Materiel;
@@ -44,6 +46,7 @@ public class CreateMenuBar {
 		barMenu=new JMenuBar();
 		barMenu.add(createMenuRessource());
 		barMenu.add(createMenuImport());
+		barMenu.add(createMenuInd());
 	}
 	/**
 	 * Renvoie la barre de menu pour la fenêtre principale
@@ -297,6 +300,54 @@ public class CreateMenuBar {
 		return imp;
 	}
 	
+	/***********************Indisponibilite***************************/
+	/**
+	 * Création du menu ressource
+	 * @return menu ressource
+	 */
+	private JMenu createMenuInd(){
+		JMenu ind=new JMenu("Indisponibilite");
+		/* Réalisation des sous menus */
+		JMenuItem select=new JMenuItem("Selectionner");
+		/* Creer une indisponibilite */
+		select.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				Indisponibilite t=null;
+				try {					
+					new IndisponibiliteWindow(InformationWindow.SEARCH,t).OpenWindow();					
+				} catch (InvalidStateException e1) {
+					JOptionPane.showMessageDialog(frame,
+							"le système ne peut afficher la fenêtre de recherche",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+			
+		});
+		/* Selectionner une indisponibilite */
+		JMenuItem creer=new JMenuItem("Creer");
+		creer.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				Indisponibilite t=null;
+				try {					
+					new IndisponibiliteWindow(InformationWindow.CREATE,t).OpenWindow();					
+				} catch (InvalidStateException e1) {
+					JOptionPane.showMessageDialog(frame,
+							"le système ne peut afficher la fenêtre de création",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+				
+			}
+			
+		});
+		
+		
+		ind.add(select);
+		ind.add(creer);
+		return ind;
+	}
 	
 	/***************** Test **********************/
 	public static void main(String[] args) {
