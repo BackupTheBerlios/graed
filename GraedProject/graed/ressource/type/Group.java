@@ -24,7 +24,7 @@ public class Group extends Ressource {
 	private int id_prof_responsable;
 	private String options;
 	public Group(String number,String name, String description,String mail/*Personne directeur,Secretariat s,List options */ ){
-		super();
+		super("Formation");
 		id=0;
 		this.number=number;
 		this.name=name;

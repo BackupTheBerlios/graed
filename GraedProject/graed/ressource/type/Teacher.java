@@ -23,7 +23,7 @@ public class Teacher extends Ressource {
 	private String email;
 	public Teacher(String name, String firstName, 
 					String office, String phone, String email){
-		super();
+		super("Professeur");
 		this.id=0;
 		this.name=name;
 		this.firstName=firstName;

@@ -21,7 +21,7 @@ public class Room extends Ressource {
 	private String lieu;
 	private int capacite;
 	public Room(String nom, String lieu,String batiment, int capacite){
-		super();
+		super("Salle");
 		this.id=0;
 		this.nom=nom;
 		this.batiment=batiment;

@@ -16,7 +16,7 @@ import graed.ressource.Ressource;
  */
 public class Materiel extends Ressource {
 	public Materiel(String nom,String type){
-		super();
+		super("Materiel");
 	}
 	public Materiel(int id,String nom,String type){
 		this(nom,type);

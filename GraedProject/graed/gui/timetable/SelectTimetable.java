@@ -158,7 +158,7 @@ private void addLine(JPanel p,GridBagConstraints c,JComponent jc,String name){
     c.gridwidth = 1;    
     c.weightx=0; 
    
-    p.add(new JLabel(name,SwingConstants.RIGHT),c);
+    p.add(new JLabel(name),c);
 	
     c.gridx = 1;
 	c.gridwidth = 1;
@@ -187,25 +187,14 @@ private void addLine(JPanel p,GridBagConstraints c,JComponent jc,String name){
  * @param c constraint
  */
 private void addJComponent(JPanel p,GridBagConstraints c){
-	c.gridx = 0;
-    c.gridwidth = 1;    
-    c.weightx=0; 
-    p.add(new JLabel("Type :"),c);
 	
-    c.gridx = 1;
-	c.weightx=1;
 	p.add(type,c);
+	addLine(p,c,type, "Type : ");
 	
 	c.gridy = 1;
-	c.gridx = 0;   
-    c.weightx=0; 
-    p.add(new JLabel("Ressource :"),c);
+	addLine(p,c,ressource, "Ressource : ");
     
-    c.gridx = 1;
-	c.weightx=1;
-	p.add(ressource,c);
-	
-	c.gridy = 2;	
+    c.gridy = 2;	
 	c.gridx = 1;
     c.gridwidth = 2;    
     c.weightx=1; 

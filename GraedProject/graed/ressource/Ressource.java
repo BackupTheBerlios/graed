@@ -13,7 +13,11 @@ package graed.ressource;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public abstract class Ressource {
-	public Ressource() {
-		super();
+	private String type;
+	public Ressource(String type) {
+		this.type=type;
+	}
+	public String getRessourceType(){
+		return type;
 	}
 }
