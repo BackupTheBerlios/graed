@@ -20,4 +20,12 @@ public class SpinnerFactory {
 	    
 	    return spinner;
 	}
+	
+	public static JSpinner createTimeSpinner( Date begin, Date min, Date max, long hourIncrement, long minuteIncrement ) {
+		JSpinner spinner = new JSpinner(new SpinnerTimeModel(begin,min,max,hourIncrement,minuteIncrement));
+	    	    
+	    spinner.setEditor(new JSpinner.DateEditor(spinner, "HH:mm"));
+	    
+	    return spinner;
+	}
 }

@@ -16,11 +16,23 @@ import javax.swing.SpinnerDateModel;
 public class SpinnerTimeModel extends SpinnerDateModel {
 	private Date min;
 	private Date max;
-		
+	private long hourIncrementValue;
+	private long minuteIncrementValue;
+	
 	public SpinnerTimeModel(Date begin, Date min, Date max ) {
 		super(begin,new Date(min.getTime()-1000*60),new Date(max.getTime()+1000*60),Calendar.HOUR_OF_DAY );
 		this.max = new Date(max.getTime()+1000*60);
 		this.min = new Date(min.getTime()-1000*60);
+		hourIncrementValue=60*60*1000;
+		minuteIncrementValue=15*60*1000;
+	}
+	
+	public SpinnerTimeModel(Date begin, Date min, Date max, long hourIncrement, long minuteIncrement ) {
+		super(begin,new Date(min.getTime()-1000*60),new Date(max.getTime()+1000*60),Calendar.HOUR_OF_DAY );
+		this.max = new Date(max.getTime()+1000*60);
+		this.min = new Date(min.getTime()-1000*60);
+		hourIncrementValue=hourIncrement;
+		minuteIncrementValue=minuteIncrement;
 	}
 	
 	public Comparable getStart() {
@@ -34,13 +46,13 @@ public class SpinnerTimeModel extends SpinnerDateModel {
 	public Object getPreviousValue() {
 		Date value = (Date)getValue();
 		if( getCalendarField() == Calendar.HOUR_OF_DAY ) {
-			Date test = new Date(value.getTime()-1000*60*60);
-			if( test.after((Date)this.getStart()) ) value.setTime(value.getTime()-1000*60*60);
+			Date test = new Date(value.getTime()-hourIncrementValue);
+			if( test.after((Date)this.getStart()) ) value.setTime(value.getTime()-hourIncrementValue);
 			return value;
 		}
 		if(getCalendarField() == Calendar.MINUTE ) {
-			Date test = new Date(value.getTime()-1000*60*15);
-			if( test.after((Date)this.getStart()) ) value.setTime(value.getTime()-1000*60*15);
+			Date test = new Date(value.getTime()-minuteIncrementValue);
+			if( test.after((Date)this.getStart()) ) value.setTime(value.getTime()-minuteIncrementValue);
 			return value;
 		}
 		return value;
@@ -49,18 +61,44 @@ public class SpinnerTimeModel extends SpinnerDateModel {
 	public Object getNextValue() {
 		Date value = (Date)getValue();
 		if( getCalendarField() == Calendar.HOUR_OF_DAY ) {
-			Date test = new Date(value.getTime()+1000*60*60);
-			if( test.before((Date)this.getEnd()) ) value.setTime(value.getTime()+1000*60*60);
+			Date test = new Date(value.getTime()+hourIncrementValue);
+			if( test.before((Date)this.getEnd()) ) value.setTime(value.getTime()+hourIncrementValue);
 			return value;
 		}
 		if(getCalendarField() == Calendar.MINUTE ) {
-			Date test = new Date(value.getTime()+1000*60*15);
-			if( test.before((Date)this.getEnd()) ) value.setTime(value.getTime()+1000*60*15);
+			Date test = new Date(value.getTime()+minuteIncrementValue);
+			if( test.before((Date)this.getEnd()) ) value.setTime(value.getTime()+minuteIncrementValue);
 			return value;
 		}
 		return value;
 	}
 	
+	
+	
+	/**
+	 * @return Returns the hourIncrementValue.
+	 */
+	public long getHourIncrementValue() {
+		return hourIncrementValue;
+	}
+	/**
+	 * @param hourIncrementValue The hourIncrementValue to set.
+	 */
+	public void setHourIncrementValue(long hourIncrementValue) {
+		this.hourIncrementValue = hourIncrementValue;
+	}
+	/**
+	 * @return Returns the minuteIncrementValue.
+	 */
+	public long getMinuteIncrementValue() {
+		return minuteIncrementValue;
+	}
+	/**
+	 * @param minuteIncrementValue The minuteIncrementValue to set.
+	 */
+	public void setMinuteIncrementValue(long minuteIncrementValue) {
+		this.minuteIncrementValue = minuteIncrementValue;
+	}
 	public Time getSQLTime() {
 		Calendar c = new GregorianCalendar();
 		c.setTime((Date)getValue());
