@@ -6,7 +6,7 @@
 <hibernate-mapping>
 
 
-<class name="graed.ressource.Ressource" table="ressource">
+<class name="graed.ressource.Ressource" table="ressource" lazy="true">
     <id name="id_ressource" type="string" unsaved-value="null" >
             <column name="id_ressource" sql-type="char(32)" not-null="true"/>
             <generator class="uuid.hex"/>
@@ -16,7 +16,7 @@
     	<column name="type" sql-type="varchar(12)" not-null="true"/>
     </property>
             
-    <joined-subclass name="graed.ressource.type.Group" table="formation">
+    <joined-subclass name="graed.ressource.type.Group" table="formation"  lazy="true">
         <key column="id_formation"/>
         <property name="number">
             <column name="number" sql-type="varchar(10)" not-null="false"/>
@@ -44,7 +44,7 @@
     </joined-subclass>
    
     
-    <joined-subclass name="graed.ressource.type.Materiel" table="materiel">
+    <joined-subclass name="graed.ressource.type.Materiel" table="materiel" lazy="true">
         <key column="id_materiel"/>
 		<property name="name">
             <column name="nom" sql-type="varchar(30)" not-null="true"/>
@@ -55,7 +55,7 @@
         </property>
     </joined-subclass>
     
-    <joined-subclass name="graed.ressource.type.Teacher" table="professeur">
+    <joined-subclass name="graed.ressource.type.Teacher" table="professeur" lazy="true">
         <key column="id_professeur"/>
 		<property name="name">
             <column name="nom" sql-type="varchar(32)" not-null="true"/>
@@ -78,7 +78,7 @@
         </property>
     </joined-subclass>
     
-    <joined-subclass name="graed.ressource.type.Room" table="salle">
+    <joined-subclass name="graed.ressource.type.Room" table="salle" lazy="true">
         <key column="id_salle"/>
 		<property name="nom">
             <column name="nom" sql-type="varchar(12)" not-null="true"/>
