@@ -27,8 +27,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.rmi.RemoteException;
 import java.sql.Date;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -104,10 +107,19 @@ public class TimetableColJTable extends JTable {
     				 	    				 	if( k!= null){      				 		
                 			try {                    				
                 				creer.setEnabled(false);
-                				consu.setEnabled(true);
-                				modif.setEnabled(true);
-                				suppr.setEnabled(true);
-                				i_tmp=getI(colF);
+                				Collection coll=getI(colF);
+                				if(coll!=null && coll.size()==1){
+                					i_tmp=(IndisponibiliteInterface) coll.toArray()[0];
+                					consu.setEnabled(true);
+                					modif.setEnabled(true);
+                					suppr.setEnabled(true);
+                				}
+                				else{
+                					consu.setEnabled(false);
+                    				modif.setEnabled(false);
+                    				suppr.setEnabled(false);
+                				}
+                				
 								System.out.println("\nPopUp: "+i_tmp.print());
 							} catch (RemoteException e1) {
 								// TODO Auto-generated catch block
@@ -143,12 +155,15 @@ public class TimetableColJTable extends JTable {
 				//On ne déplace si la taille est trop grande
 				if(size<=table.getColumnCount()-col){					
 					try {
-						IndisponibiliteInterface i=TimetableColJTable.this.removeIndispo(colF);
-						int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
-						i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));	
-						i.setFin( new Date((i.getFin().getTime()+j*(1000*60*60*24))));	
-						table.addIndispo(i,col,size);	
-						Client.getIndisponibiliteManager().updateIndiponibilite(i);
+						Collection coll=TimetableColJTable.this.removeIndispo(colF);
+						for(Iterator it=coll.iterator();it.hasNext();){
+							IndisponibiliteInterface i=(IndisponibiliteInterface) it.next();
+							int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
+							i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));	
+							i.setFin( new Date((i.getFin().getTime()+j*(1000*60*60*24))));	
+							table.addIndispo(i,col,size);	
+							Client.getIndisponibiliteManager().updateIndiponibilite(i);
+						}
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}
@@ -259,14 +274,21 @@ public class TimetableColJTable extends JTable {
 	public void addIndispo (IndisponibiliteInterface i,int col,int size){
 		col=find_col(col,size);
 		addI(i,col);
-		JTextArea j = new JTextArea();
-		//j.add(CreatePopupMenu());
-		try {
-			j.setText(i.print());
-			String text = "<html>";
-			text+=i.print();
-			text=text.replaceAll("\\n","<br>");	
-			j.setToolTipText(text+"</html>");
+		JTextArea j =(JTextArea) getValueAt(0,col);
+		String text="";
+		String tooltext="";
+		if(j!=null)	{
+			text=j.getText()+"\n";
+			tooltext=j.getToolTipText().replaceAll("</html>","<br><br>");
+		}
+		else{
+			j = new JTextArea();
+			tooltext="<html>";
+		}
+			try {
+			j.setText(text+i.print());
+			tooltext+=i.print().replaceAll("\\n","<br>");	
+			j.setToolTipText(tooltext+"</html>");
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -287,21 +309,27 @@ public class TimetableColJTable extends JTable {
 	 * @param col
 	 * @return
 	 */
-	public IndisponibiliteInterface removeIndispo (int col){
+	public Collection removeIndispo (int col){
 		int size = tm.getCellSize(0, col);
 		Object o =tm.removeValueAt(col,size);
 		TableColumn c=getColumnModel().getColumn(col);
 		c.setPreferredWidth(c.getPreferredWidth()/size);
 		return removeI(col);
 	}
-	public IndisponibiliteInterface removeI(int col){
-		return (IndisponibiliteInterface) list_ind.remove(new Integer(col));
+	public Collection removeI(int col){
+		return (Collection) list_ind.remove(new Integer(col));
 	}
 	public void addI(IndisponibiliteInterface i,int col){
-		list_ind.put(new Integer(col), i);
+		Collection coll=getI(col);
+		if(coll!=null)coll.add(i);
+		else {
+			coll=new HashSet();
+			coll.add(i);
+		}
+		list_ind.put(new Integer(col), coll);
 	}
-	public IndisponibiliteInterface getI(int col){
-		return (IndisponibiliteInterface) list_ind.get(new Integer(col));
+	public Collection getI(int col){
+		return (Collection) list_ind.get(new Integer(col));
 	}
 	private int find_col(int col,int size){
 		if(list_ind!=null){
