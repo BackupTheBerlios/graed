@@ -1,52 +1,46 @@
-/*
- * Created on 26 janv. 2005
- */
+
 package graed.indisponibilite;
 
-import java.util.List;
+import graed.indisponibilite.event.IndisponibiliteListener;
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.Collection;
+
 
 /**
- * @author Dusk93
+ * @author Helder DE SOUSA
  */
-public class IndisponibiliteManager {
-	/**
-		 * Ajoute une ressource sur le système de données
-		 * @param r
-		 */
-		 public void addIndisponibilite( Indisponibilite r ){
-		 }
-		/**
-		 * Supprime une ressource sur le système de données
-		 * @param r
-		 */
-		 public void deleteIndisponibilite( Indisponibilite r ){
-		 }
-		/**
-		 * Modifie une ressource sur le système de données
-		 * @param r
-		 */
-		 public void updateIndisponibilite( Indisponibilite r ){
-		 }
-		/**
-		 * Retourne un ensemble de ressources
-		 * @param r
-		 * @param constraint
-		 * @return
-		 */ 
-		 public List getIndisponibilites( String type, List constraints ) {
-			return null;
-		 }
-		
-	 
-		 public void registerForNotification( Object o ) {
-	 	
-		 }
-	 
-		 protected void fireIndisponibiliteUpdated() {
-		 }
-	 
-		 protected void fireIndisponibiliteDeleted() {
-		 }
-		 protected void fireIndisponibiliteCreated(){
-		 }
+public interface IndisponibiliteManager extends Remote{
+    /**
+     * Adds a resource.
+     * @param r The resource to add
+     * @throws RemoteException
+     */
+    public void addIndisponibilite( Indisponibilite i ) throws RemoteException;
+    /**
+     * Deletes a Indiponibilite.
+     * @param i The Indiponibilite to delete
+     * @throws RemoteException
+     */
+    public void deleteIndisponibilite( Indisponibilite i ) throws RemoteException;
+    /**
+     * Updates a resource.
+     * @param i The resource to update.
+     * @throws RemoteException
+     */
+    public void updateIndiponibilite( Indisponibilite i ) throws RemoteException;
+    /**
+     * Gets resources using a resource as example.
+     * @param i The resource used as an example
+     * @return A collection of <code>Indiponibilite</code>
+     * @throws RemoteException
+     */
+    public Collection getIndiponibilites( Indisponibilite i ) throws RemoteException;
+    /**
+     * Objects can register on an implementation of the Indiponibilite manager to be notified of changes.
+     * @param il The object to register.
+     * @throws RemoteException
+     */
+    public void registerForNotification( IndisponibiliteListener il ) throws RemoteException;
 }

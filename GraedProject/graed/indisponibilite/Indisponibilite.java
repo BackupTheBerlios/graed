@@ -6,19 +6,41 @@
  */
 package graed.indisponibilite;
 
+import java.util.Set;
+
 
 /**
  * @author ngonord
  */
 public class Indisponibilite {
-
-public void addIndisponibilite(){
-}
-public void updateIndisponibilite(){
-}
-public void deleteIndisponibilite(){
-}
-static public Indisponibilite[] getIndisponibilites( Indisponibilite r, String constraint ) {
- 	return null;
-}
+	private String id;
+	private Set ressources;
+	
+	public Indisponibilite() {
+	}
+	
+	/**
+	 * @return Returns the id.
+	 */
+	public String getId() {
+		return id;
+	}
+	/**
+	 * @param id The id to set.
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+	/**
+	 * @return Returns the ressources.
+	 */
+	public Set getRessources() {
+		return ressources;
+	}
+	/**
+	 * @param ressources The ressources to set.
+	 */
+	public void setRessources(Set ressources) {
+		this.ressources = ressources;
+	}
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="graed/hibernate/cfg/" kind="src" path=""/>
+	<classpathentry excluding="graed/hibernate/cfg/|graed/hibernate/cfg/" kind="src" path=""/>
 	<classpathentry kind="src" path="graed/hibernate/cfg"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="graed/lib/c3p0-0.8.4.5.jar"/>
@@ -19,5 +19,5 @@
 	<classpathentry kind="lib" path="graed/lib/xerces-2.4.0.jar"/>
 	<classpathentry kind="lib" path="graed/lib/xml-apis.jar"/>
 	<classpathentry kind="lib" path="graed/lib/postgresql-8.0-310.jdbc3.jar"/>
-	<classpathentry kind="output" path=""/>
+	<classpathentry kind="output" path="build"/>
 </classpath>

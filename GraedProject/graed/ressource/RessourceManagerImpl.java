@@ -35,7 +35,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
         
         types = new Hashtable();
         
-        String[] files = new File(directoryTypes).list(new FilenameFilter() {
+        String[] files = new File("build/"+directoryTypes).list(new FilenameFilter() {
         	public boolean accept( File dir, String name) {
         		return name.endsWith(".class");
         	}
@@ -138,7 +138,6 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     */
    public Collection getRessourcesByType(String type) throws RemoteException {
    		try {
-   			System.out.println(types);
 			return dbm.get(((Class)types.get(type)).newInstance());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,7 +147,6 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
    
    public static void main( String[] args ) throws RemoteException {
    		RessourceManager rm = new RessourceManagerImpl();
-   		rm.getRessourcesTypes();
    		Collection c = rm.getRessourcesByType("Salle");
    		for( Iterator i=c.iterator(); i.hasNext(); ) {
    			System.out.println(i.next());

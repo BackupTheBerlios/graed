@@ -2,14 +2,20 @@
 <project name="Graed" default="compile" basedir=".">
 
 <property name="src" value="graed"/>
-<property name="build" value="antBuild"/>
+<property name="build" value="build"/>
 <property name="lib" value="graed/lib"/>
 <property name="cfg" value="graed/hibernate/cfg"/>
 
 <!-- Création du repertoire de construction des classes  -->
 <target name="init">
 	<mkdir dir="${build}"/>
-	<copy srcdir="${cfg}" destdir="${build}"/>
+	
+	<copy todir="${build}/${cfg}">
+	      <fileset dir="${cfg}">
+	        <include name="*.xml"/>
+	      </fileset>
+	</copy>
+	
 </target>
 
 <target name="compile" depends="init">
