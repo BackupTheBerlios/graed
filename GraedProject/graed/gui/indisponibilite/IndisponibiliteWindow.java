@@ -6,6 +6,7 @@ package graed.gui.indisponibilite;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.indisponibilite.Indisponibilite;
+import graed.indisponibilite.IndisponibiliteManagerImpl;
 import graed.ressource.Ressource;
 import graed.ressource.RessourceManagerImpl;
 
@@ -17,6 +18,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -51,6 +54,7 @@ public class IndisponibiliteWindow extends InformationWindow{
     private JFormattedTextField libelle;
     private JFormattedTextField date_debut;
 	private JFormattedTextField date_fin;
+	private JFormattedTextField hdebut;
 	private JFormattedTextField duree;
 	private JComboBox periodicite;/* occ, hebdo */
 	private JComboBox type;/* Cours, TD, TP */
@@ -72,6 +76,7 @@ public class IndisponibiliteWindow extends InformationWindow{
     	libelle = new JFormattedTextField();
         date_debut = new JFormattedTextField();
     	date_fin = new JFormattedTextField();
+    	hdebut = new JFormattedTextField();
     	duree = new JFormattedTextField();
     	periodicite = new JComboBox(fillPeriodicite());/* occ, hebdo */
     	type = new JComboBox(fillType());/* Cours, TD, TP */
@@ -125,7 +130,7 @@ public class IndisponibiliteWindow extends InformationWindow{
 			o = rmi.getRessourcesTypes();
 			for (int i=0;i<o.length;++i){
 				ress_found.put(o[i],rmi.getRessourcesByType((String)o[i]));//Collection
-				//System.out.println(rmi.getRessourcesByType((String)o[i]));
+				System.out.println(rmi.getRessourcesByType((String)o[i]));
 			}			
 		} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
@@ -217,26 +222,28 @@ public class IndisponibiliteWindow extends InformationWindow{
     	c.gridy = 2;
     	addLine(p,c,mask,date_debut,"Date de début : ");
     	c.gridy = 3;		
-    	addLine(p,c,mask,date_fin,"Date de fin : ");
-    	c.gridy = 4;		
+    	addLine(p,c,mask,date_fin,"Date de fin : ");    	
+    	c.gridy = 4;	
+    	addLine(p,c,mask,hdebut,"Heure de début : ");
+    	c.gridy = 5;	
     	addLine(p,c,mask,duree,"Durée (min) : ");
     	
     	
-        c.gridy = 5;
+        c.gridy = 6;
         addLine(p,c,mask,periodicite, "Fréquence : ");
         
         
         c.gridx = 0;
         c.gridwidth = 1;    
         c.weightx=0; 
-        c.gridy = 6;     
+        c.gridy = 7;     
         
         p.add(type_ress,c);
         
        
         
         c.gridx = 0;
-        c.gridy = 7;   
+        c.gridy = 8;   
         JScrollPane jsp=new JScrollPane(list_ress);
         jsp.setPreferredSize(new Dimension(200,75));
         p.add(jsp,c);
@@ -253,7 +260,7 @@ public class IndisponibiliteWindow extends InformationWindow{
         p.add(jsp2,c);
     	
         c.gridx = 0;
-        c.gridy = 8;
+        c.gridy = 9;
     	if(isCreate()){
     		p.add(create(),c);
     	}
@@ -339,10 +346,23 @@ public class IndisponibiliteWindow extends InformationWindow{
     	JButton b=new JButton("Creer");
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
-    			/*setInformation(new Indisponibilite(date_debut.getText(), Date fin, int duree, String periodicite,
-    					String libelle, String type));
+    			setInformation(new Indisponibilite(
+    					Date.valueOf(date_debut.getText()), 
+    					Date.valueOf(date_fin.getText()), 
+						Time.valueOf(hdebut.getText()),
+						new Integer(duree.getText()).intValue(),
+						(String)periodicite.getSelectedItem(),
+    					libelle.getText(),
+						(String)type.getSelectedItem()));
     			System.out.println(((Indisponibilite) getInformation()));
-    			*/System.exit(0);
+    			try {
+					IndisponibiliteManagerImpl.getInstance().addIndisponibilite(((Indisponibilite) getInformation()));
+				} catch (RemoteException e) {
+					JOptionPane.showMessageDialog(frame,
+							"l'indisponibilité ne peut être crée ",
+							"Erreur",JOptionPane.ERROR_MESSAGE);	
+				}
+    			System.exit(0);
     		}		
     	});
     	return b;
