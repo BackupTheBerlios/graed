@@ -37,7 +37,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
         
         String[] files = new File("build/"+directoryTypes).list(new FilenameFilter() {
         	public boolean accept( File dir, String name) {
-        		return name.endsWith(".class");
+        		return !name.endsWith("Interface.class")&&!name.endsWith("Stub.class");
         	}
         });
         
@@ -46,6 +46,9 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
 				files[i] = files[i].split("\\.")[0];
 				String packageType = directoryTypes.replaceAll("/",".");
 				Ressource r = (Ressource) Class.forName(packageType+"."+files[i]).newInstance();
+				
+				System.out.println( "Type : "+r.getType()+" Classe : "+r.getClass() );
+				
 				types.put( r.getType() , r.getClass() );
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -139,15 +142,17 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     */
    public Collection getRessourcesByType(String type) throws RemoteException {
    		try {
+   			System.out.println(type);
 			return dbm.get(((Class)types.get(type)).newInstance());
 		} catch (Exception e) {
+			
 			e.printStackTrace();
 			throw new RemoteException(e.getMessage());
 		}
    }
    
    public static void main( String[] args ) throws RemoteException {
-   		RessourceManager rm = new RessourceManagerImpl();
+   		RessourceManager rm = RessourceManagerImpl.getInstance();
    		Collection c = rm.getRessourcesByType("Salle");
    		for( Iterator i=c.iterator(); i.hasNext(); ) {
    			System.out.println(i.next());

@@ -1,5 +1,6 @@
 package graed.ressource.type;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import graed.ressource.Ressource;
@@ -7,7 +8,7 @@ import graed.ressource.Ressource;
 /**
  * @author Propriétaire
  */
-public class Materiel extends Ressource {
+public class Materiel extends Ressource{
 	 private String name;
      private String typeMateriel;
 

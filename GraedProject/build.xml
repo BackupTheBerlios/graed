@@ -42,7 +42,7 @@
     	</classpath>
     </javac>
 	
-	<rmic base="${build}" verify="true" includes="**/*Impl.class"/>
+	<rmic base="${build}" verify="true" includes="**/*.class"/>
 </target>
 
 <target name="jar" depends="compile">

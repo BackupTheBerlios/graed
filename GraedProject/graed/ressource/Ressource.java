@@ -41,4 +41,7 @@ public class Ressource extends UnicastRemoteObject implements RessourceInterface
 		this.id_ressource = id_ressource;
 	}
 
+	public String toString() {
+		return id_ressource+" "+type;
+	}
 }

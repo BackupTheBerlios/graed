@@ -6,6 +6,7 @@
  */
 package graed.ressource.type;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import graed.ressource.Ressource;
@@ -16,7 +17,7 @@ import graed.ressource.Ressource;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class Teacher extends Ressource {
+public class Teacher extends Ressource implements TeacherInterface{
 	private String name;
 	private String firstName;
 	private String office;

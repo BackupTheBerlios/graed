@@ -6,6 +6,7 @@
  */
 package graed.ressource.type;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 import graed.ressource.Ressource;
@@ -17,7 +18,7 @@ import graed.user.User;
  * To change the template for this generated type comment go to
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class Group extends Ressource {
+public class Group extends Ressource{
 	private String number;
 	private String name;
 	private String description;

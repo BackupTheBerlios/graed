@@ -6,15 +6,18 @@
  */
 package graed.client;
 
+import graed.indisponibilite.IndisponibiliteManager;
+import graed.ressource.RessourceInterface;
+import graed.ressource.RessourceManager;
+import graed.ressource.type.Room;
+import graed.ressource.type.TeacherInterface;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-
-import graed.indisponibilite.IndisponibiliteManager;
-import graed.ressource.Ressource;
-import graed.ressource.RessourceManager;
-import graed.ressource.type.Teacher;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author hdesou01
@@ -54,6 +57,8 @@ public class Client {
 	public static void main(String[] args) throws RemoteException {
 		IndisponibiliteManager im = Client.getIndisponibiliteManager();
 		RessourceManager rm = Client.getRessourceManager();
-		System.out.println( rm.getRessources(new Teacher("zipstein",null,null,null,null)) );
+		Collection c = rm.getRessourcesByType("Salle");
+		for( Iterator i = c.iterator(); i.hasNext(); )
+			System.out.println( ((Room)i.next()).getBatiment() );
 	}
 }
