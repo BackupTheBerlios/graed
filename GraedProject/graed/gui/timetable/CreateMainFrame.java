@@ -634,7 +634,7 @@ public class CreateMainFrame {
 	    tb.addSeparator(new Dimension(8,24));
 	    tb.add(ref);
 	    tb.addSeparator(new Dimension(8,24));
-	    tp.add(logout);
+	    tb.add(logout);
 	    tb.addSeparator(new Dimension(8,24));
 	    tb.add(p);
 	    	    
