@@ -235,12 +235,14 @@ public class CreateColTimetable {
 			else if(i.getPeriodicite().equals("bihebdomadaire")){
 				libelle+=" tous les 15 jours à partir du "+i.getDebut();
 			}
+			System.out.println("--------->"+i);
 			Set s=i.getRessources();
 			for(Iterator it=s.iterator();it.hasNext();){			
 				RessourceInterface tmp=(RessourceInterface)it.next();
 				if (this.r!=tmp)
 					libelle+=" "+tmp;
 			}
+			if(((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+""))!=null)
 			((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(i,
 				celldebut,nbcell);
 		} catch (RemoteException e) {

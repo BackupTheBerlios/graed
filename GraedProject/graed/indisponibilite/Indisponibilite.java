@@ -13,6 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
@@ -184,7 +185,7 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 	public void setHdebut(Time hdebut) {
 		this.hdebut = hdebut;
 	}
-	public String print(){
+	public String print() throws RemoteException{
 		String libelle=getLibelle();
 		if(getPeriodicite().equals("ponctuel")){
 			libelle+=" le "+getDebut();
@@ -192,6 +193,8 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 		else if(getPeriodicite().equals("bihebdomadaire")){
 			libelle+=" tous les 15 jours à partir du "+getDebut();
 		}
+		for(Iterator i=ressources.iterator();i.hasNext();)
+			libelle+=" "+((RessourceInterface)i.next()).print();
 		return libelle;
 	}
 }
