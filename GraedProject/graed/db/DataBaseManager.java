@@ -87,9 +87,9 @@ public class DataBaseManager{
 	 * @throws DataBaseException
 	 */
 	public List get( Object example ) throws DataBaseException {
-	    Criteria c = session.createCriteria(example.class);
+	    Criteria c = session.createCriteria(example.getClass());
 	    // On ignore les valeurs zéro, la recherche est insensible à la case et utilise like pour les comparaison de strings
-        c.add( Example.create(example).excludeZeroes().ignoreCase().enableLike();
+        c.add( Example.create(example).excludeZeroes().ignoreCase().enableLike());
         try {
             return c.list();
         }catch( HibernateException he ) {
