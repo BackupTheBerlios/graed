@@ -218,32 +218,47 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
     }
     
     protected void fireIndisponibiliteDeleted( IndisponibiliteInterface in  ) {
-        for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-            try {
- 			((Callback)i.next()).notify(in, Callback.DELETE);
- 		} catch (RemoteException e) {
- 			e.printStackTrace();
- 		}
+
+       	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
+            Callback c =(Callback)i.next(); 
+       		try {
+            	c.notify(in, Callback.DELETE);
+    		} catch (Exception e) {
+    			try {
+    				unregister(c);
+    			} catch (RemoteException ignored) {
+    			}
+    		}
         }
     }
     
     protected void fireIndisponibiliteUpdated( IndisponibiliteInterface in  ) {
-    	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-         try {
- 			((Callback)i.next()).notify(in, Callback.UPDATE);
- 		} catch (RemoteException e) {
- 			e.printStackTrace();
- 		}
-     }
+
+       	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
+            Callback c =(Callback)i.next(); 
+       		try {
+            	c.notify(in, Callback.UPDATE);
+    		} catch (Exception e) {
+    			try {
+    				unregister(c);
+    			} catch (RemoteException ignored) {
+    			}
+    		}
+        }
     }
     
     protected void fireIndisponibiliteAdded( IndisponibiliteInterface in  ) {
-    	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-         try {
- 			((Callback)i.next()).notify(in, Callback.ADD);
- 		} catch (RemoteException e) {
- 			e.printStackTrace();
- 		}
-     }
+
+       	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
+            Callback c =(Callback)i.next(); 
+       		try {
+            	c.notify(in, Callback.ADD);
+    		} catch (Exception e) {
+    			try {
+    				unregister(c);
+    			} catch (RemoteException ignored) {
+    			}
+    		}
+        }
     }
 }

@@ -120,21 +120,31 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     
     
    protected void fireRessourceDeleted( RessourceInterface re  ) {
-       for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-           try {
-			((Callback)i.next()).notify(re, Callback.DELETE);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+
+   	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
+        Callback c =(Callback)i.next(); 
+   		try {
+        	c.notify(re, Callback.DELETE);
+		} catch (Exception e) {
+			try {
+				unregister(c);
+			} catch (RemoteException ignored) {
+			}
 		}
-       }
+    }
    }
    
    protected void fireRessourceUpdated( RessourceInterface re  ) {
+
    	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-        try {
-			((Callback)i.next()).notify(re, Callback.UPDATE);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+        Callback c =(Callback)i.next(); 
+   		try {
+        	c.notify(re, Callback.UPDATE);
+		} catch (Exception e) {
+			try {
+				unregister(c);
+			} catch (RemoteException ignored) {
+			}
 		}
     }
    }
@@ -142,10 +152,14 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
    protected void fireRessourceAdded( RessourceInterface re  ) {
    
    	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-        try {
-        	((Callback)i.next()).notify(re, Callback.ADD);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+        Callback c =(Callback)i.next(); 
+   		try {
+        	c.notify(re, Callback.ADD);
+		} catch (Exception e) {
+			try {
+				unregister(c);
+			} catch (RemoteException ignored) {
+			}
 		}
     }
    }

@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -31,6 +32,7 @@ public class TimetableTableCellRenderer extends DefaultTableCellRenderer {
 	 */
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		Component c=(Component) table.getValueAt(row, column);
+		
 		if (c!=null && (isSelected || hasFocus)){			
 			c.setBackground(table.getSelectionBackground());
 		}
@@ -40,6 +42,8 @@ public class TimetableTableCellRenderer extends DefaultTableCellRenderer {
 		if(c==null){			
 			return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		}
+		JTextArea jta = (JTextArea) table.getValueAt(row, column);
+		jta.setBorder(BorderFactory.createEtchedBorder(new Color(0xb0f0c1).darker(), new Color(0xb0f0c1).darker().darker()));
 		return c;
 	}
 

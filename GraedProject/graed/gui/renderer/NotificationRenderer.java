@@ -8,12 +8,14 @@ package graed.gui.renderer;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+ 
 
 /**
  * @author hdesou01
@@ -46,5 +48,6 @@ public class NotificationRenderer extends JLabel implements ListCellRenderer {
 			return null;
 		}
 	}
+	
 
 }
