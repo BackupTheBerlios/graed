@@ -144,10 +144,8 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     */
    public Collection getRessourcesByType(String type) throws RemoteException {
    		try {
-   			System.out.println(type);
-			return dbm.get(((Class)types.get(type)).newInstance());
+   			return dbm.get(((Class)types.get(type)).newInstance());
 		} catch (Exception e) {
-			
 			e.printStackTrace();
 			throw new RemoteException(e.getMessage());
 		}

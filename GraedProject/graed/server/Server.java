@@ -31,7 +31,7 @@ public class Server {
 			Registry r = LocateRegistry.createRegistry(portNumber);
 
 			//Facultatif, mais plus sûr dans le cas de chargement dynamique de classes
-			//System.out.println("Mise en place du Security Manager ...");
+			System.out.println("Mise en place du Security Manager ...");
 			//System.setSecurityManager(new java.rmi.RMISecurityManager());
 			
 			//Creation des objets serveurs

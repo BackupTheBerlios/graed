@@ -10,10 +10,6 @@
 		<property name="connection.url">jdbc:postgresql://sqletud.univ-mlv.fr:5432/maitahme</property>
 		<property name="connection.username">maitahme</property>
 		<property name="connection.password">graed</property>
-		<property name="c3p0.min_size">5</property>
-		<property name="c3p0.max_size">20</property>
-		<property name="c3p0.timeout">1800</property>
-		<property name="c3p0.max_statement">50</property>
 		<property name="dialect">net.sf.hibernate.dialect.PostgreSQLDialect</property>
 
         <!-- fichiers de mapping -->
