@@ -14,6 +14,7 @@ import graed.export.Exporter;
 import graed.gui.renderer.NotificationRenderer;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
+import graed.gui.timetable.CreateMenuBar;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceInterface;
 

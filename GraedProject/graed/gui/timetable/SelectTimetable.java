@@ -11,7 +11,6 @@ import graed.gui.renderer.RessourceListRenderer;
 import graed.ressource.RessourceInterface;
 import graed.util.Graphic;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
