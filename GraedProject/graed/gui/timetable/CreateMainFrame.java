@@ -7,6 +7,7 @@
 package graed.gui.timetable;
 
 import graed.client.Client;
+import graed.gui.JBackgroundPanel;
 import graed.gui.JSplashScreen;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
@@ -71,7 +72,8 @@ public class CreateMainFrame {
 	 * @return panel contenant les elements de la fenêtre principale
 	 */
 	private JPanel fillFrame(){
-		JPanel p = new JPanel(new BorderLayout());
+		JBackgroundPanel p = new JBackgroundPanel(new BorderLayout());
+		p.setBackgroundImage("graed/gui/timetable/fond.png");
 		p.add(new CreateMenuBar(frame,tp).getMenuBar(),BorderLayout.NORTH);
 		p.add(timetable(),BorderLayout.CENTER);
 		return p;
