@@ -27,14 +27,15 @@ public class TimetableTableCellRenderer extends DefaultTableCellRenderer {
 	 */
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		Component c=(Component) table.getValueAt(row, column);
-		if (c!=null && isSelected){			
+		if (c!=null && (isSelected || hasFocus)){			
 			c.setBackground(table.getSelectionBackground());
 		}
 		else if (c!=null){
 			c.setBackground(Color.WHITE);
 		}
-		if(c==null)
+		if(c==null){			
 			return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		}
 		return c;
 	}
 
