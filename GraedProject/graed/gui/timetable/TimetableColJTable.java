@@ -9,6 +9,10 @@
  */
 package graed.gui.timetable;
 
+import graed.client.Client;
+import graed.indisponibilite.Indisponibilite;
+import graed.ressource.RessourceManagerImpl;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -17,6 +21,9 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.RemoteException;
+import java.sql.Date;
+import java.util.Hashtable;
 
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -27,6 +34,7 @@ import javax.swing.text.JTextComponent;
  *
  */
 public class TimetableColJTable extends JTable {
+	private Hashtable list_ind;
 	private TimetableDefaultTableModel tm;	/* Modèle de données associé à la table */
 	TimetableDefaultListSelectionModel l; /* Modèle de sélection partagé entre les différentes tables */
 	/**
@@ -40,6 +48,7 @@ public class TimetableColJTable extends JTable {
 	 */
 	public TimetableColJTable(TimetableDefaultTableModel arg0,TimetableDefaultListSelectionModel l) {
 		super(arg0);
+		list_ind = new Hashtable(); 
 		tm=arg0;
 		/**
 		 * Sélection par ligne non
@@ -90,8 +99,15 @@ public class TimetableColJTable extends JTable {
 				int size = TimetableColJTable.this.getCellSize( rowF, colF );	
 				//On ne déplace si la taille est trop grande
 				if(size<=table.getColumnCount()-col){
-					TimetableColJTable.this.removeIndispo(colF);				
-					table.addIndispo(((JTextComponent)o).getText(),col,size);
+					Indisponibilite i=TimetableColJTable.this.removeIndispo(colF);
+					int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
+					i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));					
+					table.addIndispo(i,col,size);	
+					try {
+						Client.getIndisponibiliteManager().updateIndiponibilite(i);
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}
 				}
 				TimetableColJTable.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				table.changeSelection(row,col,false,false);
@@ -131,8 +147,9 @@ public class TimetableColJTable extends JTable {
 	 * @param col
 	 * @param size taille du cours (nombre de colonnes)
 	 */
-	public void addIndispo (Object o, int col,int size){
-		JTextArea j=new JTextArea((String)o);
+	public void addIndispo (Indisponibilite i,int col,int size){
+		addI(i,col);
+		JTextArea j=new JTextArea((String)i.toString());
 		j.setOpaque(true);
 		//Passer à la ligne suivante pour le texte
 		j.setLineWrap(true);
@@ -148,12 +165,18 @@ public class TimetableColJTable extends JTable {
 	 * @param col
 	 * @return
 	 */
-	public Object removeIndispo (int col){
+	public Indisponibilite removeIndispo (int col){
 		int size = tm.getCellSize(0, col);
 		Object o =tm.removeValueAt(col,size);
 		TableColumn c=getColumnModel().getColumn(col);
 		c.setPreferredWidth(c.getPreferredWidth()/size);
-		return o;
+		return removeI(col);
+	}
+	public Indisponibilite removeI(int col){
+		return (Indisponibilite) list_ind.remove(new Integer(col));
+	}
+	public void addI(Indisponibilite i,int col){
+		list_ind.put(new Integer(col), i);
 	}
 	/**
 	 * Récupère la taille du cours (nombre de colonnes)

@@ -238,8 +238,8 @@ public class CreateColTimetable {
 			if (this.r!=tmp)
 				libelle+=" "+tmp;
 		}
-		((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(
-				libelle,celldebut,nbcell);
+		((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(i,
+				celldebut,nbcell);
 	}
 	/**
 	 * Test
