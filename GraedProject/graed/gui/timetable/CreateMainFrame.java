@@ -50,6 +50,8 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.CompoundBorder;
+import javax.swing.plaf.basic.BasicBorders;
 
 import com.hokage.swing.JBackgroundPanel;
 import com.hokage.swing.JCloseableTabbedPane;
