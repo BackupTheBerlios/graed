@@ -1,18 +1,9 @@
-/*
- * Created on 11 janv. 2005
- *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
 package graed.ressource.type;
 
 import graed.ressource.Ressource;
 
 /**
  * @author Propriétaire
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Materiel extends Ressource {
 	 private String id;
@@ -70,9 +61,9 @@ public class Materiel extends Ressource {
 	public String toString() {
 		String p="";
 		p+="Name: "+name+" ";
-		p+="Type: "+typeMateriel;	
+		p+="Type: "+typeMateriel;
 		return p;
 	}
-	
-	
+
+
 }
