@@ -12,7 +12,6 @@ package graed.gui.timetable;
 import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.gui.JPaintPanel;
 import graed.gui.indisponibilite.IndisponibiliteWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
 
@@ -160,14 +159,17 @@ public class TimetableColJTable extends JTable {
 				try {
 						Collection coll = TimetableColJTable.this.removeIndispo(colF);
 						for(Iterator it=coll.iterator();it.hasNext();){
+							col=table.find_real_col(col);
+							colF=TimetableColJTable.this.find_real_col(colF);
 							IndisponibiliteInterface i=(IndisponibiliteInterface) it.next();
 							int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
 							i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));	
 							i.setFin( new Date((i.getFin().getTime()+j*(1000*60*60*24))));
 							i.setHdebut(new Time(i.getHdebut().getTime()+((col-colF)*1000*60*15)));
-							table.addIndispo(i,col,size,false);	
 							Client.getIndisponibiliteManager().updateIndiponibilite(i);
-							//table.refresh();
+							table.addIndispo(i,col,size,true);	
+							table.refresh();
+							TimetableColJTable.this.refresh();
 						}
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
@@ -247,8 +249,7 @@ public class TimetableColJTable extends JTable {
 		{
 			TableColumn c=getColumnModel().getColumn(i);
 			if(c!=null)c.setPreferredWidth(preferredSize.width/getColumnCount());
-			//System.out.println(tm.getName()+"setPreferredSize col="+i+" width="+preferredSize.width/getColumnCount());
-		}
+			}
 	}
 	/**
 	 * Renvoie le nom de la table (jour)
@@ -374,23 +375,7 @@ public class TimetableColJTable extends JTable {
 		if((JTextArea) getValueAt(0,col)==null)tm.setValueAt(j,col,size);
 		TableColumn c=getColumnModel().getColumn(col);	
 		c.setPreferredWidth((size*c.getPreferredWidth())+size-1);
-		/*for (int in=col+1;in<col+size;++in){
-			Collection co=getI(in);
-			if(co!=null)
-				for (Iterator it=co.iterator();it.hasNext();)
-					try {
-						System.out.println("Timetable "+((IndisponibiliteInterface) it.next()).print());{
-removeIndispo (in);
-for (Iterator it=co.iterator();it.hasNext();){
-						addIndispo ((IndisponibiliteInterface) it.next(),col,size+in,false);
-}
-						
-}
-					} catch (RemoteException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-		}*/
+		
 	}
 	/**
 	 * Supprime la donnée à la colonne indiquée
@@ -506,58 +491,35 @@ for (Iterator it=co.iterator();it.hasNext();){
 	public void refresh() throws RemoteException{
 		TreeSet trie=new TreeSet(new Comparator(){
 			public int compare(Object o1, Object o2){
-				if (o1 instanceof IndisponibiliteInterface && o2 instanceof IndisponibiliteInterface)
+				if ((o1 instanceof IndisponibiliteInterface) && (o2 instanceof IndisponibiliteInterface))
 					try {
 						return ((IndisponibiliteInterface)o1).getHdebut().compareTo(((IndisponibiliteInterface)o2).getHdebut());
+						
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				return 0;
+				return -1;
 			}
 			
 		});
-		trie.add(list_ind.values());
-		clear();
-		for(Iterator j=trie.iterator();j.hasNext();){
+		for(Iterator j=list_ind.values().iterator();j.hasNext();){	
 			Collection coll=(Collection) j.next();
 			for(Iterator i=coll.iterator();i.hasNext();){
-				IndisponibiliteInterface in=(IndisponibiliteInterface)i.next();
+				trie.add(i.next());	
+			}
+		}		
+		clear();
+		for(Iterator j=trie.iterator();j.hasNext();){			
+				IndisponibiliteInterface in=(IndisponibiliteInterface)j.next();
 				int celldebut =(in.getHdebut().getHours()-8)*4+(in.getHdebut().getMinutes()/15);
 				int nbcell=in.getDuree()/15;	
-				addIndispo (in,celldebut,nbcell,true);
-				System.out.println("refresh"+in.print());
-			}
+				addIndispo (in,celldebut,nbcell,true);				
 		}
 		validate();
 		repaint();
 	}
 	
 	
-	/*public void resize(int width, int height, int nbcol) {
-		int size=0;
-		for(int j=0;j<getColumnModel().getColumnCount();++j)
-		{
-			TableColumn c=getColumnModel().getColumn(j);
-			if(c!=null)c.setPreferredWidth(width/nbcol);
-			System.out.println(tm.getName()+"resize col="+j+" width="+width/nbcol);
-		}
-		if(list_ind!=null && !list_ind.isEmpty()){
-			for(Enumeration en=list_ind.keys();en.hasMoreElements();){
-				Integer col_tmp=((Integer)en.nextElement());	
-				Collection c=(Collection) list_ind.get(col_tmp);
-				for (Iterator i=c.iterator();i.hasNext();){
-					IndisponibiliteInterface ii=(IndisponibiliteInterface) i.next();
-					try {
-						if (ii.getDuree()>size)size=ii.getDuree();
-					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				TableColumn tc=getColumnModel().getColumn(col_tmp.intValue());		
-				tc.setPreferredWidth((size*tc.getPreferredWidth())+size-1);	
-			}
-		}
-	}*/
+	
 }

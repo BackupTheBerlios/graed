@@ -6,7 +6,6 @@ import graed.client.Client;
 import graed.conf.Configuration;
 import graed.exception.ExportException;
 import graed.export.Exporter;
-import graed.gui.JPaintPanel;
 import graed.gui.renderer.NotificationRenderer;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;

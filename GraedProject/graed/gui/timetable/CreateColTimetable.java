@@ -13,11 +13,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.rmi.RemoteException;
-import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -300,27 +298,5 @@ public class CreateColTimetable extends JBackgroundPanel{
 		this.stop = stop;
 	}
 	
-	/*public void resize(Dimension d) {
-		resize(d.width,d.height);
-	}
 	
-	public void resize(int width, int height) {
-		System.out.println("Methode resize appelée ("+width+","+height+")");
-		for(Iterator it=jourTable.values().iterator();it.hasNext();){
-			TimetableColJTable ti=(TimetableColJTable)it.next();
-			ti.resize(width,height/6,stop-start*4);
-			ti.setRowHeight(height/6);			
-		}
-		super.resize(width, height);
-	}
-	/
-	public void setSize(Dimension d) {
-		super.setSize(d);
-		resize(d.width, d.height);
-	}
-	
-	public void setSize(int width, int height) {
-		super.setSize(width, height);
-		resize(width, height);
-	}*/
 }
