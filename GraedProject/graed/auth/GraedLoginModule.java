@@ -4,6 +4,7 @@
  */
 package graed.auth;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.*;
 
@@ -162,9 +163,12 @@ public class GraedLoginModule implements LoginModule {
     private boolean validateLogin(String userName, String password)throws Exception{
     	System.out.println("Je valide : "+userName+"/"+password);
     	// on hashe le mot de passe avec MD5
-    	/*MessageDigest md = MessageDigest.getInstance("MD5");
-    	byte[] encodedPassword = md.digest(password.getBytes());
-*/
+    	MessageDigest md = MessageDigest.getInstance("MD5");
+    	md.update( password.getBytes() );
+    	BigInteger hash = new BigInteger( 1, md.digest() );
+    	String hpassword = hash.toString(16);
+    	
+    	System.out.println("Password : "+password+" / "+hpassword);
 		return true;
     }
     
