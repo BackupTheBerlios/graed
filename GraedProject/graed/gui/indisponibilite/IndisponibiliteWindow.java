@@ -471,8 +471,7 @@ public class IndisponibiliteWindow extends IndWindow{
      */
     private boolean compareTime(IndisponibiliteInterface i,IndisponibiliteInterface tmp) throws RemoteException{
     	Time time_tmp=new Time(i.getHdebut().getTime()+1000*60*tmp.getDuree());
-    	System.out.println("Heure i.deb="+i.getHdebut()+" i.fin="+time_tmp+" tmp.debut="+tmp.getHdebut());
-		if(i.getHdebut().before(tmp.getHdebut()) && time_tmp.after(tmp.getHdebut()))
+    	if(i.getHdebut().before(tmp.getHdebut()) && time_tmp.after(tmp.getHdebut()))
 			return true;		
     	return false;
     }

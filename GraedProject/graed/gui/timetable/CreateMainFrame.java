@@ -14,11 +14,11 @@ import graed.gui.ressource.TeacherWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceInterface;
 import graed.user.UserInterface;
-import graed.user.UserManager;
 import graed.auth.*;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ContainerEvent;
@@ -94,7 +94,8 @@ public class CreateMainFrame {
 	/* Heure de début et de fin de l'emploi du temps */
 	private int start=8;
 	private int stop=15;
-	
+	private CallbackThread t;
+	private CallbackThread tt;
 	/* ************************* */
 	/* Droits de l'utilisateur   */
 	/* ************************* */
@@ -109,9 +110,16 @@ public class CreateMainFrame {
 	 * @throws ClassNotFoundException 
 	 *
 	 */
-	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
+	public CreateMainFrame() throws Exception{
 		JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
+		notif = new JList();
 		
+		init();
+		
+		splash.close();
+	}
+	
+	private void init() throws Exception{
 		/* Navigation dans les dates de l'emploi du temps */
 		date_lib=new JLabel();	
 		date_lib.setHorizontalAlignment(JLabel.CENTER);
@@ -200,7 +208,6 @@ public class CreateMainFrame {
         
 		/* Fenêtre principale */
 		buttons = new Hashtable();
-		notif = new JList();
 	    notif.setModel(new DefaultListModel());
 	    notif.setCellRenderer(new NotificationRenderer());
 	    frame=new JFrame();
@@ -212,7 +219,7 @@ public class CreateMainFrame {
 		
 		/* Fermeture de l'écran de démarrage 
 		 * ouverture de la fenêtre principale */
-        splash.close();
+        
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -413,9 +420,9 @@ public class CreateMainFrame {
 			
 		};
 		
-		CallbackThread t = new CallbackThread( add,delete,update, Client.getRessourceManager());
+		t = new CallbackThread( add,delete,update, Client.getRessourceManager());
 		t.start();
-		CallbackThread tt = new CallbackThread( addI,deleteI,updateI, Client.getIndisponibiliteManager());
+		tt = new CallbackThread( addI,deleteI,updateI, Client.getIndisponibiliteManager());
 		tt.start();
 	}
 	
@@ -580,18 +587,33 @@ public class CreateMainFrame {
 	    		}
 	    });
 	    
-	    JButton logout = createButton("Deconnexion",
+	    /*JButton logout = createButton("Deconnexion",
 				"Fermer la session utilisateur", 
 				"icons/quit24.png",
 				new ActionListener() {
-	    		public void actionPerformed( ActionEvent ae ) {}
-	    });
+	    		public void actionPerformed( ActionEvent ae ) {
+	    			frame.setVisible(false);
+	    			frame.dispose();	
+	    			
+	    			t.stopThread();
+	    			tt.stopThread();
+	    			t=null;
+	    			tt=null;
+	    			System.gc();
+	    			try {
+	    				new CreateMainFrame();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+	    		}
+	    });*/
 
 	    
 	    buttons.put("export",exp);
 	    buttons.put("print",imp);
 	    buttons.put("refresh",ref);
-	    buttons.put("logout",logout);
+	   // buttons.put("logout",logout);
 	    
 	    
 	    /** Choix de la période de l'emploi du temps **/   	   
@@ -737,7 +759,7 @@ public class CreateMainFrame {
 	    tb.addSeparator(new Dimension(8,24));
 	    tb.add(ref);
 	    tb.addSeparator(new Dimension(8,24));
-	    tb.add(logout);
+	   // tb.add(logout);
 	    tb.addSeparator(new Dimension(8,24));
 	    tb.add(p);
 	    	    
@@ -843,8 +865,10 @@ public class CreateMainFrame {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 * @throws ClassNotFoundException */
-	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public static void main(String[] args) throws Exception {
         UIManager.installLookAndFeel("Hokage","com.hokage.swing.plaf.HokageLookAndFeel" );
         new CreateMainFrame();
 	}
+
+	
 }
