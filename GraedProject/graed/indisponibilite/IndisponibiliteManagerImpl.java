@@ -107,9 +107,16 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	public void updateIndiponibilite(IndisponibiliteInterface i) throws RemoteException {
 		System.out.println(i.print());
 		try {
+			System.out.println("Update");
+			System.out.println("Ressources : "+i.getRessources());
+			
+			Set set = i.getRessources();
+			i.setRessources(new HashSet());
 			Indisponibilite in = (Indisponibilite)DataBaseUtil.convertStub(dbm.getSession(), i);
+			i.setRessources(set);
 			Set s = new HashSet();
-			for( Iterator it = in.getRessources().iterator(); it.hasNext(); ) {
+			
+			for( Iterator it = set.iterator(); it.hasNext(); ) {
 				s.add(
 						DataBaseUtil.convertStub(dbm.getSession(), it.next())
 						);

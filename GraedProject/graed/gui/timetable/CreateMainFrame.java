@@ -27,6 +27,7 @@ import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -64,7 +65,7 @@ public class CreateMainFrame {
 	private JCloseableTabbedPane tp;
 	private Hashtable icons;
 	private final JList notif;
-	private Hashtable timetable_list;
+	private ConcurrentHashMap timetable_list;
 	private Hashtable buttons;
 	Date debut;
 	Date fin;
@@ -90,7 +91,7 @@ public class CreateMainFrame {
 	    date_lib.setVerticalAlignment(JLabel.CENTER);
 	    buttons = new Hashtable();
 	    notif = new JList();
-	    timetable_list=new Hashtable();
+	    timetable_list=new ConcurrentHashMap();
 	    notif.setModel(new DefaultListModel());
 	    notif.setCellRenderer(new NotificationRenderer());
 	    frame=new JFrame();

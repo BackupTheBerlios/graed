@@ -203,5 +203,20 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 			libelle+=" \n"+((RessourceInterface)i.next()).print();
 		libelle+=" \nde "+getHdebut()+" à "+new Time(getHdebut().getTime()+1000*60*getDuree());
 		return libelle;
+	}
+
+	/**
+	 * @see graed.indisponibilite.IndisponibiliteInterface#copy(graed.indisponibilite.IndisponibiliteInterface)
+	 */
+	public void copy(IndisponibiliteInterface in) throws RemoteException {
+		setDebut(in.getDebut());
+		setDuree(in.getDuree());
+		setFin(in.getFin());
+		setHdebut(in.getHdebut());
+		setId(in.getId());
+		setLibelle(in.getLibelle());
+		setPeriodicite(in.getPeriodicite());
+		setRessources(in.getRessources());
+		setType(in.getType());
 	}	
 }

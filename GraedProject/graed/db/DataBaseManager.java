@@ -50,10 +50,10 @@ public class DataBaseManager implements Serializable{
 	/**
 	 * @see java.lang.Object#finalize()
 	 */
-	protected void finalize() throws Throwable {
+	/*protected void finalize() throws Throwable {
 	    super.finalize();
 	    DataBaseUtil.closeSession();
-	}
+	}*/
 	
 	/**
 	 * Ajoute un objet à la base de données.

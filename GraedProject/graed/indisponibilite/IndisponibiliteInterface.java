@@ -102,5 +102,11 @@ public interface IndisponibiliteInterface extends Remote {
 	 * @return Returns the print.
 	 */
 	public String print() throws RemoteException;
+	/**
+	 * Copies the given indisponibilite into the current indsponibilite
+	 * @param in The indisponibilite to copy
+	 * @throws RemoteException
+	 */
+	public void copy( IndisponibiliteInterface in ) throws RemoteException; 
 	
 }
