@@ -12,6 +12,7 @@ package graed.gui.timetable;
 import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.gui.JPaintPanel;
 import graed.gui.indisponibilite.IndisponibiliteWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
 
@@ -25,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.rmi.RemoteException;
 import java.sql.Date;
 import java.util.Collection;
@@ -44,6 +46,8 @@ import javax.swing.table.TableColumn;
  *
  */
 public class TimetableColJTable extends JTable {
+	private Component moving;
+	
 	private Hashtable list_ind;
 	private IndisponibiliteInterface i_tmp;	
 	private TimetableDefaultTableModel tm;	/* Modèle de données associé à la table */
@@ -91,7 +95,6 @@ public class TimetableColJTable extends JTable {
 			addColumn(t);
 		}
 
-		
 		MouseListener listener = new MouseAdapter() {
         	private int rowF =0;
         	private int colF=0;
@@ -181,8 +184,60 @@ public class TimetableColJTable extends JTable {
         };
         
 		addMouseListener(listener);
+		setMouseListener();
+		setMouseMotionListener();
 		
 	}
+	
+	protected void setMouseListener() {
+        addMouseListener( new MouseListener() {
+
+            public void mouseClicked(MouseEvent e) {}
+
+            public void mousePressed(MouseEvent e) {
+                Point p = e.getPoint();
+                Component c = getComponentAt(p);
+                if( c!=null && c!=TimetableColJTable.this ) {
+                    moving = c;
+                    setCursor(new Cursor(Cursor.MOVE_CURSOR));
+                    setComponentZOrder(moving,0);
+                    validate();
+                    System.out.println(moving);
+                }
+            }
+
+            public void mouseReleased(MouseEvent e) {
+                if( moving != null ) {
+                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                    moving = null;
+                }
+            }
+
+            public void mouseEntered(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {}
+            
+        });
+    }
+    
+    
+    protected void setMouseMotionListener() {
+        addMouseMotionListener( new MouseMotionListener() {
+            public void mouseDragged(MouseEvent e) {
+                if( moving != null
+                        && e.getX()<=(getWidth()-moving.getWidth())
+                        && e.getY()<=(getHeight()-moving.getHeight())
+                        && e.getX()>=0
+                        && e.getY()>=0)
+                    moving.setLocation(e.getX(),e.getY());
+            }
+
+            public void mouseMoved(MouseEvent e) {}
+            
+        });
+    }
+	
+	
+	
 	/**
 	 * On redéfinit la taille de la JTable et de ses colonnes
 	 */

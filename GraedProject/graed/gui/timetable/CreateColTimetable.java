@@ -3,7 +3,6 @@ package graed.gui.timetable;
 
 
 
-import graed.gui.JPaintPanel;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceInterface;
 
@@ -14,7 +13,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.rmi.RemoteException;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -33,7 +31,7 @@ import com.hokage.swing.JBackgroundPanel;
  *
  * Création d'un JPanel contenant l'emploi du temps d'une ressource
  */
-public class CreateColTimetable extends JPaintPanel{
+public class CreateColTimetable extends JBackgroundPanel{
 	private Hashtable jourTable;
 	private RessourceInterface r;
 	private int start;
@@ -49,9 +47,9 @@ public class CreateColTimetable extends JPaintPanel{
 	 * @param stop heure de fin
 	 */
 	public CreateColTimetable(RessourceInterface r,String title, int start, int stop){
-		super();
+		super("graed/gui/timetable/icons/fond.png");
 		this.r=r;
-		color = Color.LIGHT_GRAY;
+		color = new Color(0xffffed);
 		jourTable=new Hashtable();
 		this.title=title;
 		this.start = start;
@@ -139,6 +137,7 @@ public class CreateColTimetable extends JPaintPanel{
 		t.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		t.setPreferredSize( new Dimension( (stop-start)*100,getHeight()/6 ));
 		t.setRowHeight(getHeight()/6);
+		
 		jourTable.put(name,t);
 		return t;
 	}
