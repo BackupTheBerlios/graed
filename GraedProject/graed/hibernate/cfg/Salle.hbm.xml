@@ -28,7 +28,7 @@
         </property>
         
         <property name="capacite">
-        	<column name="" sql-type="integer" not-null="false"/>
+        	<column name="capacite" sql-type="integer" not-null="false"/>
         </property>
 
     </class>
