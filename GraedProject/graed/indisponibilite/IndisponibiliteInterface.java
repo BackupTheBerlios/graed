@@ -7,6 +7,7 @@
 package graed.indisponibilite;
 
 import graed.ressource.Ressource;
+import graed.ressource.RessourceInterface;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -38,7 +39,7 @@ public interface IndisponibiliteInterface extends Remote {
 	 */
 	public void setRessources(Set ressources) throws RemoteException;
 	
-	public void addRessource( Ressource r ) throws RemoteException;
+	public void addRessource( RessourceInterface interface1 ) throws RemoteException;
 		
 	/**
 	 * @return Returns the debut.

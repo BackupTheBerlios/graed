@@ -79,7 +79,7 @@ public class CreateMainFrame {
 		try {
 			c=Client.getIndisponibiliteManager().getIndisponibilites(
 					r,dateDebut,dateFin);
-			CreateColTimetable time2=new CreateColTimetable(null,r.getType()+": "+r,8,15);
+			CreateColTimetable time2=new CreateColTimetable(null,r.getType()+": "+r.print(),8,15);
 			tp.add(time2.getTitle(),time2.getTimetable());
 			if(c!=null){
 				for(Iterator i=c.iterator();i.hasNext();)

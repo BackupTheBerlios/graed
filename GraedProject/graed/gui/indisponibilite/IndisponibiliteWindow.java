@@ -8,11 +8,9 @@ import graed.exception.InvalidStateException;
 import graed.gui.IndWindow;
 import graed.gui.factory.SpinnerFactory;
 import graed.gui.model.SpinnerTimeModel;
-import graed.indisponibilite.Indisponibilite;
+import graed.gui.renderer.RessourceListRenderer;
 import graed.indisponibilite.IndisponibiliteInterface;
-import graed.indisponibilite.IndisponibiliteManagerImpl;
-import graed.ressource.Ressource;
-import graed.ressource.RessourceManager;
+import graed.ressource.RessourceInterface;
 import graed.ressource.event.RessourceEvent;
 
 import java.awt.BorderLayout;
@@ -117,12 +115,14 @@ public class IndisponibiliteWindow extends IndWindow{
         ress_select=new Hashtable();      
         Collection coll=(Collection) ress_found.get((String) type_ress.getSelectedItem());
         list_ress=new JList();
+        list_ress.setCellRenderer(new RessourceListRenderer());
         list_ress.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
         DefaultListModel dlm = new DefaultListModel();
         for( Iterator it=coll.iterator();it.hasNext();)
         	dlm.addElement(it.next());
         list_ress.setModel(dlm);
         select_ress=new JList(new DefaultListModel());
+        select_ress.setCellRenderer(new RessourceListRenderer());
     }
     /**
      * Rempli le champs periodicite de la fenêtre
@@ -146,12 +146,11 @@ public class IndisponibiliteWindow extends IndWindow{
      */
     private Object[] fillTypeRess(){
     	Object[] o=null;
-		try {
-			RessourceManager rm = Client.getRessourceManager();;
-			o = rm.getRessourcesTypes();
+		try {			
+			o = Client.getRessourceManager().getRessourcesTypes();
 			for (int i=0;i<o.length;++i){
-				ress_found.put(o[i],rm.getRessourcesByType((String)o[i]));//Collection
-				System.out.println(rm.getRessourcesByType((String)o[i]));
+				ress_found.put(o[i],Client.getRessourceManager().getRessourcesByType((String)o[i]));//Collection
+				System.out.println(Client.getRessourceManager().getRessourcesByType((String)o[i]));
 			}			
 		} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
@@ -217,16 +216,21 @@ public class IndisponibiliteWindow extends IndWindow{
     	noselect.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				Object[] o=select_ress.getSelectedValues();
-				for (int i=0;i<o.length;++i){
-					Collection coll=(Collection) ress_found.get(((Ressource)o[i]).getType());
-					((DefaultListModel)select_ress.getModel()).removeElement(o[i]);
-					coll.add(o[i]);
-					if(((Ressource)o[i]).getType().equals(type_ress.getSelectedItem())){
+				try {
+					for (int i=0;i<o.length;++i){
+						Collection coll = (Collection) ress_found.get(((RessourceInterface)o[i]).getType());
+						((DefaultListModel)select_ress.getModel()).removeElement(o[i]);
+						coll.add(o[i]);
+						if(((RessourceInterface)o[i]).getType().equals(type_ress.getSelectedItem())){
 							((DefaultListModel)list_ress.getModel()).addElement(o[i]);
-					}
-					frame.validate();
-					frame.repaint();
-				}				
+						}
+						frame.validate();
+						frame.repaint();
+					}	
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
     		});
     	if(isSee()){
@@ -320,7 +324,7 @@ public class IndisponibiliteWindow extends IndWindow{
 		   	this.type.setSelectedItem(((IndisponibiliteInterface) getInformation()).getType());
 		   	Set s=((IndisponibiliteInterface) getInformation()).getRessources();
 		   	for(Iterator i=s.iterator();i.hasNext();)
-		   		((DefaultListModel)this.select_ress.getModel()).addElement((Ressource)i.next());
+		   		((DefaultListModel)this.select_ress.getModel()).addElement((RessourceInterface)i.next());
     	} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -367,21 +371,22 @@ public class IndisponibiliteWindow extends IndWindow{
     	JButton b=new JButton("Modifier");
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
-    			((Indisponibilite) getInformation()).setDebut(new Date(date_debut.getDate().getTime())); 
-    			((Indisponibilite) getInformation()).setFin(new Date(date_fin.getDate().getTime()));
-    			((Indisponibilite) getInformation()).setHdebut(((SpinnerTimeModel)hdebut.getModel()).getSQLTime());
-    			((Indisponibilite) getInformation()).setDuree((int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60);
-    			((Indisponibilite) getInformation()).setPeriodicite((String)periodicite.getSelectedItem());
-    			((Indisponibilite) getInformation()).setLibelle(libelle.getText());
-    			((Indisponibilite) getInformation()).setType((String)type.getSelectedItem());
-    			Set s=((Indisponibilite) getInformation()).getRessources();
+    			try {
+    			((IndisponibiliteInterface) getInformation()).setDebut(new Date(date_debut.getDate().getTime())); 
+    			((IndisponibiliteInterface) getInformation()).setFin(new Date(date_fin.getDate().getTime()));
+    			((IndisponibiliteInterface) getInformation()).setHdebut(((SpinnerTimeModel)hdebut.getModel()).getSQLTime());
+    			((IndisponibiliteInterface) getInformation()).setDuree((int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60);
+    			((IndisponibiliteInterface) getInformation()).setPeriodicite((String)periodicite.getSelectedItem());
+    			((IndisponibiliteInterface) getInformation()).setLibelle(libelle.getText());
+    			((IndisponibiliteInterface) getInformation()).setType((String)type.getSelectedItem());
+    			Set s=((IndisponibiliteInterface) getInformation()).getRessources();
     			s.clear();
     			for(int i=0;i<select_ress.getModel().getSize();++i){
-    				((Indisponibilite) getInformation()).addRessource((Ressource)select_ress.getModel().getElementAt(i));
+    				((IndisponibiliteInterface) getInformation()).addRessource((RessourceInterface)select_ress.getModel().getElementAt(i));
     			}
-    			System.out.println(((Indisponibilite) getInformation()));
-    			try {
-					IndisponibiliteManagerImpl.getInstance().addIndisponibilite(((Indisponibilite) getInformation()));
+    			System.out.println(((IndisponibiliteInterface) getInformation()));
+    			
+					Client.getIndisponibiliteManager().addIndisponibilite(((IndisponibiliteInterface) getInformation()));
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
 							"l'indisponibilité ne peut être modifiée ",
@@ -403,21 +408,20 @@ public class IndisponibiliteWindow extends IndWindow{
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
     			try {
-    			setInformation(new Indisponibilite(
-    					new Date(date_debut.getDate().getTime()), 
-    					new Date(date_fin.getDate().getTime()), 
-						((SpinnerTimeModel)hdebut.getModel()).getSQLTime(),
-						(int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60,
-						(String)periodicite.getSelectedItem(),
-    					libelle.getText(),
-						(String)type.getSelectedItem()));
-    			System.out.println("calcul durée:"+((SpinnerTimeModel)duree.getModel()).getSQLTime()+ " "+(int)((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime());
-    			for(int i=0;i<select_ress.getModel().getSize();++i){
-    				((Indisponibilite) getInformation()).addRessource((Ressource)select_ress.getModel().getElementAt(i));
+    			IndisponibiliteInterface i=Client.getIndisponibiliteManager().createIndisponibilite();
+    			i.setDebut(new Date(date_debut.getDate().getTime())); 
+    			i.setFin(new Date(date_fin.getDate().getTime()));
+    			i.setHdebut(((SpinnerTimeModel)hdebut.getModel()).getSQLTime());
+    			i.setDuree((int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60);
+    			i.setPeriodicite((String)periodicite.getSelectedItem());
+    			i.setLibelle(libelle.getText());
+    			i.setType((String)type.getSelectedItem());
+    			for(int j=0;j<select_ress.getModel().getSize();++j){
+    				i.addRessource((RessourceInterface)select_ress.getModel().getElementAt(j));
     			}
-    			System.out.println(((Indisponibilite) getInformation()));
+    			System.out.println(i);
     			
-					IndisponibiliteManagerImpl.getInstance().addIndisponibilite(((Indisponibilite) getInformation()));
+					Client.getIndisponibiliteManager().addIndisponibilite(i);
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
 							"l'indisponibilité ne peut être crée ",
@@ -447,21 +451,22 @@ public class IndisponibiliteWindow extends IndWindow{
     			String p=((String)periodicite.getSelectedItem()).length()==0?null:(String)periodicite.getSelectedItem();
     			String ty=((String)type.getSelectedItem()).length()==0?null:((String)type.getSelectedItem());
     			System.out.println(debut+" "+fin+" "+h+" "+d+" "+p+" "+ty);
-    			setInformation(new Indisponibilite(
-    					debut, 
-    					fin, 
-						h,
-						d,
-						p,
-    					lib,
-						ty));    			
-    			for(int i=0;i<select_ress.getModel().getSize();++i){
-    				((Indisponibilite) getInformation()).addRessource((Ressource)select_ress.getModel().getElementAt(i));    				
+    			IndisponibiliteInterface i=Client.getIndisponibiliteManager().createIndisponibilite();
+    			i.setDebut(debut); 
+    			i.setFin(fin);
+    			i.setHdebut(h);
+    			i.setDuree(d);
+    			i.setPeriodicite(p);
+    			i.setLibelle(lib);
+    			i.setType(ty);
+    			 			
+    			for(int j=0;j<select_ress.getModel().getSize();++j){
+    				i.addRessource((RessourceInterface)select_ress.getModel().getElementAt(j));    				
     			}    
-    			System.out.println(((Indisponibilite) getInformation()).getRessources());
+    			System.out.println(i);
     			Collection l=null;			
     			
-    				l= (Collection) IndisponibiliteManagerImpl.getInstance().getIndisponibilites(((Indisponibilite) getInformation()));
+    				l= (Collection) Client.getIndisponibiliteManager().getIndisponibilites(i);
 				
 				System.out.println("List:"+l);	
 				if(l!=null && !l.isEmpty()){

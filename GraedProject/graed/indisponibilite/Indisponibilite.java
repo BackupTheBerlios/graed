@@ -6,7 +6,7 @@
  */
 package graed.indisponibilite;
 
-import graed.ressource.Ressource;
+import graed.ressource.RessourceInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -93,7 +93,7 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 		this.ressources = ressources;
 	}
 	
-	public void addRessource( Ressource r ) {
+	public void addRessource( RessourceInterface r ) {
 		ressources.add(r);
 	}
 	
