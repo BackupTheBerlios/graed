@@ -90,6 +90,7 @@ public class CreateMainFrame {
 	/* Heure de début et de fin de l'emploi du temps */
 	private int start=8;
 	private int stop=15;
+	
 	/**
 	 * Constructeur
 	 * @return
@@ -130,9 +131,7 @@ public class CreateMainFrame {
 		}*/
 		/* Ecran de démarrage */
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
-		
-	    
-	    
+			    
 	    /* Onglets */
 	    timetable_list=new ConcurrentHashMap();
 	    tp=new JCloseableTabbedPane("graed/gui/timetable/icons/fond.png");
@@ -185,6 +184,7 @@ public class CreateMainFrame {
 		frame.pack();
 		frame.setVisible(true);
 	}
+	
 	/**
 	 * Rempli la fenêtre principale
 	 * @return panel contenant les elements de la fenêtre principale
@@ -202,6 +202,7 @@ public class CreateMainFrame {
 		p.add(createNotificationZone(),BorderLayout.SOUTH);
 		return p;
 	}
+	
 	/**
 	 * Partie emploi du temps sélection et graphique
 	 * @return JSplitPane correspondant à la partie emploi du temps
@@ -219,6 +220,7 @@ public class CreateMainFrame {
 		
 		return sp;
 	}
+	
 	/**
 	 * Création de la zone de notification des changements
 	 * @return panel de zone de notification
@@ -430,6 +432,7 @@ public class CreateMainFrame {
 		}
 		
 	}
+	
 	/**
 	 * Mise à jour de tous les emploi du temps
 	 *
@@ -439,6 +442,7 @@ public class CreateMainFrame {
 			refresh((CreateColTimetable) en.nextElement());
 		enableRefresh(false);
 	}
+	
 	/**
 	 * Mise à jour de l'emploi du temps
 	 * @param t Données concernant l'emploi du temps
@@ -447,6 +451,7 @@ public class CreateMainFrame {
 		Timetable ti=(Timetable) timetable_list.get(t);
 		modify(t,ti.getDateDebut(),ti.getDateFin());
 	}
+	
 	/**
 	 * Mise à jour de l'emploi du temps
 	 * @param t Données concernant l'emploi du temps
@@ -488,6 +493,7 @@ public class CreateMainFrame {
 		time2.validate();
 		time2.repaint();
 	}
+	
 	/**
 	 * Création de la barre de menu de la fenêtre principale
 	 * @return la barre de menu
@@ -704,6 +710,7 @@ public class CreateMainFrame {
 		    
 	    return tb;
 	}
+	
 	/**
 	 * Creer un bouton pour la fenêtre principale
 	 * @param name nom du bouton
@@ -711,7 +718,7 @@ public class CreateMainFrame {
 	 * @param image l'image du bouton
 	 * @param a l'action associée
 	 * @return le nouveau bouton créé
-	 */
+	 */	
 	protected JButton createButton( String name, String toolTipText, String image, ActionListener a ) {
 	    JButton b = new JButton( name );
 	    b.setHorizontalTextPosition(SwingConstants.CENTER);

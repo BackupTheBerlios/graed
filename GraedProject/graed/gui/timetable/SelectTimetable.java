@@ -113,21 +113,15 @@ public SelectTimetable(CreateMainFrame main) {
 	
 	ButtonGroup group=new ButtonGroup();
 	
-	semestre1 = new JRadioButton("1er trimestre");
-	/*d="Deb s1";
-	f="Fin s1";*/
+	semestre1 = new JRadioButton("1er trimestre");	
 	Graphic.makeTransparent(semestre1);
 	group.add(semestre1);
 	
 	semestre2 = new JRadioButton("2ème trimestre"); 
-	/*d="Deb s2";
-	f="Fin s2";*/
 	group.add(semestre2);
 	Graphic.makeTransparent(semestre2);
 	
 	semestre3 = new JRadioButton("3ème trimestre");
-	/*d="Deb s3";
-	f="Fin s3";*/
 	group.add(semestre3);
 	Graphic.makeTransparent(semestre3);
 	
@@ -199,21 +193,6 @@ private void addLine(JPanel p,GridBagConstraints c,JComponent jc,String name){
     c.gridx = 1;
 	c.gridwidth = 1;
 	c.weightx=1;
-	
-	
-	/*if(mask!=null){
-		MaskFormatter mf;		
-		try {
-			mf = new MaskFormatter (mask);
-			tf=new JFormattedTextField(mf);			
-			tf.setFocusLostBehavior(JFormattedTextField.PERSIST);
-			System.out.println(mask);			
-		} catch (ParseException e) {
-			tf=new JFormattedTextField();
-			System.out.println("mask null");
-		}		
-	}
-	*/
 	
 	p.add(jc,c);
 }
