@@ -259,7 +259,6 @@ public class ConnectLDAP {
 			Teacher t=(Teacher)i.next();
 			System.out.println(t);
 			DataBaseManager.getInstance().add(t);
-			System.exit(0);
 		}
 		/*List p= ldap.searchGroup();
 		System.out.println(p.size()+" groups find:");
