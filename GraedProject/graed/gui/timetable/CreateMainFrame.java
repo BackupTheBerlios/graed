@@ -59,8 +59,8 @@ public class CreateMainFrame {
 		frame.pack();
 		frame.setVisible(true);
 		icons = new Hashtable();
-		icons.put( "Salle", new ImageIcon(RoomWindow.class.getResource("classe.gif")) );
-		icons.put( "Professeur", new ImageIcon(TeacherWindow.class.getResource("professeur.jpg")) );
+		icons.put( "Salle", new ImageIcon(RoomWindow.class.getResource("classe16.gif")) );
+		icons.put( "Professeur", new ImageIcon(TeacherWindow.class.getResource("professeur16.jpg")) );
 		//icons.put( "Materiel", new ImageIcon(TeacherWindow.class.getResource("classe.gif")) );
 	}
 	/**
