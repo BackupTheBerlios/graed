@@ -260,7 +260,7 @@ protected JPanel OpenWindow(){
  * @return bouton
  */
 protected JButton search(){
-	JButton b=new JButton("Chercher");
+	JButton b=new JButton("Visualiser");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			/*Collection c=null;

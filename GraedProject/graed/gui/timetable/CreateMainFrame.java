@@ -439,7 +439,9 @@ public class CreateMainFrame {
 				public int compare(Object o1, Object o2){
 					if (o1 instanceof IndisponibiliteInterface && o2 instanceof IndisponibiliteInterface)
 						try {
-							return ((IndisponibiliteInterface)o1).getHdebut().compareTo(((IndisponibiliteInterface)o2).getHdebut());
+							int ret=((IndisponibiliteInterface)o1).getHdebut().compareTo(((IndisponibiliteInterface)o2).getHdebut());
+							if(ret==0)return 1;
+							else return ret;
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -503,7 +505,9 @@ public class CreateMainFrame {
 				public int compare(Object o1, Object o2){
 					if (o1 instanceof IndisponibiliteInterface && o2 instanceof IndisponibiliteInterface)
 						try {
-							return ((IndisponibiliteInterface)o1).getHdebut().compareTo(((IndisponibiliteInterface)o2).getHdebut());
+							int ret=((IndisponibiliteInterface)o1).getHdebut().compareTo(((IndisponibiliteInterface)o2).getHdebut());
+							if(ret==0)return 1;
+							else return ret;
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

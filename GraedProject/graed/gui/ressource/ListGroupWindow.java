@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author ngonord
@@ -45,7 +46,10 @@ public class ListGroupWindow extends ListRessourceWindow {
 	 */
 	public ListGroupWindow(Collection c) {
 		super(c);
-		frame=new JFrame();		
+		frame=new JFrame();	
+		Object[] o={"Nom","Description","Options","Professeur Responsable","Secrétaire","Courriel"};
+		table=new JTable(new DefaultTableModel(fill(),o));
+		
 	}
 
 	/**
@@ -86,8 +90,6 @@ public class ListGroupWindow extends ListRessourceWindow {
 		frame.setTitle("Liste des formations");
 		frame.setContentPane(p);
 		
-		Object[] o={"Nom","Description","Options","Professeur Responsable","Secrétaire","Courriel"};
-		table=new JTable(fill(),o);
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
 		frame.getContentPane().add(table.getTableHeader(),BorderLayout.NORTH);

@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author ngonord
@@ -45,7 +46,10 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	 */
 	public ListTeacherWindow(Collection c) {
 		super(c);
-		frame=new JFrame();		
+		frame=new JFrame();	
+		Object[] o={"Nom","Prénom","Bureau","Tel","Courriel"};
+		table=new JTable(new DefaultTableModel(fill(),o));
+		
 	}
 
 	/**

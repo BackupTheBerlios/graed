@@ -176,7 +176,6 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 				IndisponibiliteInterface t = (IndisponibiliteInterface) getInd(table.getSelectedRow());
 				removeInd(t);
 				((DefaultTableModel)table.getModel()).removeRow(table.getSelectedRow());
-				System.out.println("nb rows:"+table.getRowCount());
 				try {
 					Client.getIndisponibiliteManager().deleteIndisponibilite(t);
 				} catch (RemoteException e) {
@@ -185,8 +184,6 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 							"Cette ressource ne peut etre supprimée",
 							"Erreur",JOptionPane.WARNING_MESSAGE);
 				}
-				Object[] o={"Libelle","Début","Fin","Heure","Duree","Fréquence","Type","Ressources"};
-				
 				table.validate();
 				frame.repaint();
 				

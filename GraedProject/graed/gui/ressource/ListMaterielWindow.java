@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author ngonord
@@ -44,6 +45,9 @@ public class ListMaterielWindow extends ListRessourceWindow {
 	public ListMaterielWindow(Collection c) {
 		super(c);
 		frame=new JFrame();		
+		Object[] o={"Nom","Type"};
+		table=new JTable(new DefaultTableModel(fill(),o));
+		
 	}
 
 	/**
@@ -79,8 +83,6 @@ public class ListMaterielWindow extends ListRessourceWindow {
 		frame.setTitle("Liste des materiels");
 		frame.setContentPane(p);
 		
-		Object[] o={"Nom","Type"};
-		table=new JTable(fill(),o);
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
 		frame.getContentPane().add(table.getTableHeader(),BorderLayout.NORTH);

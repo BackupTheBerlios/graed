@@ -71,7 +71,6 @@ public class DataBaseUtil {
 	public static Object convertStub( Session session, Object stub ) {
 		try {
 			Class ori = stub.getClass();
-			System.out.println("Convert stub : "+ori);
 			if( !ori.getName().endsWith("_Stub") ) return stub;
 			
 			String original = ori.getName().split("_")[0];

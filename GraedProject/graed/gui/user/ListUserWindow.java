@@ -17,6 +17,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author root
@@ -37,7 +38,10 @@ public class ListUserWindow extends ListRessourceWindow {
 	 */
 	public ListUserWindow(Collection c) {
 		super(c);
-		frame=new JFrame();		
+		frame=new JFrame();	
+		Object[] o={"Nom","Prénom","Login","Bureau","Tel","Courriel","Fonction"};
+		table=new JTable(new DefaultTableModel(fill(),o));
+		
 	}
 
 	/**

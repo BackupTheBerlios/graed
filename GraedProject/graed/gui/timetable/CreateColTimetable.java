@@ -235,6 +235,7 @@ public class CreateColTimetable extends JBackgroundPanel{
 			int celldebut =(i.getHdebut().getHours()-start)*4+(i.getHdebut().getMinutes()/15);
 			int nbcell=i.getDuree()/15;						
 			
+			System.out.println("Indispo: "+i.print());
 			if(((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+""))!=null)
 			((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(i,
 				celldebut,nbcell,true);

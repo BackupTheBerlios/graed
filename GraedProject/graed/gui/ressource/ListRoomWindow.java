@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author ngonord
@@ -43,7 +44,10 @@ public class ListRoomWindow extends ListRessourceWindow {
 	 */
 	public ListRoomWindow(Collection c) {
 		super(c);
-		frame=new JFrame();		
+		frame=new JFrame();	
+		Object[] o={"Nom","Batiment","Lieu","Capacite"};
+		table=new JTable(new DefaultTableModel(fill(),o));
+		
 	}
 
 	/**
