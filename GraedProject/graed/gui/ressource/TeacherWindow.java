@@ -12,8 +12,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.MessageFormat;
-import java.text.ParseException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,9 +19,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.text.MaskFormatter;
 
 /**
  * @author Gonord Nadège
@@ -48,17 +44,17 @@ private Teacher t;
 /**
  * Window
  */
-
+private JFrame frame=new JFrame();
 private int with=200;
 private int height=200;
 /**
  * TextField
  */
-private JFormattedTextField name;
-private JFormattedTextField firstName;
-private JFormattedTextField office;
-private JFormattedTextField phone; 
-private JFormattedTextField email;
+private JFormattedTextField name=new JFormattedTextField();
+private JFormattedTextField firstName=new JFormattedTextField();
+private JFormattedTextField office=new JFormattedTextField();
+private JFormattedTextField phone=new JFormattedTextField(); 
+private JFormattedTextField email=new JFormattedTextField();
 
 /**
  * Constructor which open the teacher window
@@ -96,7 +92,7 @@ private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextFie
 	c.weightx=1;
 	
 	
-	if(mask!=null){
+	/*if(mask!=null){
 		MaskFormatter mf;		
 		try {
 			mf = new MaskFormatter (mask);
@@ -108,13 +104,14 @@ private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextFie
 			System.out.println("mask null");
 		}		
 	}
-	else{
-		tf=new JFormattedTextField();
-		System.out.println("mask null");
-	}
+	*/
 	
-	if((state==SEE || state==MODIFY)&& value!=null)
-		tf.setText(value);	
+	if((state==SEE || state==MODIFY)&& value!=null){
+		tf.setText(value);
+		if(state==SEE){
+			tf.setEnabled(false);
+		}
+		}
 	p.add(tf,c);
 }
 /**
@@ -146,10 +143,10 @@ private void CreateOrSearch(JPanel p,GridBagConstraints c){
 	c.gridx = 0;
 	
 	if(state==CREATE){
-		p.add(new JButton("Créer"),c);
+		p.add(create(),c);
 	}
 	else{
-		p.add(new JButton("Chercher"),c);
+		p.add(search(),c);
 	}
 }
 /**
@@ -214,26 +211,76 @@ private void OpenWindow(){
 	}
 	
 	c.gridx = 2;
-	p.add(new JButton("Annuler"),c);	
+	p.add(stop(),c);	
 	
 	frame.setContentPane(p);	
 	frame.setVisible(true);
 	
 }
-
+/**
+ * Création du bouton annuler
+ * @return bouton
+ */
+private JButton stop(){
+	JButton b=new JButton("Annuler");
+	b.addActionListener(new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			System.exit(0);
+		}		
+	});
+	return b;
+	
+}
+/**
+ * Création du bouton modifier
+ * @return bouton
+ */
 private JButton modify(){
 	JButton b=new JButton("Modifier");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-							
-				System.out.println(name.getText());
-				t.setName(name.getText());
+			t.setName(name.getText());
 			t.setFirstName(firstName.getText());
 			t.setOffice(office.getText());
 			t.setPhone(phone.getText());
 			t.setEmail(email.getText());
 			System.out.println(t);
-			
+			System.exit(0);
+		}		
+	});
+	return b;
+	
+}
+
+/**
+ * Création du bouton creer
+ * @return bouton
+ */
+private JButton create(){
+	JButton b=new JButton("Creer");
+	b.addActionListener(new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			t=new Teacher(name.getText(),firstName.getText(),
+					office.getText(),phone.getText(),email.getText());
+			System.out.println(t);
+			System.exit(0);
+		}		
+	});
+	return b;
+	
+}
+/**
+ * Création du bouton de recherche
+ * @return bouton
+ */
+private JButton search(){
+	JButton b=new JButton("Chercher");
+	b.addActionListener(new ActionListener(){
+		public void actionPerformed(ActionEvent arg0) {
+			t=new Teacher(name.getText(),firstName.getText(),
+					office.getText(),phone.getText(),email.getText());
+			System.out.println(t);
+			System.exit(0);
 		}		
 	});
 	return b;
@@ -247,7 +294,6 @@ private JButton modify(){
 public static void main (String[] args) throws InvalidStateException{
 	Teacher t=new Teacher("GONORD", "Nadege", 
 			"2B117", "0164022461", "nade77@neuf.fr");
-	new TeacherWindow(TeacherWindow.MODIFY,t);
-	System.out.println(t);
+	new TeacherWindow(TeacherWindow.SEARCH,t);
 }
 }
