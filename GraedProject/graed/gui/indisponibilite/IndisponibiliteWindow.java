@@ -150,7 +150,7 @@ public class IndisponibiliteWindow extends IndWindow{
 			o = Client.getRessourceManager().getRessourcesTypes();
 			for (int i=0;i<o.length;++i){
 				ress_found.put(o[i],Client.getRessourceManager().getRessourcesByType((String)o[i]));//Collection
-				System.out.println(Client.getRessourceManager().getRessourcesByType((String)o[i]));
+				//System.out.println(Client.getRessourceManager().getRessourcesByType((String)o[i]));
 			}			
 		} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
