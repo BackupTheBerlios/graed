@@ -31,6 +31,7 @@ import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -114,13 +115,15 @@ public class CreateMainFrame {
 	    date_lib.setVerticalAlignment(JLabel.CENTER);
 	    debut=null;
 		fin=null;
-	    
-		Subject subj = null;
+	    		
 		
-		/*try{
-		fin=null;	    
-				
 		/* Identification */
+		Properties p=new Properties();
+		p.put("java.security.auth.login.config","graed/auth/auth.config");
+		p.putAll(System.getProperties());
+		System.setProperties(p);
+		
+		Subject subj = null;
 		/*try{
 			GraedGraphicCallbackHandler cbh = new GraedGraphicCallbackHandler(frame);
 			
