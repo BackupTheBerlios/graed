@@ -84,7 +84,10 @@ public class CreateMainFrame {
 	 */
 	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
-	    date_lib=new JLabel();	
+	    
+	    date_lib=new JLabel();
+	    date_lib.setHorizontalAlignment(JLabel.CENTER);
+	    date_lib.setVerticalAlignment(JLabel.CENTER);
 	    buttons = new Hashtable();
 	    notif = new JList();
 	    timetable_list=new Hashtable();

@@ -8,6 +8,7 @@ package graed.client;
 
 import graed.callback.CallbackRunnable;
 import graed.callback.CallbackThread;
+import graed.conf.Configuration;
 import graed.indisponibilite.IndisponibiliteManager;
 import graed.ressource.RessourceInterface;
 import graed.ressource.RessourceManager;
@@ -29,16 +30,17 @@ import java.util.Collection;
 public class Client {
 	private static final RessourceManager rm;
 	private static final IndisponibiliteManager im;
-	private static final String host="pccop2b104-14.univ-mlv.fr";
 	private static final UserManager um;
 	static {
 		try {
-			//Récupération du registry de la machine dusk sur le port 6666
-			Registry rg = LocateRegistry.getRegistry(host,6666);
+			String host = Configuration.getParamValue("rmi","host");
+			String port = Configuration.getParamValue("rmi","port");
+			//Récupération du registry de la machine dusk sur le port
+			Registry rg = LocateRegistry.getRegistry(host,Integer.parseInt(port));
 			//Récupération de la référence du serveur distant
-			Remote r = rg.lookup("rmi://"+host+":6666/RessourceManager");
-			Remote i = rg.lookup("rmi://"+host+":6666/IndisponibiliteManager");
-			Remote u = rg.lookup("rmi://"+host+":6666/UserManager");
+			Remote r = rg.lookup("rmi://"+host+":"+port+"/RessourceManager");
+			Remote i = rg.lookup("rmi://"+host+":"+port+"/IndisponibiliteManager");
+			Remote u = rg.lookup("rmi://"+host+":"+port+"/UserManager");
 			rm = (RessourceManager)r;
 			im = (IndisponibiliteManager)i;
 			um = (UserManager)u;
