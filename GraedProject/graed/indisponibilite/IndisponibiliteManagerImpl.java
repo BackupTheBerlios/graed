@@ -112,7 +112,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 				Ressource r = (Ressource)ii.next();
 				c.add(Expression.eq("id_ressource", r.getId_ressource()));
 			}
-		
+			System.out.println(c);
 			return c.list();
         
 		} catch (Exception e) {
