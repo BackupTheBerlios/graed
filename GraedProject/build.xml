@@ -1,6 +1,7 @@
 <?xml version='1.0'?>
 <project name="Graed" default="compile" basedir=".">
 
+<property name="build" value="build"/>
 <property name="src" value="graed"/>
 <property name="lib" value="graed/lib"/>
 <property name="cfg" value="graed/hibernate/cfg"/>
