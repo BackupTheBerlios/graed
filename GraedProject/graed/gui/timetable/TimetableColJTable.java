@@ -151,7 +151,8 @@ public class TimetableColJTable extends JTable {
 			int row= table.rowAtPoint(p);
 			int col= table.columnAtPoint(p);
 			Object o=TimetableColJTable.this.getValueAt(rowF,colF);
-			if( o!= null && (col!=colF||row!=rowF||table!=TimetableColJTable.this)) {
+			
+			if( o!= null && !(col==colF && table==TimetableColJTable.this)) {
 				int size = TimetableColJTable.this.getCellSize( rowF, colF );	
 				//On ne déplace si la taille est trop grande
 				try {
@@ -175,10 +176,7 @@ public class TimetableColJTable extends JTable {
 				table.setCellSelectionEnabled(true);
 				
 			}
-			else if(o!=null){
-				System.out.println("Drag and Drop "+col+"!="+colF+" && "+row+"!="+rowF);
-			}
-			else  System.out.println("Drag and Drop o=null");
+			
 		}
         };
         
@@ -285,6 +283,7 @@ public class TimetableColJTable extends JTable {
 			}
 			
 		});
+		creer.setEnabled(false);
 		consu=new JMenuItem("Consulter");
 		consu.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
@@ -297,6 +296,7 @@ public class TimetableColJTable extends JTable {
 				}
 			}		
 		});
+		consu.setEnabled(false);
 		modif=new JMenuItem("Modifier");
 		modif.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
@@ -309,6 +309,7 @@ public class TimetableColJTable extends JTable {
 				}
 			}		
 		});
+		modif.setEnabled(false);
 		suppr=new JMenuItem("Supprimer");
 		suppr.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {				
@@ -321,6 +322,7 @@ public class TimetableColJTable extends JTable {
 					i_tmp=null;				
 			}		
 		});
+		suppr.setEnabled(false);
 		p.add(creer);
 		p.add(consu);
 		p.add(modif);
@@ -335,7 +337,7 @@ public class TimetableColJTable extends JTable {
 	 */
 	public void addIndispo (IndisponibiliteInterface i,int col,int size, boolean b){
 		if(b)col=find_col(col,size);		
-		addI(i,col);
+		addI(i,col);		
 		JTextArea j =(JTextArea) getValueAt(0,col);
 		String text="";
 		String tooltext="";
@@ -369,6 +371,16 @@ public class TimetableColJTable extends JTable {
 		if((JTextArea) getValueAt(0,col)==null)tm.setValueAt(j,col,size);
 		TableColumn c=getColumnModel().getColumn(col);	
 		c.setPreferredWidth((size*c.getPreferredWidth())+size-1);
+		for (int in=col;in<col+size;++in){
+			Collection co=getI(in);
+			if(co!=null)System.out.println("Timetable "+co);/*{
+				removeIndispo (in);
+				for (Iterator it=co.iterator();it.hasNext();){
+					addIndispo ((IndisponibiliteInterface) it.next(),col,size+in,false);
+				}
+					
+			}*/
+		}
 	}
 	/**
 	 * Supprime la donnée à la colonne indiquée

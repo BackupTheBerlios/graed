@@ -389,7 +389,7 @@ public class IndisponibiliteWindow extends IndWindow{
     			}
     			System.out.println(((IndisponibiliteInterface) getInformation()));
     			
-					Client.getIndisponibiliteManager().addIndisponibilite(((IndisponibiliteInterface) getInformation()));
+					Client.getIndisponibiliteManager().updateIndiponibilite(((IndisponibiliteInterface) getInformation()));
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
 							"l'indisponibilité ne peut être modifiée ",

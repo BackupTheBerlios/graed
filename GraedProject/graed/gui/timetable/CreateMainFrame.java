@@ -164,13 +164,9 @@ public class CreateMainFrame {
 	 * @return panel de zone de notification
 	 */
 	private JPanel createNotificationZone() {
-		JPanel notification = new JPanel();
-		/*DefaultListModel dlm = new DefaultListModel();
-		dlm.addElement("Zone de notification");
-		notif.setModel(dlm);*/
+		JPanel notification = new JPanel();	
 		JScrollPane js = new JScrollPane(notif);
 		js.setPreferredSize(new Dimension(1000,50));
-		//notification.setPreferredSize(new Dimension(800,50));
 		notification.add(js);
 		
 		runCallback();
@@ -197,8 +193,7 @@ public class CreateMainFrame {
 					dlm.addElement(time+"    "+ri.getType()+" ajouté(e) : "+ri.print());
 					notif.validate();
 					notif.repaint();
-					//if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
-						notif.ensureIndexIsVisible(dlm.getSize()-1);
+					notif.ensureIndexIsVisible(dlm.getSize()-1);
 					
 				} catch( Exception e ) {
 					e.printStackTrace();
@@ -220,8 +215,7 @@ public class CreateMainFrame {
 					dlm.addElement(time+"    "+ri.getType()+" mis(e) à jour : "+ri.print());
 					notif.validate();
 					notif.repaint();
-					//if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
-						notif.ensureIndexIsVisible(dlm.getSize()-1);
+					notif.ensureIndexIsVisible(dlm.getSize()-1);
 					
 				} catch( Exception e ) {
 					e.printStackTrace();
@@ -244,8 +238,7 @@ public class CreateMainFrame {
 					
 					notif.validate();
 					notif.repaint();
-					//if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
-						notif.ensureIndexIsVisible(dlm.getSize()-1);
+					notif.ensureIndexIsVisible(dlm.getSize()-1);
 					
 				} catch( Exception e ) {
 					e.printStackTrace();
