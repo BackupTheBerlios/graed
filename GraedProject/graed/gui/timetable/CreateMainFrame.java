@@ -101,11 +101,18 @@ public class CreateMainFrame {
 	 *
 	 */
 	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
-	    /* Navigation dans les dates de l'emploi du temps */
+		JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
+		
+		/* Navigation dans les dates de l'emploi du temps */
 		date_lib=new JLabel();	
 		date_lib.setHorizontalAlignment(JLabel.CENTER);
 	    date_lib.setVerticalAlignment(JLabel.CENTER);
 	    debut=null;
+		fin=null;
+	    
+		//Subject subj = null;
+		
+		/*try{
 		fin=null;	    
 				
 		/* Identification */
@@ -129,9 +136,9 @@ public class CreateMainFrame {
 			e.printStackTrace();
 			System.exit(0);
 		}*/
+	    
 		/* Ecran de démarrage */
-	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
-			    
+	    	    
 	    /* Onglets */
 	    timetable_list=new ConcurrentHashMap();
 	    tp=new JCloseableTabbedPane("graed/gui/timetable/icons/fond.png");
