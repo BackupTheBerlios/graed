@@ -6,10 +6,9 @@
  */
 package graed.ressource.type;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-
 import graed.ressource.Ressource;
+
+import java.rmi.RemoteException;
 
 /**
  * @author Propriétaire

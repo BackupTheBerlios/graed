@@ -3,7 +3,7 @@
  */
 package graed.ressource.event;
 
-import graed.ressource.Ressource;
+import graed.ressource.RessourceInterface;
 
 import java.util.EventObject;
 
@@ -14,7 +14,7 @@ public class RessourceEvent extends EventObject {
     /**
      * @param r The source of this event
      */
-    public RessourceEvent(Ressource r) {
+    public RessourceEvent(RessourceInterface r) {
         super(r);
     }
 }

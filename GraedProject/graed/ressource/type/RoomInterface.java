@@ -6,6 +6,8 @@
  */
 package graed.ressource.type;
 
+import graed.ressource.RessourceInterface;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -15,7 +17,7 @@ import java.rmi.RemoteException;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public interface RoomInterface extends Remote {
+public interface RoomInterface extends Remote, RessourceInterface {
 	/**
 	 * @return Returns the batiment.
 	 */

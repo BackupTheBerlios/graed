@@ -9,7 +9,6 @@ package graed.client;
 import graed.indisponibilite.IndisponibiliteManager;
 import graed.ressource.RessourceInterface;
 import graed.ressource.RessourceManager;
-import graed.ressource.type.Room;
 import graed.ressource.type.RoomInterface;
 import graed.ressource.type.TeacherInterface;
 
@@ -58,8 +57,8 @@ public class Client {
 	public static void main(String[] args) throws RemoteException {
 		IndisponibiliteManager im = Client.getIndisponibiliteManager();
 		RessourceManager rm = Client.getRessourceManager();
-		Collection c = rm.getRessourcesByType("Salle");
-		for( Iterator i = c.iterator(); i.hasNext(); )
-			System.out.println( ((RoomInterface)i.next()) );
+		TeacherInterface ti = (TeacherInterface)rm.createRessource("Professeur");
+		ti.setName("zipstein");
+		rm.getRessources(ti);
 	}
 }

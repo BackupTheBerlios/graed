@@ -6,6 +6,7 @@
  */
 package graed.ressource.type;
 
+import graed.ressource.RessourceInterface;
 import graed.user.User;
 
 import java.rmi.Remote;
@@ -17,7 +18,7 @@ import java.rmi.RemoteException;
  * TODO To change the template for this generated type comment go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-public interface GroupInterface extends Remote {
+public interface GroupInterface extends Remote, RessourceInterface {
 	/**
 	 * @return Returns the number.
 	 */

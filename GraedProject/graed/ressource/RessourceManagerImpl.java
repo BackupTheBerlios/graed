@@ -65,7 +65,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     /**
      * @see graed.ressource.RessourceManager#getRessources(graed.ressource.Ressource)
      */
-    public Collection getRessources(Ressource r) throws RemoteException {
+    public Collection getRessources(RessourceInterface r) throws RemoteException {
             try {
                 return dbm.get(r);
             } catch (DataBaseException e) {
@@ -83,7 +83,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     /**
      * @see graed.ressource.RessourceManager#addRessource(graed.ressource.Ressource)
      */
-    public void addRessource(Ressource r) throws RemoteException {
+    public void addRessource(RessourceInterface r) throws RemoteException {
         try {
             dbm.add(r);
         } catch (DataBaseException e) {
@@ -94,7 +94,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     /**
      * @see graed.ressource.RessourceManager#deleteRessource(graed.ressource.Ressource)
      */
-    public void deleteRessource(Ressource r) throws RemoteException {
+    public void deleteRessource(RessourceInterface r) throws RemoteException {
         try {
             dbm.delete(r);
             fireRessourceDeleted( new RessourceEvent(r));
@@ -106,7 +106,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     /**
      * @see graed.ressource.RessourceManager#updateRessource(graed.ressource.Ressource)
      */
-    public void updateRessource(Ressource r) throws RemoteException {
+    public void updateRessource(RessourceInterface r) throws RemoteException {
         try {
             dbm.update(r);
             fireRessourceUpdated( new RessourceEvent(r));
