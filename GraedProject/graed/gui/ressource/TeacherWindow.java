@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -216,6 +217,13 @@ protected JButton modify(){
 			((Teacher) getInformation()).setPhone(phone.getText());
 			((Teacher) getInformation()).setEmail(email.getText());
 			System.out.println(((Teacher) getInformation()));
+			try {
+				RessourceManagerImpl.getInstance().updateRessource(((Teacher) getInformation()));
+			} catch (RemoteException e) {
+			JOptionPane.showMessageDialog(frame,
+				"Le professeur ne peut être modifiée ",
+				"Erreur",JOptionPane.ERROR_MESSAGE);	
+			}
 			System.exit(0);
 		}		
 	});
@@ -231,10 +239,26 @@ protected JButton create(){
 	JButton b=new JButton("Creer");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			setInformation(new Teacher(name.getText(),firstName.getText(),
-					office.getText(),phone.getText(),email.getText()));
-			System.out.println(((Teacher) getInformation()));
-			System.exit(0);
+			if(name.getText()!=null &&
+					firstName.getText()!=null && email.getText()!=null){			
+				setInformation(new Teacher(name.getText(),firstName.getText(),
+						office.getText(),phone.getText(),email.getText()));
+				System.out.println(((Teacher) getInformation()));				
+					try {
+						RessourceManagerImpl.getInstance().addRessource(((Teacher) getInformation()));
+					} catch (RemoteException e) {						
+						JOptionPane.showMessageDialog(frame,
+						"Le professeur ne peut être crée",
+						"Erreur",JOptionPane.ERROR_MESSAGE);	
+					}
+				
+			}
+			else{
+				JOptionPane.showMessageDialog(frame,
+						"Veuillez renseigner les champs nom, prenom et courriel",
+						"Attention",JOptionPane.INFORMATION_MESSAGE);
+			}
+			System.exit(0);			
 		}		
 	});
 	return b;
@@ -251,6 +275,25 @@ protected JButton search(){
 			setInformation(new Teacher(name.getText(),firstName.getText(),
 					office.getText(),phone.getText(),email.getText()));
 			System.out.println(((Teacher) getInformation()));
+						
+			String name_prof = name.getText().length()==0?null:name.getText();
+			String firstName_prof = firstName.getText().length()==0?null:firstName.getText();
+			String office_prof = office.getText().length()==0?null:office.getText();
+			String phone_prof = phone.getText().length()==0?null:phone.getText();
+			String email_prof = email.getText().length()==0?null:email.getText();
+			setInformation(new Teacher(name_prof,firstName_prof,
+					office_prof,phone_prof,email_prof));
+			System.out.println(((Teacher) getInformation()));	
+			Collection l=null;			
+				try {
+					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Teacher) getInformation()));
+				} catch (RemoteException e) {
+					JOptionPane.showMessageDialog(frame,
+							"Le système de peut récuperer les professeurs",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+			
+			System.out.println("List:"+l);			
 			System.exit(0);
 		}		
 	});
@@ -263,21 +306,20 @@ protected JButton search(){
  * @throws InvalidStateException
  */
 public static void main (String[] args) throws InvalidStateException{
-	Teacher t=new Teacher("Malek", null, null,null,null);
+	Teacher t=new Teacher("Gonord", null, null,null,null);
 	Collection l=null;
 
 	try {
 		l= (Collection) RessourceManagerImpl.getInstance().getRessources(t);
 	} catch (RemoteException e) {
-		System.out.println("Ne peut recup la salle");
+		System.out.println("Ne peut recup le professeur");
 	}
 
 	System.out.println(l);
 	for (Iterator i=l.iterator();i.hasNext();){
-		new TeacherWindow(InformationWindow.SEE,((Teacher)i.next())).OpenWindow();
+		new TeacherWindow(InformationWindow.MODIFY,((Teacher)i.next())).OpenWindow();
 	}
-	/*Teacher t=new Teacher("GONORD", "Nadege", 
-			"2B117", "0164022461", "nade77@neuf.fr");
-	new TeacherWindow(InformationWindow.SEARCH,t).OpenWindow();*/
+	/*Teacher t=null;
+	new TeacherWindow(InformationWindow.CREATE,t).OpenWindow();*/
 }
 }

@@ -1,6 +1,6 @@
 package graed.util.ldap;
 
-import graed.db.DataBaseManager;
+
 import graed.exception.DataBaseException;
 import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Group;
@@ -117,8 +117,8 @@ public class ConnectLDAP {
 			while (ne.hasMore()) {
 				 NameClassPair item = (NameClassPair)ne.next();
 				 Attributes attr=((SearchResult)item).getAttributes();	
-				 l.add(new Teacher(((String)attr.get("givenName").get()), 
-				 		((String)attr.get("sn").get()), "","", 
+				 l.add(new Teacher(((String)attr.get("sn").get()),
+				 		((String)attr.get("givenName").get()),"","", 
 						((String)attr.get("mail").get())));
 			}
 		} catch (NamingException e) {
@@ -255,13 +255,17 @@ public class ConnectLDAP {
 		ConnectLDAP ldap=new ConnectLDAP();
 		Hashtable environnementLDAP = ldap.preparerEnvirronnement ();
 		ldap.initialiserConnexionLDAP(environnementLDAP);
-		/*List p= ldap.searchTeachers();
+		List p= ldap.searchTeachers();
 		System.out.println(p.size()+" teacher find:");
 		for (Iterator i=p.iterator();i.hasNext();){
 			Teacher t=(Teacher)i.next();
 			System.out.println(t);
-			RessourceManagerImpl.getInstance().addRessource(t);
-		}*//*
+			try {
+				RessourceManagerImpl.getInstance().addRessource(t);
+			} catch (RemoteException e) {				
+				e.printStackTrace();
+			}
+		}/*
 		List p= ldap.searchGroup();
 		System.out.println(p.size()+" groups find:");
 		for (Iterator i=p.iterator();i.hasNext();){
@@ -271,7 +275,7 @@ public class ConnectLDAP {
 			System.out.println(e.size()+" students find:");
 			for (Iterator j=e.iterator();j.hasNext();)
 				System.out.println("***"+j.next());
-			}*/
+			}
 		List p= ldap.searchRoom();
 		System.out.println(p.size()+" rooms find:");
 		for (Iterator i=p.iterator();i.hasNext();){
@@ -283,6 +287,6 @@ public class ConnectLDAP {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-		}
+		}*/
 	}
 }
