@@ -216,7 +216,9 @@ public class IndisponibiliteWindow extends InformationWindow{
 					Collection coll=(Collection) ress_found.get(((Ressource)o[i]).getType());
 					((DefaultListModel)select_ress.getModel()).removeElement(o[i]);
 					coll.add(o[i]);
-					((DefaultListModel)list_ress.getModel()).addElement(o[i]);
+					if(((Ressource)o[i]).getType().equals(type_ress.getSelectedItem())){
+							((DefaultListModel)list_ress.getModel()).addElement(o[i]);
+					}
 					frame.validate();
 					frame.repaint();
 				}				
