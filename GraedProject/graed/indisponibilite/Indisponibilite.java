@@ -8,7 +8,8 @@ package graed.indisponibilite;
 
 import graed.ressource.Ressource;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,8 +26,9 @@ public class Indisponibilite {
 	private String periodicite;
 	private String libelle;
 	private String type;
+	private Time hdebut;
 	
-	public Indisponibilite(Date debut, Date fin, int duree, String periodicite,
+	public Indisponibilite(Date debut, Date fin, Time hdebut, int duree, String periodicite,
 			String libelle, String type) {
 		this();
 		this.debut = debut;
@@ -35,6 +37,7 @@ public class Indisponibilite {
 		this.periodicite = periodicite;
 		this.libelle = libelle;
 		this.type = type;
+		this.hdebut = hdebut;
 	}
 	
 	public Indisponibilite() {
@@ -142,5 +145,19 @@ public class Indisponibilite {
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	
+	/**
+	 * @return Returns the hdebut.
+	 */
+	public Time getHdebut() {
+		return hdebut;
+	}
+	/**
+	 * @param hdebut The hdebut to set.
+	 */
+	public void setHdebut(Time hdebut) {
+		this.hdebut = hdebut;
 	}
 }

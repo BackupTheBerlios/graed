@@ -38,6 +38,10 @@
         <property name="type">
             <column name="type" sql-type="varchar(32)" not-null="true"/>
         </property>
+        
+        <property name="hdebut">
+        	<column name="hdebut" sql-type="time" not-null="true"/>
+        </property>
 
         <set name="ressources" table="link_ir">
              <key column="id_indisponibilite"/>

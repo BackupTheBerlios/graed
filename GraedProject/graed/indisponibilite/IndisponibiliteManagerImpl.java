@@ -154,7 +154,12 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		/*Ressource t = new Teacher("Zipstein", "Mark", "", "", "zipstein@univ-mlv.fr");
 		Ressource u = new Teacher("Forax", "Remi", "", "", "forax@univ-mlv.fr");
 		Ressource r = new Room("2b104","Copernic","Copernic",40);
-		Indisponibilite in = new Indisponibilite( new Date(), new Date(), 2, "Unique", "Réseau", "Cours");
+		java.sql.Date.valueOf("2005-06-10");
+		Indisponibilite in = new Indisponibilite( 
+				java.sql.Date.valueOf("2005-06-10"),
+				java.sql.Date.valueOf("2005-06-10"),
+				java.sql.Time.valueOf("15:00:00"),
+				2, "Unique", "Réseau", "Cours");
 		in.addRessource(t);
 		in.addRessource(r);
 		
@@ -162,14 +167,12 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		RessourceManagerImpl.getInstance().addRessource(r);
 		RessourceManagerImpl.getInstance().addRessource(u);
 		
-		IndisponibiliteManagerImpl.getInstance().addIndisponibilite(in);
-		*/
-		Ressource zip = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Zipstein", null, null, null, null)).iterator().next();
-		//System.out.println( zip  );
-		Ressource forax = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Forax", null, null, null, null)).iterator().next();
-		//System.out.println( forax  );
+		IndisponibiliteManagerImpl.getInstance().addIndisponibilite(in);*/
 		
-		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilitesForRessource(forax);
+		Ressource zip = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Zipstein", null, null, null, null)).iterator().next();
+		Ressource forax = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Forax", null, null, null, null)).iterator().next();
+		
+		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilitesForRessourceBetween(zip, java.sql.Date.valueOf("2005-06-08"),java.sql.Date.valueOf("2005-06-15")  );
 		for( Iterator i = c.iterator(); i.hasNext(); ) {
 			System.out.println(((Indisponibilite)i.next()).getRessources());
 		}
