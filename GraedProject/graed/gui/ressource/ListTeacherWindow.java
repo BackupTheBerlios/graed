@@ -37,19 +37,19 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	public ListTeacherWindow(Collection c) {
 		super(c);
 		frame=new JFrame();
-		System.out.println("ListTeacherWindow "+c);
 	}
 
 	private Object[][] fill(){
 		int j=0;
-		Object[][]o= new Object[5][super.size()];
+		Object[][]o= new Object[super.size()][5];
 		for (Iterator i=super.getIteractor();i.hasNext();){
 			Teacher t=(Teacher)i.next();
-			o[0][j]=t.getName();
-			o[1][j]=t.getFirstName();
-			o[2][j]=t.getOffice();
-			o[3][j]=t.getPhone();
-			o[4][j]=t.getEmail();			
+			System.out.println("Teacher:"+t);
+			o[j][0]=t.getName();
+			o[j][1]=t.getFirstName();
+			o[j][2]=t.getOffice();
+			o[j][3]=t.getPhone();
+			o[j][4]=t.getEmail();			
 			j++;
 		}
 		return o;
@@ -63,13 +63,13 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		frame.setIconImage(i.getImage());
 		frame.setSize(with,height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JScrollPane p=new JScrollPane();
+		//JScrollPane p=new JScrollPane();
 		frame.setTitle("Liste des professeurs");
-		frame.setContentPane(p);
+		//frame.setContentPane(p);
 		Object[] o={"Nom","Prénom","Bureau","Tel","Courriel"};
 		JTable t=new JTable(fill(),o);
-		p.add(t);
-		
+		//p.add(t);
+		frame.setContentPane(t);
 		/** Affichage de la fenêtre **/
 		frame.setVisible(true);
 	}
