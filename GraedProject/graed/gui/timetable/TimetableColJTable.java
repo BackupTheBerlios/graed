@@ -274,8 +274,8 @@ public class TimetableColJTable extends JTable {
 	 * @param col
 	 * @param size taille du cours (nombre de colonnes)
 	 */
-	public void addIndispo (IndisponibiliteInterface i,int col,int size,boolean b){
-		if(b)col=find_col(col,size);
+	public void addIndispo (IndisponibiliteInterface i,int col,int size, boolean b){
+		if(b)col=find_col(col,size);		
 		addI(i,col);
 		JTextArea j =(JTextArea) getValueAt(0,col);
 		String text="";
@@ -339,9 +339,11 @@ public class TimetableColJTable extends JTable {
 	 * @param i l'indisponibilité
 	 * @param col la colonne
 	 */
-	public void addI(IndisponibiliteInterface i,int col){
+	private void addI(IndisponibiliteInterface i,int col){
 		Collection coll=getI(col);
-		if(coll!=null)coll.add(i);
+		if(coll!=null){
+			coll.add(i);
+		}
 		else {
 			coll=new HashSet();
 			coll.add(i);
@@ -368,13 +370,15 @@ public class TimetableColJTable extends JTable {
 			for(Enumeration en=list_ind.keys();en.hasMoreElements();){
 				int col_tmp=((Integer)en.nextElement()).intValue();				
 				if(col_tmp<col){
+					System.out.println("Col "+col);
 					col-=(tm.getCellSize(0,col_tmp)-1);
 					if(col<0){
 						col=col_tmp;						
 					}
 				}				
 			}
-		}		
+		}	
+		System.out.println("Col "+col);
 		return col;
 	}
 	/**

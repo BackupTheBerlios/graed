@@ -185,6 +185,9 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 	public void setHdebut(Time hdebut) {
 		this.hdebut = hdebut;
 	}
+	/**
+	 * Affiche l'objet
+	 */
 	public String print() throws RemoteException{
 		String libelle=getLibelle();
 		if(getPeriodicite().equals("ponctuel")){
@@ -197,7 +200,8 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 			libelle+=" tous les 15 jours à partir du "+getDebut();
 		}
 		for(Iterator i=ressources.iterator();i.hasNext();)
-			libelle+="\n"+((RessourceInterface)i.next()).print();
+			libelle+=" \n"+((RessourceInterface)i.next()).print();
+		libelle+=" \nde "+getHdebut()+" à "+new Time(getHdebut().getTime()+1000*60*getDuree());
 		return libelle;
-	}
+	}	
 }

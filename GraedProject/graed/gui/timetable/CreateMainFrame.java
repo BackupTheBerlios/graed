@@ -26,9 +26,11 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -312,10 +314,24 @@ public class CreateMainFrame {
 		try {
 			c=Client.getIndisponibiliteManager().getIndisponibilites(
 					r,dateDebut,dateFin);
+			TreeSet trie=new TreeSet(new Comparator(){
+				public int compare(Object o1, Object o2){
+					if (o1 instanceof IndisponibiliteInterface && o2 instanceof IndisponibiliteInterface)
+						try {
+							return ((IndisponibiliteInterface)o1).getHdebut().compareTo(((IndisponibiliteInterface)o2).getHdebut());
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					return 0;
+				}
+				
+			});
+			trie.addAll(c);
 			CreateColTimetable time2=new CreateColTimetable(null,r.getType()+": "+r.print(),8,15);
 			tp.addTab(time2.getTitle(),time2.getTimetable(), (Icon)icons.get(r.getType()));
 			if(c!=null){
-				for(Iterator i=c.iterator();i.hasNext();)
+				for(Iterator i=trie.iterator();i.hasNext();)
 					time2.addIndispo((IndisponibiliteInterface)i.next());
 			}
 			timetable_list.put(time2,new Timetable(r,dateDebut,dateFin));

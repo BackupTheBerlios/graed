@@ -402,6 +402,22 @@ public class IndisponibiliteWindow extends IndWindow{
     	
     }
 
+    private boolean ressource_disponible(IndisponibiliteInterface i) throws RemoteException{
+    	for(int j=0;j<select_ress.getModel().getSize();++j){
+    		Collection c=Client.getIndisponibiliteManager().getIndisponibilites((RessourceInterface)select_ress.getModel().getElementAt(j),i.getDebut(),i.getFin());
+				for(Iterator it=c.iterator();it.hasNext();){
+					IndisponibiliteInterface tmp=(IndisponibiliteInterface) it.next();
+					if(i.getPeriodicite().equals(("ponctuel"))){
+						if(i.getDebut().equals(tmp.getDebut())){
+							Time time_tmp=new Time(i.getHdebut().getTime()+1000*60*i.getDuree());
+							if(i.getHdebut().before(tmp.getHdebut()) && time_tmp.after(tmp.getHdebut()))
+								System.out.println("La ressource "+(RessourceInterface)select_ress.getModel().getElementAt(j)+" est indisponible");
+						}
+					}
+				}
+    	}
+		return true;
+    }
     /**
      * Création du bouton creer
      * @return bouton
@@ -423,7 +439,7 @@ public class IndisponibiliteWindow extends IndWindow{
     				i.addRessource((RessourceInterface)select_ress.getModel().getElementAt(j));
     			}
     			//System.out.println(i);
-    			
+    			ressource_disponible(i);
 					Client.getIndisponibiliteManager().addIndisponibilite(i);
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
