@@ -24,7 +24,6 @@ import javax.swing.ListCellRenderer;
 public class NotificationRenderer extends JLabel implements ListCellRenderer {
 
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		System.out.println(((DefaultListModel)(list.getModel())).toString());
 		if( value instanceof String ) {
 			String s = (String)value;
 			this.setOpaque(true);

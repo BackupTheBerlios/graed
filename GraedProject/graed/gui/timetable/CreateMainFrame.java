@@ -32,10 +32,12 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -164,6 +166,7 @@ public class CreateMainFrame {
 
 			public void run() {
 				try {
+					enableRefresh(false);
 					GregorianCalendar gc = new GregorianCalendar();
 					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
 					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
@@ -173,7 +176,7 @@ public class CreateMainFrame {
 					dlm.addElement(time+"    "+ri.getType()+" ajouté(e) : "+ri.print());
 					notif.validate();
 					notif.repaint();
-					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+					//if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
 						notif.ensureIndexIsVisible(dlm.getSize()-1);
 					
 				} catch( Exception e ) {
@@ -186,6 +189,7 @@ public class CreateMainFrame {
 
 			public void run() {
 				try {
+					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
 					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
 					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
@@ -195,7 +199,7 @@ public class CreateMainFrame {
 					dlm.addElement(time+"    "+ri.getType()+" mis(e) à jour : "+ri.print());
 					notif.validate();
 					notif.repaint();
-					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+					//if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
 						notif.ensureIndexIsVisible(dlm.getSize()-1);
 					
 				} catch( Exception e ) {
@@ -208,6 +212,7 @@ public class CreateMainFrame {
 
 			public void run() {
 				try {
+					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
 					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
 					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
@@ -218,7 +223,7 @@ public class CreateMainFrame {
 					
 					notif.validate();
 					notif.repaint();
-					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+					//if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
 						notif.ensureIndexIsVisible(dlm.getSize()-1);
 					
 				} catch( Exception e ) {
@@ -231,6 +236,7 @@ public class CreateMainFrame {
 
 			public void run() {
 				try {
+					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
 					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
 					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
@@ -241,7 +247,7 @@ public class CreateMainFrame {
 					
 					notif.validate();
 					notif.repaint();
-					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+					//if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
 						notif.ensureIndexIsVisible(dlm.getSize()-1);
 					
 				} catch( Exception e ) {
@@ -254,6 +260,7 @@ public class CreateMainFrame {
 
 			public void run() {
 				try {
+					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
 					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
 					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
@@ -264,7 +271,7 @@ public class CreateMainFrame {
 					
 					notif.validate();
 					notif.repaint();
-					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+					//if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
 						notif.ensureIndexIsVisible(dlm.getSize()-1);
 					
 				} catch( Exception e ) {
@@ -277,6 +284,7 @@ public class CreateMainFrame {
 
 			public void run() {
 				try {
+					enableRefresh(true);
 					GregorianCalendar gc = new GregorianCalendar();
 					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
 					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
@@ -287,7 +295,7 @@ public class CreateMainFrame {
 					
 					notif.validate();
 					notif.repaint();
-					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+					//if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
 						notif.ensureIndexIsVisible(dlm.getSize()-1);
 					
 				} catch( Exception e ) {
@@ -349,6 +357,7 @@ public class CreateMainFrame {
 		tp.removeAll();
 		for (Iterator it=timetable_list.values().iterator();it.hasNext();)
 			refresh((Timetable) it.next());
+		enableRefresh(false);
 	}
 	/**
 	 * Mise à jour de l'emploi du temps
@@ -432,13 +441,27 @@ public class CreateMainFrame {
 	    buttons.put("print",imp);
 	    buttons.put("refresh",ref);
 	    
+	    JBackgroundPanel p = new JBackgroundPanel();
+	    p.setOpaque(false);
+	    p.setBorder(BorderFactory.createTitledBorder("Navigation"));
+	    p.add(createButton("","","icons/navigation/Back16.gif",null));
+	    JComboBox cb = new JComboBox();
+	    cb.addItem("Semaine");
+	    p.add(cb);
+	    p.add(createButton("","","icons/navigation/Forward16.gif",null));
+	    p.setMaximumSize(new Dimension(300,75));
+	    
 	    tb.add(exp);
 	    tb.add(imp);
-	    tb.addSeparator();
+	    tb.addSeparator(new Dimension(8,24));
 	    tb.add(ref);
+	    tb.addSeparator(new Dimension(8,24));
+	    tb.add(p);
 	    tb.setBorderPainted(true);
 	    tb.setFloatable(false);
 	    tb.setOpaque(true);
+	    enableRefresh(false);
+		    
 	    return tb;
 	}
 	/**
@@ -523,7 +546,7 @@ public class CreateMainFrame {
 	}
 
 	protected void enableRefresh(boolean b) {
-		((JButton)buttons.get("ref")).setEnabled(b);
+		((JButton)buttons.get("refresh")).setEnabled(b);
 	}
 	
 	/** test ***
