@@ -1,6 +1,8 @@
 package graed.gui.timetable;
 
+import graed.exception.ExportException;
 import graed.exception.InvalidStateException;
+import graed.export.Exporter;
 import graed.gui.InformationWindow;
 import graed.gui.indisponibilite.IndisponibiliteWindow;
 import graed.gui.ressource.MaterielWindow;
@@ -17,6 +19,7 @@ import graed.util.ldap.ConnectLDAP;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
@@ -42,10 +45,11 @@ public class CreateMenuBar {
 	 * Constructeur
 	 *
 	 */
-	public CreateMenuBar(JFrame frame){
+	public CreateMenuBar(JFrame frame,JTabbedPane tp){
 		this.frame=frame;
-		//this.tp=tp;
+		this.tp=tp;
 		barMenu=new JMenuBar();
+		barMenu.add(createMenuExport());
 		barMenu.add(createMenuRessource());
 		barMenu.add(createMenuImport());
 		barMenu.add(createMenuInd());
@@ -382,7 +386,55 @@ public class CreateMenuBar {
 		edt.add(closeAll);
 		return edt;
 	}
-	
+	/***********************Exporter***************************/
+	/**
+	 * Création du menu ressource
+	 * @return menu ressource
+	 */
+	private JMenu createMenuExport(){
+		JMenu edt=new JMenu("File");
+		/* Réalisation des sous menus */
+		JMenuItem exp=new JMenuItem("Exporter JPG");
+		/* Exporter un emploi du temps */
+		exp.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if(tp.getSelectedComponent()!=null){
+					javax.swing.JFileChooser jfc = new javax.swing.JFileChooser();
+					int state = jfc.showSaveDialog(null);
+					if(state==javax.swing.JFileChooser.APPROVE_OPTION){
+						try {
+							Exporter.exportToJpeg( tp.getSelectedComponent(), jfc.getSelectedFile().getCanonicalPath() );
+						} catch (ExportException e1) {
+							JOptionPane.showMessageDialog(frame,
+								"Le système de peut exporter l'emploi du temps",
+								"Erreur",JOptionPane.ERROR_MESSAGE);
+						} catch (IOException e1) {
+							JOptionPane.showMessageDialog(frame,
+								"Le système de peut exporter l'emploi du temps",
+								"Erreur",JOptionPane.ERROR_MESSAGE);
+						}
+					}			
+				}
+			}
+			
+		});
+		/* Imprimer un emploi du temps */
+		JMenuItem print=new JMenuItem("Imprimer");
+		print.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if(tp.getSelectedComponent()!=null){
+					System.out.println(frame+" "+tp.getSelectedComponent());
+					Exporter.exportToPrinter(frame,tp.getSelectedComponent());
+				}
+			}
+			
+		});
+		
+		
+		edt.add(exp);
+		edt.add(print);
+		return edt;
+	}
 	/***************** Test **********************/
 	public static void main(String[] args) {
 		JFrame frame=new JFrame();

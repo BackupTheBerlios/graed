@@ -91,8 +91,15 @@ public class Exporter {
         f.setVisible(true);
         javax.swing.JFileChooser jfc = new javax.swing.JFileChooser();
         int state = jfc.showSaveDialog(null);
+        if(state==javax.swing.JFileChooser.APPROVE_OPTION){
+        	 Exporter.exportToJpeg( f.getContentPane(), jfc.getSelectedFile().getCanonicalPath() );
+        }
+        //f.dispose();
+        Exporter.exportToJpeg( f.getContentPane(), jfc.getSelectedFile().getCanonicalPath() );
+
         f.dispose();
         Exporter.exportToJpeg( f.getContentPane(), jfc.getSelectedFile().getCanonicalPath() );
+
         Exporter.exportToPrinter(f,test);
     }
 }
