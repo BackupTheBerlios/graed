@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import graed.exception.DataBaseException;
-import graed.ressource.Ressource;
-
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
@@ -153,6 +151,7 @@ public class DataBaseManager implements Serializable{
 	private Object convertStub( Object stub ) {
 		try {
 			Class ori = stub.getClass();
+			if( !ori.getName().endsWith("_Stub") ) return stub;
 			String original = ori.getName().split("_")[0];
 			//System.out.println(ori.getName()+" "+original);
 			Class dest = Class.forName(original);
@@ -179,11 +178,13 @@ public class DataBaseManager implements Serializable{
 					}
 				}
 			}
+			
 			Criteria c = session.createCriteria(destObj.getClass());
 			c.add( Example.create(destObj).excludeZeroes().ignoreCase().enableLike());
 			List l = c.list();
 			if( l.size() > 0 ) return l.get(0);
-			return null;
+			return destObj;
+						
 		} catch( Exception e ) {
 			e.printStackTrace();
 			return null;
