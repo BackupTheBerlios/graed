@@ -119,7 +119,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#getIndisponibilitesBetween(java.util.Date, java.util.Date)
 	 */
-	public Collection getIndisponibilitesBetween(Date begin, Date end) throws RemoteException {
+	public Collection getIndisponibilites(Date begin, Date end) throws RemoteException {
 		try {
 			return getCriteriaBetween(begin, end).list();
 		} catch(Exception e) {
@@ -128,7 +128,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 	}
 	
 	
-	public Collection getIndisponibilitesForRessource( Ressource r ) throws RemoteException {
+	public Collection getIndisponibilites( Ressource r ) throws RemoteException {
 		
 		try {
 			return dbm.createCriteria(Indisponibilite.class)
@@ -140,11 +140,8 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		}
 	}
 	
-	public Collection getIndisponibilitesForRessourceBetween( Ressource r, Date begin, Date end ) throws RemoteException {
+	public Collection getIndisponibilites( Ressource r, Date begin, Date end ) throws RemoteException {
 		try {
-			/*return getCriteriaBetween(begin,end).createCriteria("ressources")
-				.add( Expression.eq("id_ressource", r.getId_ressource()) )
-				.list();*/
 			return dbm.createCriteria(Indisponibilite.class)
 			.add(Expression.or(
 					Expression.between("debut", begin, end ),
@@ -178,7 +175,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		Ressource zip = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Zipstein", null, null, null, null)).iterator().next();
 		Ressource forax = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Forax", null, null, null, null)).iterator().next();
 		
-		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilitesForRessourceBetween( zip, java.sql.Date.valueOf("2005-06-08"),java.sql.Date.valueOf("2005-06-15")  );
+		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilites( zip, java.sql.Date.valueOf("2005-06-08"),java.sql.Date.valueOf("2005-06-15")  );
 		for( Iterator i = c.iterator(); i.hasNext(); ) {
 			System.out.println(((Indisponibilite)i.next()).getRessources());
 		}
