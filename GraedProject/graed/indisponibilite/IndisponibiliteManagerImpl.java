@@ -142,9 +142,15 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 	
 	public Collection getIndisponibilitesForRessourceBetween( Ressource r, Date begin, Date end ) throws RemoteException {
 		try {
-			return getCriteriaBetween(begin,end).createCriteria("ressources")
+			/*return getCriteriaBetween(begin,end).createCriteria("ressources")
 				.add( Expression.eq("id_ressource", r.getId_ressource()) )
-				.list();
+				.list();*/
+			return dbm.createCriteria(Indisponibilite.class)
+			.add(Expression.or(
+					Expression.between("debut", begin, end ),
+					Expression.between("fin", begin, end ))
+			).createCriteria("ressources")
+				.add( Expression.eq("id_ressource", r.getId_ressource())).list();
 		} catch(Exception e) {
 			throw new RemoteException(e.getMessage());
 		}
@@ -172,7 +178,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		Ressource zip = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Zipstein", null, null, null, null)).iterator().next();
 		Ressource forax = (Ressource)RessourceManagerImpl.getInstance().getRessources(new Teacher("Forax", null, null, null, null)).iterator().next();
 		
-		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilitesForRessourceBetween(zip, java.sql.Date.valueOf("2005-06-08"),java.sql.Date.valueOf("2005-06-15")  );
+		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilitesForRessourceBetween( zip, java.sql.Date.valueOf("2005-06-08"),java.sql.Date.valueOf("2005-06-15")  );
 		for( Iterator i = c.iterator(); i.hasNext(); ) {
 			System.out.println(((Indisponibilite)i.next()).getRessources());
 		}
