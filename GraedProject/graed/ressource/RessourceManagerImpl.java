@@ -5,7 +5,10 @@ package graed.ressource;
 
 import graed.callback.Callback;
 import graed.db.DataBaseManager;
+import graed.db.DataBaseUtil;
 import graed.exception.DataBaseException;
+import graed.indisponibilite.IndisponibiliteInterface;
+import graed.indisponibilite.IndisponibiliteManagerImpl;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -102,10 +105,14 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     public void deleteRessource(RessourceInterface r) throws RemoteException {
         try {
             dbm.delete(r);
-            String sql = "DELETE FROM table link_ir WHERE id_ressource = ?";
-            Query q = dbm.getSession().createQuery(sql);
-            q.setString(0, r.getId_ressource());
-            q.iterate();
+            /*IndisponibiliteManagerImpl im = IndisponibiliteManagerImpl.getInstance();
+            Collection c=im.getIndisponibilites(r);
+            Ressource rr = (Ressource)DataBaseUtil.convertStub(dbm.getSession(),r);
+            for( Iterator i = c.iterator(); i.hasNext(); ) {
+            	IndisponibiliteInterface ii = (IndisponibiliteInterface)i.next();
+            	ii.getRessources().remove(rr);
+            	im.updateIndiponibilite(ii);
+            }*/
             fireRessourceDeleted( r);
         } catch (Exception e) {
         	throw new RemoteException(e.getMessage());
