@@ -14,10 +14,17 @@ import net.sf.hibernate.expression.Example;
 /**
  * @author Helder DE SOUSA
  * Classe s'occupant de la gestion des objets dans la BD
+ * 
  * Design Pattern : Singleton
  */
 public class DataBaseManager{
+	/**
+	 * Instance du gestionnaire de base de données.
+	 */
     private static DataBaseManager instance;
+    /**
+     * Session à la base de données.
+     */
 	private static Session session;
 	
 	private DataBaseManager() {
@@ -28,6 +35,10 @@ public class DataBaseManager{
 	    }
 	}
 	
+	/**
+	 * Récupère l'instance du gestionnaire de base de données.
+	 * @return L'instance.
+	 */
 	public static DataBaseManager getInstance() {
 	    if( instance == null ) 
 	        instance = new DataBaseManager();
@@ -43,8 +54,8 @@ public class DataBaseManager{
 	}
 	
 	/**
-	 * Correspond à la requête insert dans la BD
-	 * @param dbo Objet contenant la liste des paramètres et le nom de la table
+	 * Ajoute un objet à la base de données.
+	 * @param dbo L'objet à ajouter.
 	 * @throws HibernateException
 	 */
 	public void add(Object dbo) throws DataBaseException{
@@ -68,8 +79,8 @@ public class DataBaseManager{
 	    }
 	}
 	/**
-	 * Correspond à la requête delete dans la BD
-	 * @param dbo Objet contenant la liste des paramètres et le nom de la table
+	 * Supprime un objet de la base de données.
+	 * @param dbo L'objet à supprimer.
 	 * @throws DataBaseException
 	 */
 	public void delete(Object dbo) throws DataBaseException{
@@ -82,7 +93,7 @@ public class DataBaseManager{
 	    }
 	}
 	/**
-	 * Correspond à la requête update dans la BD
+	 * Met à jour un objet à la base de données. 
 	 * @param dbo Objet contenant la liste des paramètres et le nom de la table
 	 * @throws DataBaseException
 	 */

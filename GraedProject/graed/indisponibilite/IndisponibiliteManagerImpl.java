@@ -94,6 +94,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 			throws RemoteException {
 		try {
 			Criteria c = dbm.createCriteria(Indisponibilite.class);
+			
 			if( i.getDebut() != null ) c.add(Expression.ge("debut",i.getDebut()) );
 			if( i.getFin() != null ) c.add(Expression.le("fin",i.getFin()) );
 			if( i.getDuree() != 0 ) c.add(Expression.eq( "duree", new Integer(i.getDuree()) ) );

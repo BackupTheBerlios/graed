@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<project name="Graed" default="compile" basedir=".">
+<project name="Graed" default="jar" basedir=".">
 
 <property name="src" value="graed"/>
 <property name="build" value="build"/>
@@ -10,11 +10,17 @@
 <target name="init">
 	<mkdir dir="${build}"/>
 	
-	<copy todir="${build}/${cfg}">
+	<copy todir="${build}">
 	      <fileset dir="${cfg}">
 	        <include name="*.xml"/>
 	      </fileset>
 	</copy>
+		
+	<unjar dest="${build}">
+		<fileset dir="${lib}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</unjar>
 	
 </target>
 
@@ -25,8 +31,18 @@
     	    <fileset dir="${lib}">
     	    	<include name="**/*.jar"/>
     	    </fileset>
-    	  </classpath>
+    	</classpath>
     </javac>
+</target>
+
+<target name="jar" depends="compile">
+	<jar destfile="graed.jar" basedir="${build}">
+		<manifest>
+			<attribute name="Built-By" value="Your name"/>
+			<attribute name="Main-Class"
+						value="graed.gui.timetable.CreateMainFrame"/>
+		</manifest>
+	</jar>
 </target>
 	
 <target name="clean">
