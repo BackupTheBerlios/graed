@@ -5,7 +5,7 @@
 package graed.gui;
 
 import graed.exception.InvalidStateException;
-import graed.ressource.Ressource;
+import graed.ressource.RessourceInterface;
 import graed.ressource.event.RessourceListener;
 
 import javax.swing.JButton;
@@ -28,7 +28,7 @@ public static int SEARCH=4;
  * The current state
  */
 private int state;
-private Ressource o;
+private RessourceInterface o;
 
 
 /**
@@ -36,7 +36,7 @@ private Ressource o;
  * @param state the state of the window
  * @throws InvalidStateException
  */
-public InformationWindow(int state,Ressource o) throws InvalidStateException{
+public InformationWindow(int state,RessourceInterface o) throws InvalidStateException{
 	if((state!=CREATE && state!=MODIFY
 			&& state!=SEE && state!=SEARCH)
 			|| (o==null && 
@@ -82,14 +82,14 @@ public int getState(){
  * Retourne l'information affichée par la fenêtre
  * @return l'information affichée par la fenêtre
  */
-public Ressource getInformation(){
+public RessourceInterface getInformation(){
 	return o;
 }
 /**
  * Modifie l'information contenue dans la fenêtre
  * @param o la nouvelle information
  */
-public void setInformation(Ressource o){
+public void setInformation(RessourceInterface o){
 	this.o=o;
 }
 /**

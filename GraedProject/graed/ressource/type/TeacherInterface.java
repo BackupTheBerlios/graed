@@ -58,4 +58,8 @@ public interface TeacherInterface extends Remote, RessourceInterface {
 	 * @param phone The phone to set.
 	 */
 	public void setPhone(String phone) throws RemoteException;
+	/**
+	 * @return Returns the string representation of the classe
+	 */
+	public String print() throws RemoteException;
 }

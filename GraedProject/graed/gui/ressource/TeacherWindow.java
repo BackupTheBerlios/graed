@@ -4,11 +4,12 @@
  */
 package graed.gui.ressource;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.ressource.RessourceManagerImpl;
 import graed.ressource.event.RessourceEvent;
 import graed.ressource.type.Teacher;
+import graed.ressource.type.TeacherInterface;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -54,13 +55,21 @@ private JFormattedTextField email;
  * @param t the teacher
  * @throws InvalidStateException
  */
-public TeacherWindow(int state, Teacher t) throws InvalidStateException{
+public TeacherWindow(int state, TeacherInterface t) throws InvalidStateException{
 	super(state,t);
 	name = new JFormattedTextField();
 	firstName = new JFormattedTextField();
 	office = new JFormattedTextField();
 	phone = new JFormattedTextField(); 
 	email = new JFormattedTextField();
+	if(state==InformationWindow.MODIFY || state==InformationWindow.SEE){
+		try {
+			Client.getRessourceManager().registerForNotification(this);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();			
+		}
+	}
 }
 /**
  * Add a label and a texfield
@@ -145,11 +154,16 @@ private void addJComponent(JPanel p,GridBagConstraints c){
  * @param c constraint
  */
 private void FillComponent(){
-	name.setText(((Teacher) getInformation()).getName());
-	firstName.setText(((Teacher) getInformation()).getFirstName());
-	office.setText(((Teacher) getInformation()).getOffice());
-	phone.setText(((Teacher) getInformation()).getPhone());
-	email.setText(((Teacher) getInformation()).getEmail());
+	try {
+		name.setText(((TeacherInterface) getInformation()).getName());	
+		firstName.setText(((TeacherInterface) getInformation()).getFirstName());
+		office.setText(((TeacherInterface) getInformation()).getOffice());
+		phone.setText(((TeacherInterface) getInformation()).getPhone());
+		email.setText(((TeacherInterface) getInformation()).getEmail());
+	} catch (RemoteException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	
 }
 /**
@@ -210,16 +224,16 @@ protected JButton modify(){
 	JButton b=new JButton("Modifier");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			((Teacher) getInformation()).setName(name.getText());
-			((Teacher) getInformation()).setFirstName(firstName.getText());
-			((Teacher) getInformation()).setOffice(office.getText());
-			((Teacher) getInformation()).setPhone(phone.getText());
-			((Teacher) getInformation()).setEmail(email.getText());
-			System.out.println(((Teacher) getInformation()));
 			try {
-				RessourceManagerImpl.getInstance().updateRessource(((Teacher) getInformation()));
+				((TeacherInterface) getInformation()).setName(name.getText());			
+				((TeacherInterface) getInformation()).setFirstName(firstName.getText());
+				((TeacherInterface) getInformation()).setOffice(office.getText());
+				((TeacherInterface) getInformation()).setPhone(phone.getText());
+				((TeacherInterface) getInformation()).setEmail(email.getText());
+				System.out.println(((TeacherInterface) getInformation()));			
+				Client.getRessourceManager().updateRessource(((TeacherInterface) getInformation()));
 			} catch (RemoteException e) {
-			JOptionPane.showMessageDialog(frame,
+				JOptionPane.showMessageDialog(frame,
 				"Le professeur ne peut être modifiée ",
 				"Erreur",JOptionPane.ERROR_MESSAGE);	
 			}
@@ -241,10 +255,15 @@ protected JButton create(){
 			if(name.getText()!=null &&
 					firstName.getText()!=null && email.getText()!=null){
 					try {
-						setInformation(new Teacher(name.getText(),firstName.getText(),
-								office.getText(),phone.getText(),email.getText()));					
-						System.out.println(((Teacher) getInformation()));	
-						RessourceManagerImpl.getInstance().addRessource(((Teacher) getInformation()));
+						TeacherInterface ti=(TeacherInterface) Client.getRessourceManager().createRessource("Professeur");
+						setInformation(ti);		
+						((TeacherInterface) getInformation()).setName(name.getText());			
+						((TeacherInterface) getInformation()).setFirstName(firstName.getText());
+						((TeacherInterface) getInformation()).setOffice(office.getText());
+						((TeacherInterface) getInformation()).setPhone(phone.getText());
+						((TeacherInterface) getInformation()).setEmail(email.getText());
+						System.out.println(((TeacherInterface) getInformation()));	
+						Client.getRessourceManager().addRessource(((TeacherInterface) getInformation()));
 					} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
 						"Le professeur ne peut être crée",
@@ -277,11 +296,18 @@ protected JButton search(){
 				String office_prof = office.getText().length()==0?null:office.getText();
 				String phone_prof = phone.getText().length()==0?null:phone.getText();
 				String email_prof = email.getText().length()==0?null:email.getText();
-				setInformation(new Teacher(name_prof,firstName_prof,
-					office_prof,phone_prof,email_prof));
-				System.out.println(((Teacher) getInformation()));	
+				
+				TeacherInterface ti=(TeacherInterface) Client.getRessourceManager().createRessource("Professeur");
+				//setInformation(ti);		
+				ti.setName(name_prof);			
+				ti.setFirstName(firstName_prof);
+				ti.setOffice(office_prof);
+				ti.setPhone(phone_prof);
+				ti.setEmail(email_prof);
+				System.out.println("--------->"+ti.print());	
+				
 				Collection l=null;			
-				l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Teacher) getInformation()));
+				l= (Collection) Client.getRessourceManager().getRessources(ti);
 				System.out.println("List:"+l);	
 				frame.setEnabled(false);
 				new ListTeacherWindow(l).OpenWindow();
@@ -329,7 +355,7 @@ public static void main (String[] args) throws InvalidStateException{
 	for (Iterator i=l.iterator();i.hasNext();){
 		new TeacherWindow(InformationWindow.MODIFY,((Teacher)i.next())).OpenWindow();
 	}*/
-	Teacher t=null;
+	TeacherInterface t=null;
 	new TeacherWindow(InformationWindow.SEARCH,t).OpenWindow();
 }
 /* (non-Javadoc)

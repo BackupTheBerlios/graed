@@ -106,4 +106,13 @@ public class Teacher extends Ressource implements TeacherInterface{
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	/* (non-Javadoc)
+	 * @see graed.ressource.type.TeacherInterface#print()
+	 */
+	public String print() throws RemoteException {
+		String p="";
+		p+=name+" ";
+		p+=firstName;	
+		return p;
+	}
 }
