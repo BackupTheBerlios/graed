@@ -18,11 +18,15 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -74,8 +78,12 @@ public class CreateMainFrame {
 	 */
 	private JPanel fillFrame(){
 		JBackgroundPanel p = new JBackgroundPanel(new BorderLayout());
+		JBackgroundPanel bars = new JBackgroundPanel(new BorderLayout());
 		p.setBackgroundImage("graed/gui/timetable/fond.png");
-		p.add(new CreateMenuBar(frame,tp).getMenuBar(),BorderLayout.NORTH);
+		bars.setBackgroundImage("graed/gui/timetable/fond.png");
+		bars.add(new CreateMenuBar(frame,tp).getMenuBar(),BorderLayout.NORTH);
+		bars.add( createToolBar(), BorderLayout.SOUTH );
+		p.add(bars,BorderLayout.NORTH);
 		p.add(timetable(),BorderLayout.CENTER);
 		return p;
 	}
@@ -121,8 +129,36 @@ public class CreateMainFrame {
 			e.printStackTrace();
 		}
 		System.out.println(c);
-				
-		
+	}
+	
+	protected JToolBar createToolBar() {
+	    JToolBar tb = new JToolBar();
+	    JButton exp = createButton("Exporter",
+	            					"Exporter au format JPEG", 
+	    							"icons/general/export24.gif",
+	    							null);
+	    JButton imp = createButton("Imprimer",
+				"Imprimer l'emploi du temps sélectionné", 
+				"icons/general/print24.gif",
+				null);
+	    
+	    tb.add(exp);
+	    tb.add(imp);
+	    tb.addSeparator();
+	    //tb.setBorderPainted(false);
+	    tb.setFloatable(false);
+	    tb.setOpaque(false);
+	    return tb;
+	}
+	
+	protected JButton createButton( String name, String toolTipText, String image, Action a ) {
+	    JButton b = new JButton( name );
+	    b.setHorizontalTextPosition(SwingConstants.CENTER);
+	    b.setVerticalTextPosition(SwingConstants.BOTTOM);
+	    b.setToolTipText(toolTipText);
+	    b.setIcon(new ImageIcon( getClass().getResource(image)));
+	    if( a!=null ) b.setAction(a);
+	    return b;
 	}
 	
 	/** test ****/
