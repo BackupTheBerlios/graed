@@ -21,6 +21,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class JPaintPanel extends JPanel {
+
+    /**
+     * Version number
+     */
+    private static final long serialVersionUID = 1L;
+    
     private Component moving = null;
     /**
      * 
@@ -103,10 +109,6 @@ public class JPaintPanel extends JPanel {
         });
     }
     
-    /**
-     * Version number
-     */
-    private static final long serialVersionUID = 1L;
 
     
     
@@ -121,6 +123,9 @@ public class JPaintPanel extends JPanel {
         JLabel jl = new JLabel("TEATEWFD");
         jl.setOpaque(true);
         jl.setBackground(Color.GREEN);
+        JLabel jl2 = new JLabel("TEAdsfsdfFD");
+        jl2.setOpaque(true);
+        jl2.setBackground(Color.RED);
         pp.add( jl );
         c.add(pp);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
