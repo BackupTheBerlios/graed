@@ -121,6 +121,15 @@ public class DataBaseManager implements Serializable{
 	    }
 	}
 	
+	public void refresh( Object dbo ) throws DataBaseException {
+		try {
+			session.refresh(dbo);
+		} catch (HibernateException he) {
+			he.printStackTrace();
+	        throw (DataBaseException)new DataBaseException( "Erreur lors du refresh de la base de données").initCause(he);
+		}
+	}
+	
 	/**
 	 * Correspond à la requête select dans la BD
 	 * @param example Objet servant d'example

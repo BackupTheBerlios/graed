@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import net.sf.hibernate.Query;
+
 /**
  * @author Helder DE SOUSA
  */
@@ -100,8 +102,12 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     public void deleteRessource(RessourceInterface r) throws RemoteException {
         try {
             dbm.delete(r);
+            String sql = "DELETE FROM table link_ir WHERE id_ressource = ?";
+            Query q = dbm.getSession().createQuery(sql);
+            q.setString(0, r.getId_ressource());
+            q.iterate();
             fireRessourceDeleted( r);
-        } catch (DataBaseException e) {
+        } catch (Exception e) {
         	throw new RemoteException(e.getMessage());
         }
     }

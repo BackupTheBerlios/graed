@@ -287,4 +287,28 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
     		}
         }
     }
+
+	/* (non-Javadoc)
+	 * @see graed.indisponibilite.IndisponibiliteManager#refreshIndisponibilite(graed.indisponibilite.IndisponibiliteInterface)
+	 */
+	public void refreshIndisponibilite(IndisponibiliteInterface i) throws RemoteException {
+		try {
+			Set set = i.getRessources();
+			i.setRessources(new HashSet());
+			Indisponibilite in = (Indisponibilite)DataBaseUtil.convertStub(dbm.getSession(), i);
+			i.setRessources(set);
+			Set s = new HashSet();
+		
+			for( Iterator it = set.iterator(); it.hasNext(); ) {
+				s.add(
+					DataBaseUtil.convertStub(dbm.getSession(), it.next())
+			);
+			}
+			in.getRessources().clear();
+			in.setRessources(s);
+			dbm.refresh(in);
+		} catch (DataBaseException e) {
+			throw new RemoteException(e.getMessage());
+		}
+	}
 }

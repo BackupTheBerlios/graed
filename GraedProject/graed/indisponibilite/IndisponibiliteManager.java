@@ -69,6 +69,14 @@ public interface IndisponibiliteManager extends CallbackSender, Remote{
 	public Collection getIndisponibilites( RessourceInterface r, Date begin, Date end ) throws RemoteException;
 	
 	/**
+	 * Mets à jour l'indisponibilite passée en argument
+	 * @param i
+	 * @return
+	 * @throws RemoteException
+	 */
+	public void refreshIndisponibilite( IndisponibiliteInterface i ) throws RemoteException;
+	
+	/**
 	 * Permet aux listener de s'enregister pour être avertis des modifications.
      * @param il Le listener voulant s'enregister.
      * @throws RemoteException
