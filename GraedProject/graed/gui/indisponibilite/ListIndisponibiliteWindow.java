@@ -53,16 +53,17 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 	 */
 	private Object[][] fill(){
 		int j=0;
-		Object[][]o= new Object[super.size()][7];
+		Object[][]o= new Object[super.size()][8];
 		for (Iterator i=super.getIteractor();i.hasNext();){
 			Indisponibilite t=(Indisponibilite)i.next();
 			o[j][0]=t.getLibelle();
 			o[j][1]=t.getDebut();
 			o[j][2]=t.getFin();
 			o[j][3]=t.getHdebut();
-			o[j][4]=t.getPeriodicite();			
-			o[j][5]=t.getType();	
-			o[j][6]=t.getRessources().toString();
+			o[j][4]=t.getDuree()+"";
+			o[j][5]=t.getPeriodicite();			
+			o[j][6]=t.getType();	
+			o[j][7]=t.getRessources().toString();
 			j++;
 		}
 		return o;
@@ -77,7 +78,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 		frame.setTitle("Liste des indisponibilités");
 		frame.setContentPane(p);
 		
-		Object[] o={"Libelle","Début","Fin","Heure","Fréquence","Type","Ressources"};
+		Object[] o={"Libelle","Début","Fin","Heure","Duree","Fréquence","Type","Ressources"};
 		table=new JTable(fill(),o);
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
