@@ -100,7 +100,8 @@ public class TimetableColJTable extends JTable {
 					try {
 						IndisponibiliteInterface i=TimetableColJTable.this.removeIndispo(colF);
 						int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
-						i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));					
+						i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));	
+						i.setFin( new Date((i.getFin().getTime()+j*(1000*60*60*24))));	
 						table.addIndispo(i,col,size);	
 						Client.getIndisponibiliteManager().updateIndiponibilite(i);
 					} catch (RemoteException e1) {
