@@ -79,7 +79,7 @@ public class Exporter {
      * @param jf La JFrame à imprimer.
      * @throws ExportException
      */
-    public static void exportToPrinter( JFrame jf ) throws ExportException {
+    public static void exportToPrinter( JFrame jf ) {
         exportToPrinter(jf,jf.getContentPane());
     }
     

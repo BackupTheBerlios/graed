@@ -36,7 +36,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
      */
     private List toBeNotified;
     
-    private IndisponibiliteManagerImpl() throws RemoteException {
+    public IndisponibiliteManagerImpl() throws RemoteException {
     	dbm = DataBaseManager.getInstance();
     	toBeNotified = new ArrayList();
     }
