@@ -151,7 +151,7 @@ public void OpenWindow(){
 	/** Fenêtre d'affichage des données d'un professeur **/
 	frame=new JFrame();
 	Class clazz=RoomWindow.class;
-	ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
+	ImageIcon i=new ImageIcon(clazz.getResource("classe.gif"));
 	frame.setIconImage(i.getImage());
 	if(isSee()){
 		frame.setTitle("Consulter une salle");
