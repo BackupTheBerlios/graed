@@ -163,6 +163,7 @@ public class CreateMainFrame {
 	
 	/** test ****/
 	public static void main(String[] args) {
+        UIManager.installLookAndFeel("Hokage","com.hokage.swing.plaf.HokageLookAndFeel" );
 		new CreateMainFrame();
 	}
 }
