@@ -7,6 +7,7 @@ package graed.gui.ressource;
 import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.gui.renderer.RessourceListRenderer;
 import graed.ressource.event.RessourceEvent;
 import graed.ressource.type.GroupInterface;
 import graed.ressource.type.TeacherInterface;
@@ -66,8 +67,7 @@ public GroupWindow(int state, GroupInterface t) throws InvalidStateException{
 	option = new JFormattedTextField();
 	email = new JFormattedTextField();
 	directeur = new JComboBox();
-	//directeur.setRenderer(new RessourceListRenderer());
-	directeur.addItem("");
+	directeur.setRenderer(new RessourceListRenderer());
 	Collection c;//Collection
 	try {
 		c = Client.getRessourceManager().getRessourcesByType("Professeur");

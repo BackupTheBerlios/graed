@@ -231,8 +231,8 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 		if(getFin()==null)return "Veuillez renseigner la date de fin";
 		if(getPeriodicite()==null || getPeriodicite().equals(""))return "Veuillez renseigner la périodicité";
 		if(getPeriodicite().equals("ponctuel") ){
-			if(!(getDebut().equals(getFin())))
-			return "La date de début doit être égale à la date de fin";
+			if((getDebut().after(getFin())) && (getDebut().before(getFin())))
+				return "La date de début "+getDebut()+" doit être égale à la date de fin "+getFin();
 		}
 		else if(getDebut().after(getFin())){
 			return "La date de début doit être inférieure à la date de fin";

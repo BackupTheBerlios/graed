@@ -29,7 +29,7 @@ public class RessourceListRenderer extends JLabel implements ListCellRenderer {
 	   	{
 	         try {
 	         	if( value!=null )
-				setText(((RessourceInterface)value).print());
+	         	setText(((RessourceInterface)value).print());
 			} catch (RemoteException e) {
 				e.printStackTrace();
 				setText("Erreur !!");
