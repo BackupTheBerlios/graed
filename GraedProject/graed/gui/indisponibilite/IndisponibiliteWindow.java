@@ -5,8 +5,8 @@ package graed.gui.indisponibilite;
 
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.gui.ressource.TeacherWindow;
 import graed.indisponibilite.Indisponibilite;
+import graed.ressource.Ressource;
 import graed.ressource.RessourceManagerImpl;
 
 import java.awt.BorderLayout;
@@ -14,17 +14,13 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -35,9 +31,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
@@ -131,6 +125,7 @@ public class IndisponibiliteWindow extends InformationWindow{
 			o = rmi.getRessourcesTypes();
 			for (int i=0;i<o.length;++i){
 				ress_found.put(o[i],rmi.getRessourcesByType((String)o[i]));//Collection
+				//System.out.println(rmi.getRessourcesByType((String)o[i]));
 			}			
 		} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
@@ -171,8 +166,15 @@ public class IndisponibiliteWindow extends InformationWindow{
     	JButton select=new JButton(">");
     	select.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				list_ress.getSelectedValue();
-				
+				Object[] o=list_ress.getSelectedValues();
+				for (int i=0;i<o.length;++i){
+					Collection coll=(Collection) ress_found.get((String) type_ress.getSelectedItem());
+					((DefaultListModel)list_ress.getModel()).removeElement(o[i]);
+					coll.remove(o[i]);
+					((DefaultListModel)select_ress.getModel()).addElement(o[i]);
+					frame.validate();
+					frame.repaint();
+				}				
 			}
     		});
     	return select;
@@ -183,6 +185,19 @@ public class IndisponibiliteWindow extends InformationWindow{
      */
     private JButton noselect(){
     	JButton noselect=new JButton("<");
+    	noselect.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				Object[] o=select_ress.getSelectedValues();
+				for (int i=0;i<o.length;++i){
+					Collection coll=(Collection) ress_found.get(((Ressource)o[i]).getType());
+					((DefaultListModel)select_ress.getModel()).removeElement(o[i]);
+					coll.add(o[i]);
+					((DefaultListModel)list_ress.getModel()).addElement(o[i]);
+					frame.validate();
+					frame.repaint();
+				}				
+			}
+    		});
     	return noselect;
     }
     /**
