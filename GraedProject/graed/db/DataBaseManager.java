@@ -1,9 +1,11 @@
 package graed.db;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import graed.exception.DataBaseException;
+import graed.ressource.Ressource;
 
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
@@ -62,7 +64,7 @@ public class DataBaseManager implements Serializable{
 	public void add(Object dbo) throws DataBaseException{
 	    try {
 	        Transaction tx = session.beginTransaction();
-	        session.save(dbo);
+	        session.save(convertStub(dbo));
 	        tx.commit();
 	    } catch( HibernateException he ) {
 	    	
@@ -87,9 +89,17 @@ public class DataBaseManager implements Serializable{
 	public void delete(Object dbo) throws DataBaseException{
 	    try {
 	        Transaction tx = session.beginTransaction();
-	        session.delete(dbo);
+	        session.delete(convertStub(dbo));
 	        tx.commit();
 	    } catch( HibernateException he ) {
+	    	Throwable[] t = he.getThrowables();
+	    	
+	    	for( int i=0; i<t.length; ++i ) {
+	    		if( t[i] instanceof java.sql.SQLException ) {
+	    			Exception e = ((java.sql.SQLException)t[i]).getNextException();
+	    			e.printStackTrace();
+	    		}
+	    	}
 	        throw (DataBaseException)new DataBaseException( "Erreur lors de la suppression de la base de données").initCause(he);
 	    }
 	}
@@ -101,7 +111,7 @@ public class DataBaseManager implements Serializable{
 	public void update( Object dbo ) throws DataBaseException {
 	    try {
 	        Transaction tx = session.beginTransaction();
-	        session.update(dbo);
+	        session.update(convertStub(dbo));
 	        tx.commit();
 	    } catch( HibernateException he ) {
 	        throw (DataBaseException)new DataBaseException( "Erreur lors de la mise à jour de la base de données").initCause(he);
@@ -115,9 +125,10 @@ public class DataBaseManager implements Serializable{
 	 * @throws DataBaseException
 	 */
 	public List get( Object example ) throws DataBaseException {
-	    Criteria c = session.createCriteria(example.getClass());
+		Object o = convertStub(example);
+		Criteria c = session.createCriteria(o.getClass());
 	    // On ignore les valeurs zéro, la recherche est insensible à la case et utilise like pour les comparaison de strings
-        c.add( Example.create(example).excludeZeroes().ignoreCase().enableLike());
+        c.add( Example.create(o).excludeZeroes().ignoreCase().enableLike());
         try {
             return c.list();
         }catch( HibernateException he ) {
@@ -127,5 +138,38 @@ public class DataBaseManager implements Serializable{
 	
 	public Criteria createCriteria( Class c ) {
 		return session.createCriteria(c);
+	}
+	
+	/**
+	 * Renvoi l'object auquel correspond le stub.
+	 * @param stub Le stub à convertir
+	 * @return L'object correspondant au stub 
+	 */
+	private Object convertStub( Object stub ) {
+		try {
+			Class ori = stub.getClass();
+			String original = ori.getName().split("_")[0];
+			Class dest = Class.forName(original);
+			Object destObj = dest.newInstance();
+			Method[] ms = dest.getMethods();
+			
+			for( int i=0; i<ms.length; ++i ) {
+				Method m = ms[i];
+				String s = m.getName();
+				if( s.startsWith( "set" )) {
+					String r = s.replaceFirst("set", "get");
+					try {
+						Method mm = ori.getMethod(r, null);
+						Object[] args = {mm.invoke(stub,null)};
+						m.invoke( destObj, args );
+					} catch ( NoSuchMethodException ignored ) {
+					}
+				}
+			}
+			return destObj;
+		} catch( Exception e ) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

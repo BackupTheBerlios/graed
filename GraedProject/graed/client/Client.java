@@ -7,9 +7,7 @@
 package graed.client;
 
 import graed.indisponibilite.IndisponibiliteManager;
-import graed.ressource.RessourceInterface;
 import graed.ressource.RessourceManager;
-import graed.ressource.type.RoomInterface;
 import graed.ressource.type.TeacherInterface;
 
 import java.rmi.Remote;
@@ -59,6 +57,8 @@ public class Client {
 		RessourceManager rm = Client.getRessourceManager();
 		TeacherInterface ti = (TeacherInterface)rm.createRessource("Professeur");
 		ti.setName("zipstein");
-		rm.getRessources(ti);
+		Collection c = rm.getRessources(ti);
+		TeacherInterface tic = (TeacherInterface)c.iterator().next();
+		rm.deleteRessource(ti);
 	}
 }

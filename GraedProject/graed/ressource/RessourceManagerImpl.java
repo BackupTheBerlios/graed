@@ -7,9 +7,11 @@ import graed.db.DataBaseManager;
 import graed.exception.DataBaseException;
 import graed.ressource.event.RessourceEvent;
 import graed.ressource.event.RessourceListener;
+import graed.ressource.type.Teacher;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.lang.reflect.Method;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -67,7 +69,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
      */
     public Collection getRessources(RessourceInterface r) throws RemoteException {
             try {
-                return dbm.get(r);
+            	return dbm.get(r);
             } catch (DataBaseException e) {
             	throw new RemoteException(e.getMessage());
             }
@@ -177,5 +179,4 @@ public RessourceInterface createRessource(Class type) throws RemoteException {
 		throw new RemoteException(e.getMessage());
 	}
 }
-
 }
