@@ -154,6 +154,7 @@ public class DataBaseManager implements Serializable{
 		try {
 			Class ori = stub.getClass();
 			String original = ori.getName().split("_")[0];
+			//System.out.println(ori.getName()+" "+original);
 			Class dest = Class.forName(original);
 			Object destObj = dest.newInstance();
 			Method[] ms = dest.getMethods();
