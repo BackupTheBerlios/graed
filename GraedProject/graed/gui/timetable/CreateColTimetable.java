@@ -229,7 +229,7 @@ public class CreateColTimetable {
 			
 			if(((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+""))!=null)
 			((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(i,
-				celldebut,nbcell);
+				celldebut,nbcell,true);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

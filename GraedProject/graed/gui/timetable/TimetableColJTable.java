@@ -149,7 +149,7 @@ public class TimetableColJTable extends JTable {
 			int row= table.rowAtPoint(p);
 			int col= table.columnAtPoint(p);
 			Object o=TimetableColJTable.this.getValueAt(rowF,colF);
-			if( o!= null) {
+			if( o!= null && (col!=colF||row!=rowF||table!=TimetableColJTable.this)) {
 				 
 				int size = TimetableColJTable.this.getCellSize( rowF, colF );	
 				//On ne déplace si la taille est trop grande
