@@ -223,9 +223,8 @@ public class CreateColTimetable {
 		try {
 			GregorianCalendar gcal=new GregorianCalendar();
 			String libelle;		
-			gcal.setTime(i.getDebut());
-		
-			System.out.println(gcal.get(GregorianCalendar.DAY_OF_WEEK));
+			gcal.setTime(i.getDebut());		
+			
 			int celldebut =(i.getHdebut().getHours()-start)*4+(i.getHdebut().getMinutes()/15);
 			int nbcell=i.getDuree()/15;
 			libelle=i.getLibelle();
@@ -235,7 +234,7 @@ public class CreateColTimetable {
 			else if(i.getPeriodicite().equals("bihebdomadaire")){
 				libelle+=" tous les 15 jours à partir du "+i.getDebut();
 			}
-			System.out.println("--------->"+i);
+			
 			Set s=i.getRessources();
 			for(Iterator it=s.iterator();it.hasNext();){			
 				RessourceInterface tmp=(RessourceInterface)it.next();
