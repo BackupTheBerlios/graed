@@ -6,20 +6,24 @@ package graed.gui.ressource;
 
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Room;
-import graed.ressource.type.Teacher;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -52,6 +56,10 @@ private JFormattedTextField capacite;
  */
 public RoomWindow(int state, Room r) throws InvalidStateException{
 	super(state,r);
+	nom=new JFormattedTextField();
+	batiment=new JFormattedTextField();
+	lieu=new JFormattedTextField();
+	capacite=new JFormattedTextField("0");
 }
 /**
  * Add a label and a texfield
@@ -85,8 +93,6 @@ private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextFie
 		}		
 	}
 	*/
-	tf=new JFormattedTextField();
-	
 	if(isSee()){
 		tf.setEnabled(false);
 	}
@@ -141,7 +147,7 @@ private void FillComponent(){
 /**
  * Open and fill the window
  */
-protected void OpenWindow(){
+public void OpenWindow(){
 	/** Fenêtre d'affichage des données d'un professeur **/
 	frame=new JFrame();
 	Class clazz=RoomWindow.class;
@@ -200,7 +206,15 @@ protected JButton modify(){
 			((Room) getInformation()).setBatiment(batiment.getText());
 			((Room) getInformation()).setLieu(lieu.getText());
 			((Room) getInformation()).setCapacite(Integer.parseInt(capacite.getText()));
-			System.out.println(((Teacher) getInformation()));
+			System.out.println(((Room) getInformation()));
+			
+				try {
+					RessourceManagerImpl.getInstance().updateRessource(((Room) getInformation()));
+				} catch (RemoteException e) {
+				JOptionPane.showMessageDialog(frame,
+					"La salle ne peut être modifiée ",
+					"Erreur",JOptionPane.ERROR_MESSAGE);	
+				}
 			System.exit(0);
 		}		
 	});
@@ -216,9 +230,26 @@ protected JButton create(){
 	JButton b=new JButton("Creer");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
+			if(nom.getText()!=null &&
+					lieu.getText()!=null && batiment.getText()!=null){			
 			setInformation(new Room(nom.getText(),lieu.getText(),
-					batiment.getText(),Integer.parseInt(capacite.getText())));
-			System.out.println(((Teacher) getInformation()));
+					batiment.getText(),Integer.parseInt(capacite.getText())));			
+				System.out.println(((Room) getInformation()));
+				
+					try {
+						RessourceManagerImpl.getInstance().addRessource(((Room) getInformation()));
+					} catch (RemoteException e) {						
+						JOptionPane.showMessageDialog(frame,
+						"La salle ne peut être crée",
+						"Erreur",JOptionPane.ERROR_MESSAGE);	
+					}
+				
+			}
+			else{
+				JOptionPane.showMessageDialog(frame,
+						"Veuillez renseigner tous les champs",
+						"Attention",JOptionPane.INFORMATION_MESSAGE);
+			}
 			System.exit(0);
 		}		
 	});
@@ -233,9 +264,24 @@ protected JButton search(){
 	JButton b=new JButton("Chercher");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			setInformation(new Room(nom.getText(),lieu.getText(),
-					batiment.getText(),Integer.parseInt(capacite.getText())));
-			System.out.println(((Teacher) getInformation()));
+			String nom_salle = nom.getText().length()==0?null:nom.getText();
+			String lieu_salle = lieu.getText().length()==0?null:lieu.getText();
+			String batiment_salle = batiment.getText().length()==0?null:batiment.getText();
+			String capacite_salle = capacite.getText().length()==0?null:capacite.getText();
+			setInformation(new Room(nom_salle,lieu_salle,
+					batiment_salle,Integer.parseInt(capacite_salle)));
+			
+			System.out.println(((Room) getInformation()));			
+			Collection l=null;			
+				try {
+					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Room) getInformation()));
+				} catch (RemoteException e) {
+					JOptionPane.showMessageDialog(frame,
+							"Le système de peut récuperer les salles",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+			
+			System.out.println(l);			
 			System.exit(0);
 		}		
 	});
@@ -248,8 +294,21 @@ protected JButton search(){
  * @throws InvalidStateException
  */
 public static void main (String[] args) throws InvalidStateException{
-	Room r=new Room("3B118", "Bat Copernic", 
-			"Copernic", 15);
-	new RoomWindow(InformationWindow.SEARCH,r);
+	/*Room r=new Room("test", null, 
+			null, 0);
+	Collection l=null;
+	
+		try {
+			l= (Collection) RessourceManagerImpl.getInstance().getRessources(r);
+		} catch (RemoteException e) {
+			System.out.println("Ne peut recup la salle");
+		}
+	
+	System.out.println(l);
+	for (Iterator i=l.iterator();i.hasNext();){
+		new RoomWindow(InformationWindow.MODIFY,((Room)i.next())).OpenWindow();
+	}*/
+	Room r=null;
+	new RoomWindow(InformationWindow.SEARCH,r).OpenWindow();
 }
 }

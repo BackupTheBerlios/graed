@@ -139,7 +139,7 @@ public class IndisponibiliteWindow extends InformationWindow{
     /**
      * Open and fill the window
      */
-    protected void OpenWindow(){
+    public void OpenWindow(){
     	frame=new JFrame();
     	Class clazz=TeacherWindow.class;
     	ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
@@ -232,6 +232,6 @@ public class IndisponibiliteWindow extends InformationWindow{
      */
     public static void main (String[] args) throws InvalidStateException{
     	Indisponibilite i=new Indisponibilite();
-    	new IndisponibiliteWindow(InformationWindow.SEARCH,i);
+    	new IndisponibiliteWindow(InformationWindow.SEARCH,i).OpenWindow();
     }
 }

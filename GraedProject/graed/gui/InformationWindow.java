@@ -45,12 +45,11 @@ public InformationWindow(int state,Object o) throws InvalidStateException{
 		throw new InvalidStateException();
 	this.state=state;
 	this.o=o;	
-	OpenWindow();
 }
 /**
  * Open and fill the window
  */
-protected abstract void OpenWindow();
+public abstract void OpenWindow();
 /**
  * Création du bouton annuler
  * @return bouton

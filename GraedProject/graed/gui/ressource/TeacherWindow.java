@@ -6,6 +6,7 @@ package graed.gui.ressource;
 
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Teacher;
 
 import java.awt.GridBagConstraints;
@@ -13,6 +14,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -33,7 +37,7 @@ public class TeacherWindow extends InformationWindow{
  * Window
  */
 private JFrame frame;
-private static int with=200;
+private static int with=300;
 private static int height=200;
 /**
  * TextField
@@ -52,6 +56,11 @@ private JFormattedTextField email;
  */
 public TeacherWindow(int state, Teacher t) throws InvalidStateException{
 	super(state,t);
+	name = new JFormattedTextField();
+	firstName = new JFormattedTextField();
+	office = new JFormattedTextField();
+	phone = new JFormattedTextField(); 
+	email = new JFormattedTextField();
 }
 /**
  * Add a label and a texfield
@@ -85,7 +94,7 @@ private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextFie
 		}		
 	}
 	*/
-	tf=new JFormattedTextField();
+	
 	
 	if(isSee()){
 		tf.setEnabled(false);
@@ -146,7 +155,7 @@ private void FillComponent(){
 /**
  * Open and fill the window
  */
-protected void OpenWindow(){
+public void OpenWindow(){
 	/** Fenêtre d'affichage des données d'un professeur **/
 	frame=new JFrame();
 	Class clazz=TeacherWindow.class;
@@ -254,8 +263,21 @@ protected JButton search(){
  * @throws InvalidStateException
  */
 public static void main (String[] args) throws InvalidStateException{
-	Teacher t=new Teacher("GONORD", "Nadege", 
+	Teacher t=new Teacher("Malek", null, null,null,null);
+	Collection l=null;
+
+	try {
+		l= (Collection) RessourceManagerImpl.getInstance().getRessources(t);
+	} catch (RemoteException e) {
+		System.out.println("Ne peut recup la salle");
+	}
+
+	System.out.println(l);
+	for (Iterator i=l.iterator();i.hasNext();){
+		new TeacherWindow(InformationWindow.SEE,((Teacher)i.next())).OpenWindow();
+	}
+	/*Teacher t=new Teacher("GONORD", "Nadege", 
 			"2B117", "0164022461", "nade77@neuf.fr");
-	new TeacherWindow(InformationWindow.SEARCH,t);
+	new TeacherWindow(InformationWindow.SEARCH,t).OpenWindow();*/
 }
 }
