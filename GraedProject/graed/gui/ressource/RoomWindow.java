@@ -242,7 +242,7 @@ protected JButton create(){
 					room.setLieu(lieu.getText());
 					setInformation(room);			
 										
-					RessourceManagerImpl.getInstance().addRessource(((Room) getInformation()));
+					Client.getRessourceManager().addRessource(((RoomInterface) getInformation()));
 				} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
 						"La salle ne peut être crée",

@@ -169,9 +169,11 @@ public class CreateMainFrame {
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					RessourceInterface ri = (RessourceInterface)getSource();
 					dlm.addElement(time+"    "+ri.getType()+" ajouté(e) : "+ri.print());
-					notif.ensureIndexIsVisible(dlm.getSize()-1);
 					notif.validate();
 					notif.repaint();
+					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+						notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 				} catch( Exception e ) {
 					e.printStackTrace();
 				}
@@ -189,9 +191,11 @@ public class CreateMainFrame {
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					RessourceInterface ri = (RessourceInterface)getSource();
 					dlm.addElement(time+"    "+ri.getType()+" mis(e) à jour : "+ri.print());
-					notif.ensureIndexIsVisible(dlm.getSize()-1);
 					notif.validate();
 					notif.repaint();
+					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+						notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 				} catch( Exception e ) {
 					e.printStackTrace();
 				}
@@ -209,9 +213,12 @@ public class CreateMainFrame {
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					RessourceInterface ri = (RessourceInterface)getSource();
 					dlm.addElement(time+"    "+ri.getType()+" supprimé(e) : "+ri.print());
-					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 					notif.validate();
 					notif.repaint();
+					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+						notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 				} catch( Exception e ) {
 					e.printStackTrace();
 				}
@@ -229,9 +236,12 @@ public class CreateMainFrame {
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					IndisponibiliteInterface ri = (IndisponibiliteInterface)getSource();
 					dlm.addElement(time+"    "+ri.getType()+" ajouté(e) : "+ri.print());
-					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 					notif.validate();
 					notif.repaint();
+					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+						notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 				} catch( Exception e ) {
 					e.printStackTrace();
 				}
@@ -249,9 +259,12 @@ public class CreateMainFrame {
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					IndisponibiliteInterface ri = (IndisponibiliteInterface)getSource();
 					dlm.addElement(time+"    "+ri.getType()+" mis(e) à jour : "+ri.print());
-					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 					notif.validate();
 					notif.repaint();
+					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+						notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 				} catch( Exception e ) {
 					e.printStackTrace();
 				}
@@ -269,9 +282,12 @@ public class CreateMainFrame {
 					DefaultListModel dlm = (DefaultListModel)notif.getModel();
 					IndisponibiliteInterface ri = (IndisponibiliteInterface)getSource();
 					dlm.addElement(time+"    "+ri.getType()+" supprimé(e) : "+ri.print());
-					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 					notif.validate();
 					notif.repaint();
+					if( notif.getLastVisibleIndex()!=(dlm.getSize()-1) )
+						notif.ensureIndexIsVisible(dlm.getSize()-1);
+					
 				} catch( Exception e ) {
 					e.printStackTrace();
 				}

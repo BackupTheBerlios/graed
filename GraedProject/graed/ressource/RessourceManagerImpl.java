@@ -45,8 +45,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
         });
         
         for( int i=0; i<files.length; ++i) {
-        	//System.out.println(files[i]);
-        	 try {
+        	try {
 				files[i] = files[i].split("\\.")[0];
 				String packageType = directoryTypes.replaceAll("/",".");
 				Ressource r = (Ressource) Class.forName(packageType+"."+files[i]).newInstance();
@@ -69,6 +68,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
      */
     public Collection getRessources(RessourceInterface r) throws RemoteException {
             try {
+            	r.setId_ressource(null);
             	return dbm.get(r);
             } catch (DataBaseException e) {
             	throw new RemoteException(e.getMessage());
