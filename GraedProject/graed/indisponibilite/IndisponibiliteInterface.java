@@ -98,4 +98,9 @@ public interface IndisponibiliteInterface extends Remote {
 	 * @param hdebut The hdebut to set.
 	 */
 	public void setHdebut(Time hdebut) throws RemoteException;
+	/**
+	 * @return Returns the print.
+	 */
+	public String print() throws RemoteException;
+	
 }

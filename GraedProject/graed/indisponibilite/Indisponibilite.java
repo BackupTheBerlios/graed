@@ -184,7 +184,7 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 	public void setHdebut(Time hdebut) {
 		this.hdebut = hdebut;
 	}
-	public String toString(){
+	public String print(){
 		String libelle=getLibelle();
 		if(getPeriodicite().equals("ponctuel")){
 			libelle+=" le "+getDebut();

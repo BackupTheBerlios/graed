@@ -147,16 +147,23 @@ public class TimetableColJTable extends JTable {
 	 */
 	public void addIndispo (IndisponibiliteInterface i,int col,int size){
 		addI(i,col);
-		JTextArea j=new JTextArea((String)i.toString());
+		JTextArea j = new JTextArea();
+		try {
+			j.setText(i.print());	
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		j.setOpaque(true);
 		//Passer à la ligne suivante pour le texte
 		j.setLineWrap(true);
 		j.setWrapStyleWord(true);		
 		//Gestion des erreurs de la taille de la cellule
 		if(size>tm.getColumnCount()-col)size=tm.getColumnCount()-col;
-        tm.setValueAt(j,col,size);
+		tm.setValueAt(j,col,size);
 		TableColumn c=getColumnModel().getColumn(col);
 		c.setPreferredWidth(size*c.getPreferredWidth()+size-1);
+		
 	}
 	/**
 	 * Supprime la donnée à la colonne indiquée

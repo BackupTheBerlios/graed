@@ -6,8 +6,8 @@
  */
 package graed.gui.timetable;
 
+import graed.client.Client;
 import graed.indisponibilite.IndisponibiliteInterface;
-import graed.indisponibilite.IndisponibiliteManagerImpl;
 import graed.ressource.RessourceInterface;
 
 import java.awt.BorderLayout;
@@ -77,7 +77,7 @@ public class CreateMainFrame {
 	public void addTimetable(RessourceInterface r,java.sql.Date dateDebut,java.sql.Date dateFin){
 		Collection c=null;
 		try {
-			c=IndisponibiliteManagerImpl.getInstance().getIndisponibilites(
+			c=Client.getIndisponibiliteManager().getIndisponibilites(
 					r,dateDebut,dateFin);
 			CreateColTimetable time2=new CreateColTimetable(null,r.getType()+": "+r,8,15);
 			tp.add(time2.getTitle(),time2.getTimetable());
