@@ -32,8 +32,7 @@ import com.hokage.swing.JBackgroundPanel;
  *
  * Création d'un JPanel contenant l'emploi du temps d'une ressource
  */
-public class CreateColTimetable {
-	private final JPanel colTimetable;
+public class CreateColTimetable extends JBackgroundPanel{
 	private Hashtable jourTable;
 	private RessourceInterface r;
 	private int start;
@@ -49,23 +48,23 @@ public class CreateColTimetable {
 	 * @param stop heure de fin
 	 */
 	public CreateColTimetable(RessourceInterface r,String title, int start, int stop){
+		super("graed/gui/timetable/icons/fond.png");
 		this.r=r;
 		color = Color.LIGHT_GRAY;
 		jourTable=new Hashtable();
 		this.title=title;
 		this.start = start;
 		this.stop = stop;
-		colTimetable=new JBackgroundPanel("graed/gui/timetable/icons/fond.png");
-		colTimetable.setSize((stop-start)*100+60,500);
+		setSize((stop-start)*100+60,500);
 		CreateTables();		
 	}
 	/**
 	 * Recupère le Jpanel contenant l'emploi du temps de la ressource
 	 * @return JPanel contenant l'emploi du temps de la ressource
 	 */
-	public JPanel getTimetable(){
+	/*public JPanel getTimetable(){
 		return colTimetable;
-	}
+	}*/
 	/**
 	 * Récupération du titre de l'emploi du temps
 	 * @return titre de l'emploi du temps
@@ -88,9 +87,9 @@ public class CreateColTimetable {
 		hours.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		hours.setCellSelectionEnabled(true);
 		hours.setEnabled(false);
-		hours.setRowHeight(colTimetable.getHeight()/12);
+		hours.setRowHeight(getHeight()/12);
 		hours.setFont(new Font("Dialog",Font.PLAIN,8));
-		hours.setPreferredSize( new Dimension( (stop-start)*100,colTimetable.getHeight()/12 ));
+		hours.setPreferredSize( new Dimension( (stop-start)*100,getHeight()/12 ));
 		for(int i=start;i<=stop;++i){
 			hours.setValueAt(i+"h",0,(i-start)*4);			
 		}
@@ -109,8 +108,8 @@ public class CreateColTimetable {
 		days.setGridColor(Color.BLACK);		
 		days.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		days.setEnabled(false);
-		days.setPreferredSize( new Dimension( 60,colTimetable.getHeight()*5/6 ));
-		days.setRowHeight(colTimetable.getHeight()/6);
+		days.setPreferredSize( new Dimension( 60,getHeight()*5/6 ));
+		days.setRowHeight(getHeight()/6);
 		days.setValueAt("Lundi",0,0);
 		days.setValueAt("Mardi",1,0);
 		days.setValueAt("Mercredi",2,0);
@@ -130,8 +129,8 @@ public class CreateColTimetable {
 		TimetableColJTable t= new TimetableColJTable(new TimetableDefaultTableModel(stop-start+1,name ),mdl);
 		t.setOpaque(false);
 		t.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
-		t.setPreferredSize( new Dimension( (stop-start)*100,colTimetable.getHeight()/6 ));
-		t.setRowHeight(colTimetable.getHeight()/6);
+		t.setPreferredSize( new Dimension( (stop-start)*100,getHeight()/6 ));
+		t.setRowHeight(getHeight()/6);
 		jourTable.put(name,t);
 		return t;
 	}
@@ -143,10 +142,10 @@ public class CreateColTimetable {
 	private void CreateTables(){
 		GridBagLayout l=new GridBagLayout();
 		
-		colTimetable.setLayout(l);
-		colTimetable.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
-		colTimetable.setBackground(color);
-		colTimetable.setOpaque(false);
+		setLayout(l);
+		setBorder(BorderFactory.createLineBorder(Color.BLACK) );
+		setBackground(color);
+		setOpaque(false);
 		GridBagConstraints c= new GridBagConstraints();
 		
 		/* Table affichant les heures */
@@ -159,7 +158,7 @@ public class CreateColTimetable {
 	    c.weightx=1;
 	    c.weighty=1;
 	    c.fill = GridBagConstraints.BOTH;
-	    colTimetable.add(heure,c);
+	    add(heure,c);
 		
 		/* Table affichant les jours */
 		JTable jour =CreateDaysTable();
@@ -171,13 +170,13 @@ public class CreateColTimetable {
 	    c.weighty=0.2;
 	    c.fill = GridBagConstraints.BOTH;
 	    
-	    colTimetable.add(jour,c);
+	    add(jour,c);
 	
 		
 		/* Tables affichant les cours */
 		JPanel col=new JBackgroundPanel("graed/gui/timetable/icons/fond.png");
 		col.setLayout(new GridLayout(5,1));
-		col.setPreferredSize( new Dimension( (stop-start)*100,colTimetable.getHeight()*5/6  ));
+		col.setPreferredSize( new Dimension( (stop-start)*100,getHeight()*5/6  ));
 		TimetableDefaultListSelectionModel mdl=new TimetableDefaultListSelectionModel();
 		
 		   
@@ -203,7 +202,7 @@ public class CreateColTimetable {
 	    c.gridheight = 1;
 	    c.weightx=1;
 	    c.fill = GridBagConstraints.BOTH;
-	    colTimetable.add(col,c);
+	    add(col,c);
 		
 		/* Table affichant les heures */
 		JTable heure2 =CreateHoursTable();
@@ -212,7 +211,7 @@ public class CreateColTimetable {
 	    c.gridwidth = 1;
 	    c.gridheight = 1;
 	    c.fill = GridBagConstraints.BOTH;
-	    colTimetable.add(heure2,c);
+	    add(heure2,c);
 		
 	}
 	/**
@@ -251,9 +250,9 @@ public class CreateColTimetable {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JTabbedPane tp=new JTabbedPane();
 		CreateColTimetable time1=new CreateColTimetable(null,"Emploi du temps n°1",8,15);
-		tp.add(time1.getTitle(),time1.getTimetable());
+		tp.add(time1.getTitle(),time1);
 		CreateColTimetable time2=new CreateColTimetable(null,"Emploi du temps n°2",8,15);
-		tp.add(time2.getTitle(),time2.getTimetable());
+		tp.add(time2.getTitle(),time2);
 		f.setContentPane(tp);
 		/* Affichage de l'interface */
 		f.pack();
