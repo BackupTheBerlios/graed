@@ -63,12 +63,12 @@ public TeacherWindow(int state, TeacherInterface t) throws InvalidStateException
 	phone = new JFormattedTextField(); 
 	email = new JFormattedTextField();
 	if(state==InformationWindow.MODIFY || state==InformationWindow.SEE){
-		try {
+		/*try {
 			Client.getRessourceManager().registerForNotification(this);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();			
-		}
+		}*/
 	}
 }
 /**

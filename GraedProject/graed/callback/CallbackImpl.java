@@ -28,4 +28,18 @@ public class CallbackImpl implements Callback {
 		this.cause = cause;
 		notify();
 	}
+
+	/* (non-Javadoc)
+	 * @see graed.callback.Callback#getSource()
+	 */
+	public Object getSource() throws RemoteException {
+		return o;
+	}
+
+	/* (non-Javadoc)
+	 * @see graed.callback.Callback#getCause()
+	 */
+	public int getCause() throws RemoteException {
+		return cause;
+	}
 }

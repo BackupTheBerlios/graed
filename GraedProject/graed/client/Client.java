@@ -6,6 +6,8 @@
  */
 package graed.client;
 
+import graed.callback.Callback;
+import graed.callback.CallbackImpl;
 import graed.indisponibilite.IndisponibiliteManager;
 import graed.ressource.RessourceManager;
 import graed.ressource.type.TeacherInterface;
@@ -14,6 +16,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 
 /**
@@ -59,5 +62,20 @@ public class Client {
 		System.out.println(c);
 		//TeacherInterface tic = (TeacherInterface)c.iterator().next();
 		//rm.deleteRessource(tic);
+		final Callback ca = new CallbackImpl();
+		UnicastRemoteObject.exportObject(ca);
+		Client.getRessourceManager().registerForNotification(ca);
+		Thread t = new Thread() {
+			public void run() {
+				synchronized(ca) {
+					try {
+						System.out.println(ca.getSource()+" "+ca.getSource());
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		t.start();
 	}
 }
