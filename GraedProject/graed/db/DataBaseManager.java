@@ -1,13 +1,14 @@
 package graed.db;
 
+import java.util.List;
+
 import graed.exception.DataBaseException;
 
 import net.sf.hibernate.Criteria;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.Transaction;
-import net.sf.hibernate.expression.Criterion;
-import net.sf.hibernate.expression.Order;
+import net.sf.hibernate.expression.Example;
 
 
 /**
@@ -47,7 +48,7 @@ public class DataBaseManager{
 	        session.save(dbo);
 	        tx.commit();
 	    } catch( HibernateException he ) {
-	        throw (DataBaseException)new DataBaseException( "Erreur lors de l'ajout dans la base de donnée").initCause(he);
+	        throw (DataBaseException)new DataBaseException( "Erreur lors de l'ajout dans la base de données").initCause(he);
 	    }
 	}
 	/**
@@ -61,7 +62,7 @@ public class DataBaseManager{
 	        session.delete(dbo);
 	        tx.commit();
 	    } catch( HibernateException he ) {
-	        throw (DataBaseException)new DataBaseException( "Erreur lors de la suppression de la base de donnée").initCause(he);
+	        throw (DataBaseException)new DataBaseException( "Erreur lors de la suppression de la base de données").initCause(he);
 	    }
 	}
 	/**
@@ -75,32 +76,24 @@ public class DataBaseManager{
 	        session.update(dbo);
 	        tx.commit();
 	    } catch( HibernateException he ) {
-	        throw (DataBaseException)new DataBaseException( "Erreur lors de la mise à jour de la base de donnée").initCause(he);
+	        throw (DataBaseException)new DataBaseException( "Erreur lors de la mise à jour de la base de données").initCause(he);
 	    }
 	}
 	
 	/**
 	 * Correspond à la requête select dans la BD
-	 * @param clazz Classe des objets à récupérer
-	 * @param criterions les critères de recherche à utiliser
-	 * @param orders les ordres de tris
+	 * @param example Objet servant d'example
 	 * @return liste des objets correspondant à la requête de sélection
 	 * @throws DataBaseException
 	 */
-	public Object[] get( Class clazz, Criterion[] criterions, Order[] orders ) throws DataBaseException {
-	    Criteria c = session.createCriteria(clazz);
-	    
-	    for( int i=0; i<criterions.length; ++i )
-	        c.add(criterions[i]);
-	    
-	    for( int i=0; i<orders.length; ++i )
-	        c.addOrder(orders[i]);
-	    
-		try {
-            return c.list().toArray();
-        } catch (HibernateException he) {
-            throw (DataBaseException)new DataBaseException( "Erreur lors de la récupération de données de la base de donnée").initCause(he);
+	public List get( Object example ) throws DataBaseException {
+	    Criteria c = session.createCriteria(example.class);
+	    // On ignore les valeurs zéro, la recherche est insensible à la case et utilise like pour les comparaison de strings
+        c.add( Example.create(example).excludeZeroes().ignoreCase().enableLike();
+        try {
+            return c.list();
+        }catch( HibernateException he ) {
+            throw (DataBaseException)new  DataBaseException( "Erreur lors de la récupération de données à partir de la base de données").initCause(he);
         }
-        
 	}
 }
