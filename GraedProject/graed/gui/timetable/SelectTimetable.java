@@ -5,7 +5,6 @@
 package graed.gui.timetable;
 
 import graed.exception.InvalidStateException;
-import graed.indisponibilite.IndisponibiliteManagerImpl;
 import graed.ressource.Ressource;
 import graed.ressource.RessourceManagerImpl;
 
@@ -27,7 +26,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;

@@ -10,8 +10,6 @@ import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.indisponibilite.Indisponibilite;
 import graed.indisponibilite.IndisponibiliteManagerImpl;
-import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Teacher;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;

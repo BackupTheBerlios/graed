@@ -18,7 +18,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +27,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 /**
  * @author ngonord
@@ -37,16 +37,19 @@ import javax.swing.JPanel;
 public class CreateMenuBar {
 	private JMenuBar barMenu;
 	private JFrame frame;
+	private JTabbedPane tp;
 	/**
 	 * Constructeur
 	 *
 	 */
-	public CreateMenuBar(JFrame frame){
+	public CreateMenuBar(JFrame frame,JTabbedPane tp){
 		this.frame=frame;
+		this.tp=tp;
 		barMenu=new JMenuBar();
 		barMenu.add(createMenuRessource());
 		barMenu.add(createMenuImport());
 		barMenu.add(createMenuInd());
+		barMenu.add(createMenuEDT());
 	}
 	/**
 	 * Renvoie la barre de menu pour la fenêtre principale
@@ -348,6 +351,37 @@ public class CreateMenuBar {
 		ind.add(creer);
 		return ind;
 	}
+	/***********************Emploi du temps***************************/
+	/**
+	 * Création du menu ressource
+	 * @return menu ressource
+	 */
+	private JMenu createMenuEDT(){
+		JMenu edt=new JMenu("Emploi du temps");
+		/* Réalisation des sous menus */
+		JMenuItem close=new JMenuItem("Fermer onglet");
+		/* Fermer un emploi du temps */
+		close.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				tp.remove(tp.getSelectedIndex());				
+			}
+			
+		});
+		/* Fermer tous les emploi du temps */
+		JMenuItem closeAll=new JMenuItem("Fermer tous les onglets");
+		closeAll.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				tp.removeAll();		
+				
+			}
+			
+		});
+		
+		
+		edt.add(close);
+		edt.add(closeAll);
+		return edt;
+	}
 	
 	/***************** Test **********************/
 	public static void main(String[] args) {
@@ -358,7 +392,7 @@ public class CreateMenuBar {
 		/** Affichage de la fenêtre **/
 		JPanel p = new JPanel(new BorderLayout());
 		frame.setContentPane(p);
-		p.add(new CreateMenuBar(frame).getMenuBar(),BorderLayout.NORTH);	
+		//p.add(new CreateMenuBar(frame).getMenuBar(),BorderLayout.NORTH);	
 		
 		frame.pack();
 		frame.setVisible(true);

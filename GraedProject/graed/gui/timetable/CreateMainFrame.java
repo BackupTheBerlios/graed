@@ -35,7 +35,7 @@ public class CreateMainFrame {
 	 */
 	public CreateMainFrame(){
 		JFrame frame=new JFrame();
-		tp=new JTabbedPane();
+		tp=new JTabbedPane();		
 		frame.setTitle("Graed project");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(fillFrame());
@@ -48,7 +48,7 @@ public class CreateMainFrame {
 	 */
 	private JPanel fillFrame(){
 		JPanel p = new JPanel(new BorderLayout());
-		p.add(new CreateMenuBar(frame).getMenuBar(),BorderLayout.NORTH);
+		p.add(new CreateMenuBar(frame,tp).getMenuBar(),BorderLayout.NORTH);
 		p.add(timetable(),BorderLayout.CENTER);
 		return p;
 	}
