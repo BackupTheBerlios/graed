@@ -161,7 +161,7 @@ public class CreateMainFrame {
 		tp.add(time1.getTitle(),time1.getTimetable());
 		CreateColTimetable time2=new CreateColTimetable(null,"Emploi du temps n°2",8,15);
 		tp.add(time2.getTitle(),time2.getTimetable());*/
-		tp.setPreferredSize(new Dimension((stop-start)*100+80,500));
+		tp.setPreferredSize(new Dimension((stop-start)*100+80,550));
 		sp.setRightComponent(tp);
 		
 		return sp;

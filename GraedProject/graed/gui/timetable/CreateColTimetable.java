@@ -96,6 +96,7 @@ public class CreateColTimetable extends JBackgroundPanel{
 		hours.setRowHeight(getHeight()/12);
 		hours.setFont(new Font("Dialog",Font.PLAIN,8));
 		hours.setPreferredSize( new Dimension( (stop-start)*100,getHeight()/12 ));
+		
 		for(int i=start;i<=stop;++i){
 			hours.setValueAt(i+"h",0,(i-start)*4);			
 		}

@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.rmi.RemoteException;
 import java.sql.Date;
 import java.util.Collection;
@@ -189,10 +188,10 @@ public class TimetableColJTable extends JTable {
 	 */
 	public void setPreferredSize(Dimension preferredSize){
 		super.setPreferredSize(preferredSize);
-		for(int i=0;i<getColumnCount();++i)
+		for(int i=0;i<getColumnModel().getColumnCount();++i)
 		{
 			TableColumn c=getColumnModel().getColumn(i);
-			c.setPreferredWidth(preferredSize.width/getColumnCount());
+			if(c!=null)c.setPreferredWidth(preferredSize.width/getColumnCount());
 		}
 	}
 	/**
@@ -290,11 +289,11 @@ public class TimetableColJTable extends JTable {
 			tooltext=j.getToolTipText().replaceAll("</html>","<br><br>");
 			int size_tmp=tm.getCellSize(0,col);
 			TableColumn c=getColumnModel().getColumn(col);
+			System.out.println("JTable2:"+text+" "+c.getPreferredWidth());
 			c.setPreferredWidth(c.getPreferredWidth()/size_tmp);
-			System.out.println("Size tmp:"+size_tmp);
+			System.out.println("JTable2:"+text+" "+c.getPreferredWidth());
 			size=size>size_tmp?size:size_tmp;
 			tm.modifyCellSize(col,size);
-			System.out.println("Size tmp:"+size_tmp);
 		}
 		else{
 			j = new JTextArea();
@@ -316,8 +315,9 @@ public class TimetableColJTable extends JTable {
 		if(size>tm.getColumnCount()-col)size=tm.getColumnCount()-col;
 		if((JTextArea) getValueAt(0,col)==null)tm.setValueAt(j,col,size);
 		TableColumn c=getColumnModel().getColumn(col);
-		c.setPreferredWidth(size*c.getPreferredWidth()+size-1);
-		
+		System.out.println("JTable:"+text+" "+c.getPreferredWidth());		
+		c.setPreferredWidth((size*c.getPreferredWidth())+size-1);
+		System.out.println("JTable:"+text+" "+c.getPreferredWidth());
 	}
 	/**
 	 * Supprime la donnée à la colonne indiquée
@@ -415,4 +415,30 @@ public class TimetableColJTable extends JTable {
 		list_ind.clear();
 	}
 	
+	
+	/* (non-Javadoc)
+	 * @see javax.swing.JTable#resizeAndRepaint()
+	 */
+	/*protected void resizeAndRepaint() {
+		Dimension d=this.getSize();
+		int size=0;
+		if(list_ind!=null && !list_ind.isEmpty()){
+			for(Enumeration en=list_ind.keys();en.hasMoreElements();){
+				Integer col_tmp=((Integer)en.nextElement());	
+				Collection c=(Collection) list_ind.get(col_tmp);
+				for (Iterator i=c.iterator();i.hasNext();){
+					IndisponibiliteInterface ii=(IndisponibiliteInterface) i.next();
+					try {
+						if (ii.getDuree()>size)size=ii.getDuree();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				TableColumn tc=getColumnModel().getColumn(col_tmp.intValue());		
+				tc.setPreferredWidth((size*tc.getPreferredWidth())+size-1);	
+			}
+		}
+		super.resizeAndRepaint();
+	}*/
 }
