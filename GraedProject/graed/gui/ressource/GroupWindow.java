@@ -67,7 +67,7 @@ public GroupWindow(int state, GroupInterface t) throws InvalidStateException{
 	option = new JFormattedTextField();
 	email = new JFormattedTextField();
 	directeur = new JComboBox();
-	directeur.setRenderer(new RessourceListRenderer());
+	//directeur.setRenderer(new RessourceListRenderer());
 	directeur.addItem("");
 	Collection c;//Collection
 	try {
