@@ -4,8 +4,14 @@
  */
 package graed.auth;
 
+import graed.client.Client;
+import graed.user.UserInterface;
+import graed.user.UserManager;
+
 import java.math.BigInteger;
+import java.rmi.RemoteException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 import javax.security.auth.*;
@@ -92,8 +98,10 @@ public class GraedLoginModule implements LoginModule {
             callbacks[0] = null;
             callbacks[1] = null;
 
-            if (!success)
-                throw new LoginException("Pb d'Authentification : login/password ne correspondent pas");
+            if (!success){
+            	System.out.println("Pas loggééééé !!!!");
+            	throw new LoginException("Pb d'Authentification : login/password ne correspondent pas");
+            }
 
             return true;
             
@@ -160,15 +168,43 @@ public class GraedLoginModule implements LoginModule {
     	return true;
     }
 
-    private boolean validateLogin(String userName, String password)throws Exception{
+    private boolean validateLogin(String userName, String password) throws LoginException/*throws Exception*/{
     	System.out.println("Je valide : "+userName+"/"+password);
     	// on hashe le mot de passe avec MD5
-    	MessageDigest md = MessageDigest.getInstance("MD5");
-    	md.update( password.getBytes() );
-    	BigInteger hash = new BigInteger( 1, md.digest() );
-    	String hpassword = hash.toString(16);
+    	try{
+    		MessageDigest md = MessageDigest.getInstance("MD5");
+    		md.update( password.getBytes() );
+    		BigInteger hash = new BigInteger( 1, md.digest() );
+    		String hpassword = hash.toString(16);
     	
-    	System.out.println("Password : "+password+" / "+hpassword);
+    		try{
+    			UserManager um = Client.getUserManager();
+    			UserInterface ui = um.createUser();
+    			ui.setLogin(userName);
+    			
+    			Iterator i = um.getUsers(ui).iterator();
+    			UserInterface userToLog=null;
+    			if(i.hasNext()){
+    				userToLog = (UserInterface)i.next();
+    			}
+    			else{
+    				success = false;
+    			}	
+    	
+    			if(userToLog.getPassword().equals(hpassword)==false){
+    				success = false;
+    			}
+    	
+    			System.out.println("Password : "+password+" / "+hpassword);
+    			
+    		}catch(RemoteException remoteEx){
+    			System.out.println("pb avec RMI");
+    			throw new LoginException("Pb avec RMI");
+    		}
+    	}catch(NoSuchAlgorithmException algoEx){
+    		throw new LoginException("Impossible de hasher le mdp");    		
+    	}
+
 		return true;
     }
     

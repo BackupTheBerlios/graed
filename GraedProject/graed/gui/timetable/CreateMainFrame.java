@@ -13,6 +13,7 @@ import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceInterface;
+import graed.auth.*;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -33,6 +34,9 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.security.auth.Subject;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -78,6 +82,7 @@ public class CreateMainFrame {
 	private int stop=15;
 	/**
 	 * Constructeur
+	 * @return
 	 * @throws UnsupportedLookAndFeelException 
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
@@ -90,6 +95,22 @@ public class CreateMainFrame {
 	    debut=null;
 		fin=null;
 	    
+		Subject subj = null;
+		JFrame mainFrame = new JFrame();
+		/*
+		try{
+			GraedGraphicCallbackHandler cbh = new GraedGraphicCallbackHandler(frame);
+			
+			LoginContext lc = new LoginContext("GraedAuth",cbh);
+			lc.login();
+			
+			subj = lc.getSubject();
+			
+		}catch(LoginException e){
+			e.printStackTrace();
+			System.exit(0);
+		}*/
+		
 	    date_lib=new JLabel();
 	    date_lib.setHorizontalAlignment(JLabel.CENTER);
 	    date_lib.setVerticalAlignment(JLabel.CENTER);

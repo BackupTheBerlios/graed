@@ -1,8 +1,11 @@
 package graed.user;
 
 
+import java.math.BigInteger;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author ngonord
@@ -171,36 +174,30 @@ public class User extends UnicastRemoteObject implements UserInterface{
      * @see graed.ressource.RessourceInterface#setType(java.lang.String)
      */
     public void setType(String type) throws RemoteException {
-        // TODO Auto-generated method stub
-        
     }
     /* (non-Javadoc)
      * @see graed.ressource.RessourceInterface#getType()
      */
     public String getType() throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
+        return "User";
     }
+    
     /* (non-Javadoc)
      * @see graed.ressource.RessourceInterface#getId_ressource()
      */
     public String getId_ressource() throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
+        return getId();
     }
     /* (non-Javadoc)
      * @see graed.ressource.RessourceInterface#setId_ressource(java.lang.String)
      */
     public void setId_ressource(String id_ressource) throws RemoteException {
-        // TODO Auto-generated method stub
-        
     }
     /* (non-Javadoc)
      * @see graed.ressource.RessourceInterface#print()
      */
     public String print() throws RemoteException {
-        // TODO Auto-generated method stub
-        return null;
+    	return name+firstName;
     }
     /* (non-Javadoc)
      * @see graed.user.UserInterface#control()
@@ -208,5 +205,13 @@ public class User extends UnicastRemoteObject implements UserInterface{
     public String control() throws RemoteException{
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    public static String encodePassword(String password) throws NoSuchAlgorithmException{
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update( password.getBytes() );
+		BigInteger hash = new BigInteger( 1, md.digest() );
+		String hpassword = hash.toString(16);
+		return hpassword;
     }
 }
