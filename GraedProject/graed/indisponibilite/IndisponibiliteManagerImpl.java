@@ -10,11 +10,24 @@ import graed.ressource.type.Room;
 import graed.ressource.type.Teacher;
 
 import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import javax.swing.text.DateFormatter;
+import javax.swing.text.DefaultFormatterFactory;
+
+import com.toedter.calendar.JDateChooser;
+import com.toedter.components.JSpinField;
 
 
 import net.sf.hibernate.Criteria;
@@ -179,5 +192,19 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		for( Iterator i = c.iterator(); i.hasNext(); ) {
 			System.out.println(((Indisponibilite)i.next()).getRessources());
 		}
+		
+		SpinnerDateModel dateModel = new SpinnerDateModel(
+	        new Date(7*60*60*1000), new Date(7*60*60*1000), new Date(18*60*60*1000), Calendar.HOUR_OF_DAY);
+	    
+	    JSpinner spinner = new JSpinner(dateModel);
+	    
+	    
+	    spinner.setEditor(new JSpinner.DateEditor(spinner, "HH:mm"));
+	    
+		JFrame jf = new JFrame();
+		jf.getContentPane().add(spinner);
+		jf.pack();
+		jf.setVisible(true);
+		
 	}
 }
