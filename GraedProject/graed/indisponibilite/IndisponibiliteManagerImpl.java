@@ -94,7 +94,7 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 			}
 			in.getRessources().clear();
 			in.setRessources(s);
-            dbm.delete(i);
+            dbm.delete(in);
             fireIndisponibiliteDeleted( i);
         } catch (DataBaseException e) {
         	throw new RemoteException(e.getMessage());
@@ -115,7 +115,7 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 			}
 			in.getRessources().clear();
 			in.setRessources(s);
-			dbm.update(i);
+			dbm.update(in);
             fireIndisponibiliteUpdated( i);
         } catch (DataBaseException e) {
         	throw new RemoteException(e.getMessage());
