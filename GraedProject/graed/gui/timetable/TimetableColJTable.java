@@ -31,10 +31,12 @@ import java.rmi.RemoteException;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -74,7 +76,7 @@ public class TimetableColJTable extends JTable {
 		i_tmp=null;
 		creer=null;
 		this.setComponentPopupMenu(CreatePopupMenu());
-		list_ind = new Hashtable(); 
+		list_ind = new Hashtable();		
 		tm=arg0;
 		/**
 		 * Sélection par ligne non
@@ -373,7 +375,9 @@ public class TimetableColJTable extends JTable {
 		c.setPreferredWidth((size*c.getPreferredWidth())+size-1);
 		for (int in=col;in<col+size;++in){
 			Collection co=getI(in);
-			if(co!=null)System.out.println("Timetable "+co);/*{
+			if(co!=null)
+				for (Iterator it=co.iterator();it.hasNext();)
+					System.out.println("Timetable "+(IndisponibiliteInterface) it.next());/*{
 				removeIndispo (in);
 				for (Iterator it=co.iterator();it.hasNext();){
 					addIndispo ((IndisponibiliteInterface) it.next(),col,size+in,false);

@@ -40,8 +40,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 import com.toedter.calendar.JDateChooser;
 
@@ -386,8 +384,7 @@ public class IndisponibiliteWindow extends IndWindow{
     			s.clear();
     			for(int i=0;i<select_ress.getModel().getSize();++i){
     				((IndisponibiliteInterface) getInformation()).addRessource((RessourceInterface)select_ress.getModel().getElementAt(i));
-    			}
-    			System.out.println(((IndisponibiliteInterface) getInformation()));
+    			}   			
     			
 					Client.getIndisponibiliteManager().updateIndiponibilite(((IndisponibiliteInterface) getInformation()));
 				} catch (RemoteException e) {

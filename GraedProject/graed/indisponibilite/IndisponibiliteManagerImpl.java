@@ -105,6 +105,7 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	 * @see graed.indisponibilite.IndisponibiliteManager#updateIndiponibilite(graed.indisponibilite.Indisponibilite)
 	 */
 	public void updateIndiponibilite(IndisponibiliteInterface i) throws RemoteException {
+		System.out.println(i.print());
 		try {
 			Indisponibilite in = (Indisponibilite)DataBaseUtil.convertStub(dbm.getSession(), i);
 			Set s = new HashSet();
