@@ -57,9 +57,10 @@ public class Client {
 		IndisponibiliteManager im = Client.getIndisponibiliteManager();
 		RessourceManager rm = Client.getRessourceManager();
 		TeacherInterface ti = (TeacherInterface)rm.createRessource("Professeur");
-		ti.setName("zipstein");
+		ti.setName("Forax");
 		Collection c = rm.getRessources(ti);
-		TeacherInterface tic = (TeacherInterface)c.iterator().next();
-		rm.deleteRessource(tic);
+		System.out.println(c);
+		//TeacherInterface tic = (TeacherInterface)c.iterator().next();
+		//rm.deleteRessource(tic);
 	}
 }

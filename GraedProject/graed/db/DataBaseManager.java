@@ -2,6 +2,7 @@ package graed.db;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import graed.exception.DataBaseException;
@@ -129,6 +130,7 @@ public class DataBaseManager implements Serializable{
 	 */
 	public List get( Object example ) throws DataBaseException {
 		Object o = convertStub(example);
+		if( o==null ) return new ArrayList();
 		Criteria c = session.createCriteria(o.getClass());
 	    // On ignore les valeurs zéro, la recherche est insensible à la case et utilise like pour les comparaison de strings
         c.add( Example.create(o).excludeZeroes().ignoreCase().enableLike());
@@ -171,7 +173,9 @@ public class DataBaseManager implements Serializable{
 			}
 			Criteria c = session.createCriteria(destObj.getClass());
 			c.add( Example.create(destObj).excludeZeroes().ignoreCase().enableLike());
-			return c.list().get(0);
+			List l = c.list();
+			if( l.size() > 0 ) return l.get(0);
+			return null;
 		} catch( Exception e ) {
 			e.printStackTrace();
 			return null;
