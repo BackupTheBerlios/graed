@@ -9,6 +9,7 @@ package graed.gui.renderer;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -26,12 +27,18 @@ public class NotificationRenderer extends JLabel implements ListCellRenderer {
 			this.setOpaque(true);
 			String s = (String)value;
 			
-				if( s.indexOf("ajouté") >=0 )
+				if( s.indexOf("ajouté") >=0 ) {
+					this.setIcon(new ImageIcon(getClass().getResource("../timetable/icons/general/New16.gif")));
 					this.setBackground(new Color(0x9dc97f));
-				else if( s.indexOf("supprimé") >=0 )
+				}
+				else if( s.indexOf("supprimé") >=0 ) {
+					this.setIcon(new ImageIcon(getClass().getResource("../timetable/icons/general/Delete16.gif")));
 					this.setBackground(new Color(0xc97f7f));
-				else if( s.indexOf("à jour") >=0 )
+				}
+				else if( s.indexOf("à jour") >=0 ) {
+					this.setIcon(new ImageIcon(getClass().getResource("../timetable/icons/general/Refresh16.gif")));
 					this.setBackground(new Color(0xf8ff8b));
+				}
 			
 			this.setText(s);
 			return this;

@@ -278,7 +278,7 @@ protected JButton search(){
 			String batiment_salle = batiment.getText().length()==0?null:batiment.getText();
 			String capacite_salle = capacite.getText().length()==0?null:capacite.getText();
 			
-			RoomInterface room = (RoomInterface)Client.getRessourceManager().createRessource("Classe");
+			RoomInterface room = (RoomInterface)Client.getRessourceManager().createRessource("Salle");
 			room.setNom(nom_salle);
 			room.setBatiment(batiment_salle);
 			room.setCapacite(Integer.parseInt(capacite_salle));
