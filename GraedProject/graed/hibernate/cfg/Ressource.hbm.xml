@@ -16,26 +16,33 @@
     	<column name="type" sql-type="varchar(12)" not-null="true"/>
     </property>
             
-    <!--
     <joined-subclass name="graed.ressource.type.Group" table="formation">
         <key column="id_formation"/>
-		<property name="nom">
-            <column name="nom" sql-type="varchar(12)" not-null="true"/>
-        </property>
-
-        <property name="batiment">
-        	<column name="batiment" sql-type="varchar(30)" not-null="true"/>
-        </property>
-
-        <property name="lieu">
-        	<column name="lieu" sql-type="varchar(64)" not-null="true"/>
+        <property name="number">
+            <column name="number" sql-type="varchar(10)" not-null="true"/>
         </property>
         
-        <property name="capacite">
-        	<column name="capacite" sql-type="integer" not-null="false"/>
+		<property name="name">
+            <column name="nom" sql-type="varchar(24)" not-null="true"/>
         </property>
+
+        <property name="description">
+        	<column name="description" sql-type="varchar(50)" not-null="true"/>
+        </property>
+
+        <property name="mail">
+        	<column name="courriel" sql-type="varchar(64)" not-null="false"/>
+        </property>
+        
+        <property name="options">
+        	<column name="options" sql-type="varchar(50)" not-null="false"/>
+        </property>
+        
+        <many-to-one name="prof_responsable" column="id_prof_responsable" class="graed.ressource.Ressource"/>
+    
+    	<many-to-one name="user" column="id_secretaire" class="graed.user.User"/>  
     </joined-subclass>
-    -->
+   
     
     <joined-subclass name="graed.ressource.type.Materiel" table="materiel">
         <key column="id_materiel"/>

@@ -16,7 +16,6 @@ import graed.user.User;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Group extends Ressource {
-	private String id;
 	private String number;
 	private String name;
 	private String description;
@@ -27,16 +26,19 @@ public class Group extends Ressource {
 	public Group(){
 		super("Formation");
 	}
-	public Group(String number,String name, String description,String mail/*Personne directeur,Secretariat s,List options */ ){
+	public Group(String number,String name, String description,String mail,
+			User user, Teacher prof_responsable, String options){
 		this();
 		this.number=number;
 		this.name=name;
 		this.description=description;
 		this.mail=mail;
+		this.user=user;
+		this.prof_responsable=prof_responsable;
+		this.options=options;
 	}		
 	public String toString() {
 		String p="";
-		p+="ID"+id+" ";
 		p+="Number"+number+" ";
 		p+="Name: "+name+" ";
 		p+="Description: "+description+" ";

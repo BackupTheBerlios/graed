@@ -213,7 +213,7 @@ public class ConnectLDAP {
 				 	l.add(new Group(((String)attr.get("gidNumber").get()),
 				 		((String)attr.get("cn").get()),
 				 		((String)description.get()),
-				 		((String)mailLocalAddress.get())));
+				 		((String)mailLocalAddress.get()),null,null,null));
 			}
 		} catch (NamingException e) {
 			return null;
