@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.rmi.RemoteException;
+import java.util.Collection;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -67,7 +68,7 @@ public SelectTimetable() {
 	p=new JPanel();
 	p.setSize(with,height);
 	
-	RessourceManagerImpl rmi;
+	final RessourceManagerImpl rmi;
 	String[] ressTypes=null;
 	try {
 		rmi=RessourceManagerImpl.getInstance();
@@ -79,14 +80,17 @@ public SelectTimetable() {
 	
 	
 	type = new JComboBox(ressTypes);
-	/*type.addItemListener(new ItemListener(){
+	type.addItemListener(new ItemListener(){
 
 		public void itemStateChanged(ItemEvent e) {
-			System.out.println(type.getSelectedItem());
-			
+			if(e.getItem()==type.getSelectedItem()){
+				//Collection col=rmi.getRessourcesByType((String)e.getItem());
+				
+				//ressource.add();
+			}
 		}
 		
-	});*/
+	});
 	ressource = new JComboBox();
 	
 	ButtonGroup group=new ButtonGroup();
