@@ -265,7 +265,7 @@ public class TimetableColJTable extends JTable {
 			j.setText(i.print());
 			String text = "<html>";
 			text+=i.print();
-			text=text.replaceAll("\\n","<br>");			
+			text=text.replaceAll("\\n","<br>");	
 			j.setToolTipText(text+"</html>");
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block

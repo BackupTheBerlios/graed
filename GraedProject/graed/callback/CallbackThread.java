@@ -20,8 +20,10 @@ public class CallbackThread extends Thread {
 	private Callback ca;
 	private boolean run;
 	private Hashtable runnables;
+	private CallbackSender cs;
 	
-	public CallbackThread( Runnable add, Runnable delete, Runnable update,  ) {
+	public CallbackThread( Runnable add, Runnable delete, Runnable update, CallbackSender cs ) {
+		this.cs = cs;
 		init();
 		runnables = new Hashtable();
 		runnables.put( new Integer(Callback.ADD), add );
@@ -49,7 +51,7 @@ public class CallbackThread extends Thread {
 			run = true;
 			ca = new CallbackImpl();
 			UnicastRemoteObject.exportObject(ca);
-			Client.getRessourceManager().registerForNotification(ca);
+			cs.registerForNotification(ca);
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
 		}

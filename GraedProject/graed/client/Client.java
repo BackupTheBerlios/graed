@@ -81,7 +81,7 @@ public class Client {
 			}			
 		} };
 		
-		CallbackThread t = new CallbackThread(add,delete,update);
+		CallbackThread t = new CallbackThread(add,delete,update, Client.getRessourceManager());
 		
 		t.start();
 		

@@ -2,6 +2,7 @@
 package graed.ressource;
 
 import graed.callback.Callback;
+import graed.callback.CallbackSender;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -11,7 +12,7 @@ import java.util.Collection;
 /**
  * @author Helder DE SOUSA
  */
-public interface RessourceManager extends Remote{
+public interface RessourceManager extends CallbackSender, Remote{
     /**
      * Adds a resource.
      * @param r The resource to add
@@ -37,14 +38,7 @@ public interface RessourceManager extends Remote{
      * @throws RemoteException
      */
     public Collection getRessources( RessourceInterface r ) throws RemoteException;
-    /**
-     * Objects can register on an implementation of the ressource manager to be notified of changes.
-     * @param o The object to register.
-     * @throws RemoteException
-     */
-    public void registerForNotification( Callback c ) throws RemoteException;
-    public void unregister( Callback c ) throws RemoteException;
-    
+        
     /**
      * Returns the availables types for ressources.
      * @return An array containing all types.
