@@ -191,13 +191,12 @@ protected JButton modify(){
 		public void actionPerformed(ActionEvent arg0) {
 			((Materiel) getInformation()).setName(name.getText());
 			((Materiel) getInformation()).setType(type.getText());
-			System.out.println(((Materiel) getInformation()));
-			
+			System.out.println(((Materiel) getInformation()));			
 				try {
 					RessourceManagerImpl.getInstance().updateRessource(((Materiel) getInformation()));
 				} catch (RemoteException e) {
 				JOptionPane.showMessageDialog(frame,
-					"Le matériel ne peut être modifiée ",
+					"Le matériel ne peut être modifié ",
 					"Erreur",JOptionPane.ERROR_MESSAGE);	
 				}
 			System.exit(0);
@@ -273,19 +272,18 @@ protected JButton search(){
  * @throws InvalidStateException
  */
 public static void main (String[] args) throws InvalidStateException{
-	/*Room r=new Room("test", null, 
-			null, 0);
+	/*Materiel r=new materiel("m", null);
 	Collection l=null;
 	
 		try {
 			l= (Collection) RessourceManagerImpl.getInstance().getRessources(r);
 		} catch (RemoteException e) {
-			System.out.println("Ne peut recup la salle");
+			System.out.println("Ne peut recup le matériel");
 		}
 	
 	System.out.println(l);
 	for (Iterator i=l.iterator();i.hasNext();){
-		new RoomWindow(InformationWindow.MODIFY,((Room)i.next())).OpenWindow();
+		new MaterielWindow(InformationWindow.MODIFY,((Room)i.next())).OpenWindow();
 	}*/
 	Materiel m=null;
 	new MaterielWindow(InformationWindow.CREATE,m).OpenWindow();
