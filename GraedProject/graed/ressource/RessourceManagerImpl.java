@@ -140,12 +140,5 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
    		
    		return null;
    }
-   
-   public static void main( String[] args ) throws RemoteException {
-   		RessourceManagerImpl rmi = RessourceManagerImpl.getInstance();
-   		String[] types = rmi.getRessourcesTypes();
-   		for( int i=0; i<types.length; ++i )
-   			System.out.println( types[i] );
-   		System.exit(0);
-   }
+
 }
