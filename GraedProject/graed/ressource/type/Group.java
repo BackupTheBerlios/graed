@@ -20,6 +20,9 @@ public class Group extends Ressource {
 	private String name;
 	private String description;
 	private String mail;
+	private int id_utilisateur;
+	private int id_prof_responsable;
+	private String options;
 	public Group(String number,String name, String description,String mail/*Personne directeur,Secretariat s,List options */ ){
 		super();
 		id=0;
