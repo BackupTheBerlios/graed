@@ -72,6 +72,7 @@ public GroupWindow(int state, GroupInterface t) throws InvalidStateException{
 	try {
 		c = Client.getRessourceManager().getRessourcesByType("Professeur");
 		if(c!=null){
+			directeur.addItem("");
 			for( Iterator it=c.iterator();it.hasNext();)
 				directeur.addItem(it.next());		}
 	}catch (RemoteException e) {
@@ -271,7 +272,9 @@ protected JButton create(){
 					g.setDescription(description.getText());
 					g.setMail(email.getText());
 					g.setOptions(option.getText());
-					System.out.println(g);				
+					TeacherInterface prof = (TeacherInterface) (((String)directeur.getSelectedItem().toString()).length()==0?null:directeur.getSelectedItem());
+					g.setProf_responsable(prof);
+					
 					String control=g.control();
 	    			if(control!=null){
 	    				JOptionPane.showMessageDialog(frame,
@@ -313,19 +316,16 @@ protected JButton search(){
 			String op = option.getText().length()==0?null:option.getText();
 			String m = email.getText().length()==0?null:email.getText();
 			TeacherInterface prof = (TeacherInterface) (((String)directeur.getSelectedItem().toString()).length()==0?null:directeur.getSelectedItem());
-			
 			GroupInterface g=(GroupInterface) Client.getRessourceManager().createRessource("Formation");
 			g.setName(n);
 			g.setDescription(d);
 			g.setMail(m);
 			g.setOptions(op);
 			g.setProf_responsable(prof);
-			System.out.println(g);		
 			Collection l=null;			
-					l= (Collection) Client.getRessourceManager().getRessources(((GroupInterface) getInformation()));
+					l= (Collection) Client.getRessourceManager().getRessources(g);
 				
 			
-			System.out.println("List:"+l);	
 			frame.setEnabled(false);
 			new ListGroupWindow(l).OpenWindow();
 			frame.dispose();

@@ -28,8 +28,9 @@ public class RessourceListRenderer extends JLabel implements ListCellRenderer {
 	    boolean cellHasFocus)
 	   	{
 	         try {
-	         	if( value!=null )
+	         	if( value!=null && value instanceof RessourceInterface)
 	         	setText(((RessourceInterface)value).print());
+	         	else setText("");
 			} catch (RemoteException e) {
 				e.printStackTrace();
 				setText("Erreur !!");

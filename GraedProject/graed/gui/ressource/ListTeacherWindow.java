@@ -119,6 +119,8 @@ public class ListTeacherWindow extends ListRessourceWindow {
 				frame.setEnabled(false);
 				try {
 					new TeacherWindow(InformationWindow.SEE,t).OpenWindow();
+					frame.setEnabled(true);
+					
 				} catch (InvalidStateException e) {
 					JOptionPane.showMessageDialog(frame,
 							"Vous ne pouvez consulter cette ressource",
@@ -141,6 +143,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 				frame.setEnabled(false);
 				try {
 					new TeacherWindow(InformationWindow.MODIFY,t).OpenWindow();
+					frame.setEnabled(true);
 				} catch (InvalidStateException e) {
 					JOptionPane.showMessageDialog(frame,
 							"Vous ne pouvez consulter cette ressource",

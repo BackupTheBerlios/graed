@@ -315,19 +315,19 @@ protected JButton search(){
 				ti.setOffice(office_prof);
 				ti.setPhone(phone_prof);
 				ti.setEmail(email_prof);
-				System.out.println("--------->"+ti.print());	
 				
 				Collection l=null;			
 				l= (Collection) Client.getRessourceManager().getRessources(ti);
-				System.out.println("List:"+l);	
 				frame.setEnabled(false);
 				new ListTeacherWindow(l).OpenWindow();
+				frame.setEnabled(true);				
+				frame.dispose();
 			} catch (RemoteException e) {
 				JOptionPane.showMessageDialog(frame,
 							"Le système de peut récuperer les professeurs : "+e.getMessage(),
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 			}			
-			frame.dispose();
+			
 			
 		}		
 	});

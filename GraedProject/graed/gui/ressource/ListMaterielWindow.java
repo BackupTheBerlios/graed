@@ -112,12 +112,12 @@ public class ListMaterielWindow extends ListRessourceWindow {
 				frame.setEnabled(false);
 				try {
 					new MaterielWindow(InformationWindow.SEE,t).OpenWindow();
+					frame.setEnabled(true);
 				} catch (InvalidStateException e) {
 					JOptionPane.showMessageDialog(frame,
 							"Vous ne pouvez consulter cette ressource",
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
-				frame.dispose();
 			}		
 		});
 		return b;
@@ -134,12 +134,12 @@ public class ListMaterielWindow extends ListRessourceWindow {
 				frame.setEnabled(false);
 				try {
 					new MaterielWindow(InformationWindow.MODIFY,t).OpenWindow();
+					frame.setEnabled(true);
 				} catch (InvalidStateException e) {
 					JOptionPane.showMessageDialog(frame,
 							"Vous ne pouvez consulter cette ressource",
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
-				frame.dispose();
 			}		
 		});
 		return b;
