@@ -36,7 +36,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
         
         String[] files = new File(directoryTypes).list(new FilenameFilter() {
         	public boolean accept( File dir, String name) {
-        		//System.out.println(">>>> "+name+" "+!(name.endsWith("Interface.class")||name.endsWith("Stub.class")));
+        		System.out.println(">>>> "+name+" "+!(name.endsWith("Interface.class")||name.endsWith("Stub.class")));
         		return (!(name.endsWith("Interface.class")
         					||name.endsWith(".java")
 							||name.endsWith("Stub.class")

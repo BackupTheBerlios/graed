@@ -10,7 +10,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -18,7 +17,6 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 public class JPaintPanel extends JPanel {
 
@@ -28,37 +26,25 @@ public class JPaintPanel extends JPanel {
     private static final long serialVersionUID = 1L;
     
     private Component moving = null;
-    /**
-     * 
-     */
+
     public JPaintPanel() {
         super();
         setMouseListener();
         setMouseMotionListener();
     }
 
-    /**
-     * @param arg0
-     */
     public JPaintPanel(boolean b) {
         super(b);
         setMouseListener();
         setMouseMotionListener();
     }
 
-    /**
-     * @param arg0
-     * @param arg1
-     */
     public JPaintPanel(LayoutManager lay, boolean b) {
         super(lay, b);
         setMouseListener();
         setMouseMotionListener();
     }
 
-    /**
-     * @param arg0
-     */
     public JPaintPanel(LayoutManager lay) {
         super(lay);
         setMouseListener();
@@ -76,6 +62,9 @@ public class JPaintPanel extends JPanel {
                 if( c!=null && c!=JPaintPanel.this ) {
                     moving = c;
                     setCursor(new Cursor(Cursor.MOVE_CURSOR));
+                    setComponentZOrder(moving,0);
+                    validate();
+                    System.out.println(moving);
                 }
             }
 
@@ -109,10 +98,6 @@ public class JPaintPanel extends JPanel {
         });
     }
     
-
-    
-    
-    
     public static void main(String[] args) {
         JFrame f = new JFrame();
         Container c = f.getContentPane();
@@ -127,6 +112,7 @@ public class JPaintPanel extends JPanel {
         jl2.setOpaque(true);
         jl2.setBackground(Color.RED);
         pp.add( jl );
+        pp.add( jl2 );
         c.add(pp);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();

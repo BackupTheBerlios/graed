@@ -12,6 +12,7 @@ import graed.client.Client;
 import graed.conf.Configuration;
 import graed.exception.ExportException;
 import graed.export.Exporter;
+import graed.gui.JPaintPanel;
 import graed.gui.renderer.NotificationRenderer;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
@@ -381,7 +382,7 @@ public class CreateMainFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(c);
+		//System.out.println(c);
 	}
 	/**
 	 * Mise à jour de tous les emploi du temps
