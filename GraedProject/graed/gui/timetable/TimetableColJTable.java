@@ -113,8 +113,7 @@ public class TimetableColJTable extends JTable {
             		if(e.getButton() == MouseEvent.BUTTON3 ){
     				 	JPopupMenu pop=TimetableColJTable.this.getComponentPopupMenu();
     				 	    				 	if( k!= null){      				 		
-                			try {                    				
-                				creer.setEnabled(false);
+                			creer.setEnabled(false);
                 				Collection coll=getI(colF);
                 				if(coll!=null && coll.size()==1){
                 					i_tmp=(IndisponibiliteInterface) coll.toArray()[0];
@@ -127,24 +126,18 @@ public class TimetableColJTable extends JTable {
                     				modif.setEnabled(false);
                     				suppr.setEnabled(false);
                 				}
-                				
-								if(i_tmp!=null)System.out.println("\nPopUp: "+i_tmp.print());
-							} catch (RemoteException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+                			
                 		} 
     				 	else{
     				 		creer.setEnabled(true);
-    				 		System.out.println("Popup: Col select "+colF+" nbr col:"+TimetableColJTable.this.getSelectedColumnCount());
-            				consu.setEnabled(false);
+    				 		consu.setEnabled(false);
             				modif.setEnabled(false);
             				suppr.setEnabled(false);
     				 	}
     				 	if(pop!=null)pop.show(TimetableColJTable.this, e.getX(),e.getY());
     				 	return;
     				 }
-            		else System.out.println("Drag and Drop Mouse pressed");
+            		
 		}
 		
 		public void mouseReleased(MouseEvent e){	
