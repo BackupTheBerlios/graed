@@ -8,6 +8,7 @@ package graed.gui.ressource;
 
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.ressource.type.Room;
 import graed.ressource.type.Teacher;
 
 import java.awt.BorderLayout;
@@ -29,7 +30,7 @@ import javax.swing.JTable;
  *
  * Classe affichant une liste de professeurs
  */
-public class ListTeacherWindow extends ListRessourceWindow {
+public class ListRoomWindow extends ListRessourceWindow {
 
 	/**
 	 * Window
@@ -42,7 +43,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	 * Constructor of the window
 	 * @param c
 	 */
-	public ListTeacherWindow(Collection c) {
+	public ListRoomWindow(Collection c) {
 		super(c);
 		frame=new JFrame();		
 	}
@@ -53,14 +54,13 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	 */
 	private Object[][] fill(){
 		int j=0;
-		Object[][]o= new Object[super.size()][5];
+		Object[][]o= new Object[super.size()][4];
 		for (Iterator i=super.getIteractor();i.hasNext();){
-			Teacher t=(Teacher)i.next();
-			o[j][0]=t.getName();
-			o[j][1]=t.getFirstName();
-			o[j][2]=t.getOffice();
-			o[j][3]=t.getPhone();
-			o[j][4]=t.getEmail();			
+			Room t=(Room)i.next();
+			o[j][0]=t.getNom();
+			o[j][1]=t.getBatiment();
+			o[j][2]=t.getLieu();
+			o[j][3]=t.getCapacite()+"";		
 			j++;
 		}
 		return o;
@@ -69,16 +69,16 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	 * @see graed.gui.ressource.ListRessourceWindow#OpenWindow()
 	 */
 	public void OpenWindow() {
-		Class clazz=ListTeacherWindow.class;
-		ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
+		Class clazz=ListRoomWindow.class;
+		ImageIcon i=new ImageIcon(clazz.getResource("classe.gif"));
 		frame.setIconImage(i.getImage());
 		frame.setSize(with,height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel p=new JPanel(new BorderLayout());
-		frame.setTitle("Liste des professeurs");
+		frame.setTitle("Liste des salles");
 		frame.setContentPane(p);
 		
-		Object[] o={"Nom","Prénom","Bureau","Tel","Courriel"};
+		Object[] o={"Nom","Batiment","Lieu","Capacite"};
 		table=new JTable(fill(),o);
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
@@ -104,10 +104,10 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		JButton b=new JButton("Consulter");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Teacher t = (Teacher) getRessource(table.getSelectedRow());	
+				Room t = (Room) getRessource(table.getSelectedRow());	
 				frame.setEnabled(false);
 				try {
-					new TeacherWindow(InformationWindow.SEE,t).OpenWindow();
+					new RoomWindow(InformationWindow.SEE,t).OpenWindow();
 				} catch (InvalidStateException e) {
 					JOptionPane.showMessageDialog(frame,
 							"Vous ne pouvez consulter cette ressource",
@@ -126,10 +126,10 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		JButton b=new JButton("Modifier");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Teacher t = (Teacher) getRessource(table.getSelectedRow());
+				Room t = (Room) getRessource(table.getSelectedRow());
 				frame.setEnabled(false);
 				try {
-					new TeacherWindow(InformationWindow.MODIFY,t).OpenWindow();
+					new RoomWindow(InformationWindow.MODIFY,t).OpenWindow();
 				} catch (InvalidStateException e) {
 					JOptionPane.showMessageDialog(frame,
 							"Vous ne pouvez consulter cette ressource",
@@ -148,7 +148,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		JButton b=new JButton("Afficher EDP");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Teacher t = (Teacher) getRessource(table.getSelectedRow());
+				Room t = (Room) getRessource(table.getSelectedRow());
 				//frame.setEnabled(false);
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",

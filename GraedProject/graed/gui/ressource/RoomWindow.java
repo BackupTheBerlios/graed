@@ -279,8 +279,9 @@ protected JButton search(){
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
 			
-			System.out.println(l);			
-			System.exit(0);
+			System.out.println(l);	
+			frame.setEnabled(false);
+			new ListRoomWindow(l).OpenWindow();
 		}		
 	});
 	return b;

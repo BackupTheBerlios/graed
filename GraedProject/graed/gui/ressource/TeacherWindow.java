@@ -293,7 +293,7 @@ protected JButton search(){
 			
 			System.out.println("List:"+l);	
 			frame.setEnabled(false);
-			new ListTeacherWindow(l,frame).OpenWindow();
+			new ListTeacherWindow(l).OpenWindow();
 			
 		}		
 	});
