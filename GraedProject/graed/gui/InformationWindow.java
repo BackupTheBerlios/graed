@@ -5,6 +5,7 @@
 package graed.gui;
 
 import graed.exception.InvalidStateException;
+import graed.ressource.event.RessourceListener;
 
 import javax.swing.JButton;
 
@@ -13,7 +14,7 @@ import javax.swing.JButton;
  *
  * The window for alter teachers
  */
-public abstract class InformationWindow {
+public abstract class InformationWindow implements RessourceListener{
 
 /**
  * The different state to open the window
@@ -118,4 +119,5 @@ public boolean isSearch(){
 public boolean isCreate(){
 	return state==CREATE;
 }
+
 }

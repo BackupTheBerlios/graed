@@ -11,6 +11,7 @@ import graed.indisponibilite.Indisponibilite;
 import graed.indisponibilite.IndisponibiliteManagerImpl;
 import graed.ressource.Ressource;
 import graed.ressource.RessourceManagerImpl;
+import graed.ressource.event.RessourceEvent;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -482,6 +483,26 @@ public class IndisponibiliteWindow extends InformationWindow{
     		}		
     	});
     	return b;
+    }
+    /* (non-Javadoc)
+     * @see graed.ressource.event.RessourceListener#ressourceDeleted(graed.ressource.event.RessourceEvent)
+     */
+    public void ressourceDeleted(RessourceEvent re) {
+    	JOptionPane.showMessageDialog(frame,
+    			"La ressource a été supprimée",
+    			"Erreur",JOptionPane.ERROR_MESSAGE);	
+    	frame.dispose();
+    	
+    }
+    /* (non-Javadoc)
+     * @see graed.ressource.event.RessourceListener#ressourceUpdated(graed.ressource.event.RessourceEvent)
+     */
+    public void ressourceUpdated(RessourceEvent re) {
+    	JOptionPane.showMessageDialog(frame,
+    			"La ressource a été modifiée",
+    			"Erreur",JOptionPane.ERROR_MESSAGE);	
+    	frame.dispose();
+    	
     }
     /**
      * Test the class
