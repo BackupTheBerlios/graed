@@ -75,4 +75,8 @@ public interface GroupInterface extends Remote, RessourceInterface {
 	 * @param user The user to set.
 	 */
 	public void setUser(User user) throws RemoteException;
+	/**
+	 * Controle les données
+	 */
+	public String control() throws RemoteException;
 }

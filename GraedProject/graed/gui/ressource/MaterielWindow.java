@@ -4,11 +4,13 @@
  */
 package graed.gui.ressource;
 
+
+
+
 import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.ressource.event.RessourceEvent;
-import graed.ressource.type.Materiel;
 import graed.ressource.type.MaterielInterface;
 
 import java.awt.GridBagConstraints;
@@ -196,7 +198,13 @@ protected JButton modify(){
 			try {
 				((MaterielInterface) getInformation()).setName(name.getText());
 				((MaterielInterface) getInformation()).setTypeMateriel(type.getText());
-				
+				String control=((MaterielInterface) getInformation()).control();
+    			if(control!=null){
+    				JOptionPane.showMessageDialog(frame,
+							control,
+							"Attention",JOptionPane.INFORMATION_MESSAGE);	
+    				return;
+    			}
 				Client.getRessourceManager().updateRessource(((MaterielInterface) getInformation()));
 			} catch (RemoteException e) {
 				JOptionPane.showMessageDialog(frame,
@@ -220,10 +228,18 @@ protected JButton create(){
 		public void actionPerformed(ActionEvent arg0) {
 			if(name.getText()!=null && type.getText()!=null){	
 				try {
-					setInformation(new Materiel(name.getText(),type.getText()));			
-				System.out.println(((MaterielInterface) getInformation()));				
-					
-						Client.getRessourceManager().addRessource(((MaterielInterface) getInformation()));
+					MaterielInterface m=(MaterielInterface) Client.getRessourceManager().createRessource("Materiel");
+					setInformation(m);
+					((MaterielInterface) getInformation()).setName(name.getText());
+					((MaterielInterface) getInformation()).setTypeMateriel(type.getText());
+					String control=((MaterielInterface) getInformation()).control();
+	    			if(control!=null){
+	    				JOptionPane.showMessageDialog(frame,
+								control,
+								"Attention",JOptionPane.INFORMATION_MESSAGE);	
+	    				return;
+	    			}
+	    			Client.getRessourceManager().addRessource(((MaterielInterface) getInformation()));
 					} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
 						"Le matériel ne peut être cré",
@@ -311,26 +327,4 @@ public void ressourceUpdated(RessourceEvent re) {
 	
 }
 
-/**
- * Test the class
- * @param args
- * @throws InvalidStateException
- */
-public static void main (String[] args) throws InvalidStateException{
-	/*Materiel r=new Materiel("mat", null);
-	Collection l=null;
-	
-		try {
-			l= (Collection) RessourceManagerImpl.getInstance().getRessources(r);
-		} catch (RemoteException e) {
-			System.out.println("Ne peut recup le matériel");
-		}
-	
-	System.out.println(l);
-	for (Iterator i=l.iterator();i.hasNext();){
-		new MaterielWindow(InformationWindow.SEE,((Materiel)i.next())).OpenWindow();
-	}*/
-	Materiel m=null;
-	new MaterielWindow(InformationWindow.SEARCH,m).OpenWindow();
-}
 }

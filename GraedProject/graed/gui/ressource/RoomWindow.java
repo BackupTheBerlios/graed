@@ -7,9 +7,7 @@ package graed.gui.ressource;
 import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.ressource.RessourceManagerImpl;
 import graed.ressource.event.RessourceEvent;
-import graed.ressource.type.Room;
 import graed.ressource.type.RoomInterface;
 
 import java.awt.GridBagConstraints;
@@ -19,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Collection;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -211,6 +210,13 @@ protected JButton modify(){
 				((RoomInterface) getInformation()).setBatiment(batiment.getText());
 				((RoomInterface) getInformation()).setLieu(lieu.getText());
 				((RoomInterface) getInformation()).setCapacite(Integer.parseInt(capacite.getText()));
+				String control=((RoomInterface) getInformation()).control();
+    			if(control!=null){
+    				JOptionPane.showMessageDialog(frame,
+							control,
+							"Attention",JOptionPane.INFORMATION_MESSAGE);	
+    				return;
+    			}	
 				Client.getRessourceManager().updateRessource(((RoomInterface) getInformation()));
 			} catch (RemoteException e) {
 				JOptionPane.showMessageDialog(frame,
@@ -241,7 +247,13 @@ protected JButton create(){
 					room.setCapacite(Integer.parseInt(capacite.getText()));
 					room.setLieu(lieu.getText());
 					setInformation(room);			
-										
+					String control=((RoomInterface) getInformation()).control();
+	    			if(control!=null){
+	    				JOptionPane.showMessageDialog(frame,
+								control,
+								"Attention",JOptionPane.INFORMATION_MESSAGE);	
+	    				return;
+	    			}					
 					Client.getRessourceManager().addRessource(((RoomInterface) getInformation()));
 				} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
@@ -334,28 +346,5 @@ public void ressourceUpdated(RessourceEvent re) {
 			"Erreur",JOptionPane.ERROR_MESSAGE);	
 	frame.dispose();
 	
-}
-/**
- * Test the class
- * @param args
- * @throws InvalidStateException
- */
-public static void main (String[] args) throws InvalidStateException{
-	/*Room r=new Room("test", null, 
-			null, 0);
-	Collection l=null;
-	
-		try {
-			l= (Collection) RessourceManagerImpl.getInstance().getRessources(r);
-		} catch (RemoteException e) {
-			System.out.println("Ne peut recup la salle");
-		}
-	
-	System.out.println(l);
-	for (Iterator i=l.iterator();i.hasNext();){
-		new RoomWindow(InformationWindow.MODIFY,((Room)i.next())).OpenWindow();
-	}*/
-	Room r=null;
-	new RoomWindow(InformationWindow.SEARCH,r).OpenWindow();
 }
 }

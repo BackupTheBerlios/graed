@@ -394,8 +394,7 @@ public class IndisponibiliteWindow extends IndWindow{
 							"Attention",JOptionPane.INFORMATION_MESSAGE);	
     				return;
     			}
-    			if(!ressource_disponible(in)){System.out.println("bien");return;}
-				System.out.println("Indispo Modifiée");
+    			if(!ressource_disponible(in))return;
 				((IndisponibiliteInterface) getInformation()).copy(in);
     			Client.getIndisponibiliteManager().updateIndiponibilite(in);				
         		} catch (RemoteException e) {

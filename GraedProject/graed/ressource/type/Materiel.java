@@ -53,6 +53,13 @@ public class Materiel extends Ressource implements MaterielInterface{
 		p+="("+typeMateriel+")";
 		return p;
 	}
-
+	/**
+	 * Controle les données
+	 */
+	public String control() {
+		if(name==null || name.equals(""))return "Veuillez renseigner le nom du matériel";
+		if(typeMateriel==null || typeMateriel.equals(""))return "Veuillez renseigner le type du matériel";
+		return null;
+	}
 
 }

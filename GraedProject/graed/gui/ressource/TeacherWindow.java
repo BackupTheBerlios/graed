@@ -230,8 +230,13 @@ protected JButton modify(){
 				((TeacherInterface) getInformation()).setOffice(office.getText());
 				((TeacherInterface) getInformation()).setPhone(phone.getText());
 				((TeacherInterface) getInformation()).setEmail(email.getText());
-				System.out.println(((TeacherInterface) getInformation()));			
-				Client.getRessourceManager().updateRessource(((TeacherInterface) getInformation()));
+				String control=((TeacherInterface) getInformation()).control();
+    			if(control!=null){
+    				JOptionPane.showMessageDialog(frame,
+							control,
+							"Attention",JOptionPane.INFORMATION_MESSAGE);	
+    				return;
+    			}Client.getRessourceManager().updateRessource(((TeacherInterface) getInformation()));
 			} catch (RemoteException e) {
 				JOptionPane.showMessageDialog(frame,
 				"Le professeur ne peut être modifiée ",
@@ -262,8 +267,14 @@ protected JButton create(){
 						((TeacherInterface) getInformation()).setOffice(office.getText());
 						((TeacherInterface) getInformation()).setPhone(phone.getText());
 						((TeacherInterface) getInformation()).setEmail(email.getText());
-						System.out.println(((TeacherInterface) getInformation()));	
-						Client.getRessourceManager().addRessource(((TeacherInterface) getInformation()));
+						String control=((TeacherInterface) getInformation()).control();
+		    			if(control!=null){
+		    				JOptionPane.showMessageDialog(frame,
+									control,
+									"Attention",JOptionPane.INFORMATION_MESSAGE);	
+		    				return;
+		    			}
+		    			Client.getRessourceManager().addRessource(((TeacherInterface) getInformation()));
 					} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
 						"Le professeur ne peut être crée",

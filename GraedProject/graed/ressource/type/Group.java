@@ -153,4 +153,12 @@ public class Group extends Ressource implements GroupInterface{
 		this.prof_responsable = prof;
 		
 	}
+	/**
+	 * Controle les données
+	 */
+	public String control() throws RemoteException{
+		if(name==null || name.equals(""))return "Veuillez renseigner le nom de la formation";
+		if(description==null || description.equals(""))return "Veuillez renseigner la description de la formation";
+		return null;
+	}
 }

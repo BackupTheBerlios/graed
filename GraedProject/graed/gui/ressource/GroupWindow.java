@@ -235,8 +235,13 @@ protected JButton modify(){
 				((GroupInterface) getInformation()).setDescription(description.getText());
 				((GroupInterface) getInformation()).setOptions(option.getText());
 				((GroupInterface) getInformation()).setMail(email.getText());
-				System.out.println(((GroupInterface) getInformation()));
-			
+				String control=((GroupInterface) getInformation()).control();
+    			if(control!=null){
+    				JOptionPane.showMessageDialog(frame,
+							control,
+							"Attention",JOptionPane.INFORMATION_MESSAGE);	
+    				return;
+    			}
 				Client.getRessourceManager().updateRessource(((GroupInterface) getInformation()));
 			} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
@@ -267,7 +272,13 @@ protected JButton create(){
 					g.setMail(email.getText());
 					g.setOptions(option.getText());
 					System.out.println(g);				
-					
+					String control=g.control();
+	    			if(control!=null){
+	    				JOptionPane.showMessageDialog(frame,
+								control,
+								"Attention",JOptionPane.INFORMATION_MESSAGE);	
+	    				return;
+	    			}
 					Client.getRessourceManager().addRessource(g);
 					} catch (RemoteException e) {	
 						e.printStackTrace();

@@ -34,4 +34,8 @@ public interface MaterielInterface extends Remote, RessourceInterface {
      * @param type The type to set.
      */
     public void setTypeMateriel(String typeMateriel) throws RemoteException;
+    /**
+	 * Controle les données
+	 */
+	public String control() throws RemoteException;
 }

@@ -90,4 +90,13 @@ public class Room extends Ressource implements RoomInterface{
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
+	/**
+	 * Controle les données
+	 */
+	public String control() throws RemoteException{
+		if(nom==null || nom.equals(""))return "Veuillez renseigner le nom de la salle";
+		if(lieu==null || lieu.equals(""))return "Veuillez renseigner le lieu de la salle";
+		if(batiment==null || batiment.equals(""))return "Veuillez renseigner le batiment de la salle";
+		return null;
+	}
 }

@@ -115,4 +115,12 @@ public class Teacher extends Ressource implements TeacherInterface{
 		p+=firstName;	
 		return p;
 	}
+	/**
+	 * Controle les données
+	 */
+	public String control() throws RemoteException{
+		if(name==null || name.equals(""))return "Veuillez renseigner le nom du professeur";
+		if(firstName==null || firstName.equals(""))return "Veuillez renseigner le prénom du professeur";
+		return null;
+	}
 }

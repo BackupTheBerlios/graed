@@ -62,4 +62,8 @@ public interface TeacherInterface extends Remote, RessourceInterface {
 	 * @return Returns the string representation of the classe
 	 */
 	public String print() throws RemoteException;
+	/**
+	 * Controle les données
+	 */
+	public String control() throws RemoteException;
 }

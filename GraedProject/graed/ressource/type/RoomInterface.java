@@ -50,4 +50,8 @@ public interface RoomInterface extends Remote, RessourceInterface {
 	 * @param nom The nom to set.
 	 */
 	public void setNom(String nom) throws RemoteException;
+	/**
+	 * Controle les données
+	 */
+	public String control() throws RemoteException;
 }
