@@ -43,7 +43,7 @@ public class Exporter {
             j.encode(img);
             out.close();
         } catch( Exception e ) {
-            throw (ExportException)new ExportException("Impossible de sauvegarder au format jpeg").initCause(e);
+            throw (ExportException)new ExportException("Impossible de sauvegarder au format jpeg : "+e.getMessage()).initCause(e);
         }
     }
     
@@ -52,7 +52,7 @@ public class Exporter {
      * @param jf La JFrame contenant le Component
      * @param c Le Component à imprimer
      */
-    public static void exportToPrinter( JFrame jf, Component c ) throws ExportException {
+    public static void exportToPrinter( JFrame jf, Component c ) {
         /*
          * Impression en couleur sur la zone imprimable de la page avec une orientation du papier en paysage
          */
@@ -71,8 +71,7 @@ public class Exporter {
     	    c.printAll(g);
     	    g.dispose();
     	    job.end();
-    	} else
-    	    throw new ExportException("Impossible de lancer l'impression");
+    	}
     }
     
     /**
