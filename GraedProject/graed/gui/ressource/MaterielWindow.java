@@ -259,8 +259,9 @@ protected JButton search(){
 							"Erreur",JOptionPane.ERROR_MESSAGE);
 				}
 			
-			System.out.println(l);			
-			System.exit(0);
+				System.out.println(l);	
+				frame.setEnabled(false);
+				new ListMaterielWindow(l).OpenWindow();
 		}		
 	});
 	return b;
@@ -272,7 +273,7 @@ protected JButton search(){
  * @throws InvalidStateException
  */
 public static void main (String[] args) throws InvalidStateException{
-	Materiel r=new Materiel("mat", null);
+	/*Materiel r=new Materiel("mat", null);
 	Collection l=null;
 	
 		try {
@@ -284,8 +285,8 @@ public static void main (String[] args) throws InvalidStateException{
 	System.out.println(l);
 	for (Iterator i=l.iterator();i.hasNext();){
 		new MaterielWindow(InformationWindow.SEE,((Materiel)i.next())).OpenWindow();
-	}
-	/*Materiel m=null;
-	new MaterielWindow(InformationWindow.SEARCH,m).OpenWindow();*/
+	}*/
+	Materiel m=null;
+	new MaterielWindow(InformationWindow.SEARCH,m).OpenWindow();
 }
 }
