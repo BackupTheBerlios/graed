@@ -2,6 +2,7 @@ package graed.indisponibilite;
 
 import graed.db.DataBaseManager;
 import graed.exception.DataBaseException;
+import graed.gui.factory.SpinnerFactory;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
 import graed.ressource.Ressource;
@@ -10,6 +11,7 @@ import graed.ressource.type.Room;
 import graed.ressource.type.Teacher;
 
 import java.rmi.RemoteException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -193,16 +195,47 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 			System.out.println(((Indisponibilite)i.next()).getRessources());
 		}
 		
-		SpinnerDateModel dateModel = new SpinnerDateModel(
-	        new Date(7*60*60*1000), new Date(7*60*60*1000), new Date(18*60*60*1000), Calendar.HOUR_OF_DAY);
+		SpinnerDateModel dateModel = new SpinnerDateModel() {
+			public Object getPreviousValue() {
+				Date value = (Date)getValue();
+				if( getCalendarField() == Calendar.HOUR_OF_DAY ) {
+					value.setTime(value.getTime()-1000*60*60);
+					return value;
+				}
+				if(getCalendarField() == Calendar.MINUTE ) {
+					value.setTime(value.getTime()-1000*60*15);
+					return value;
+				}
+				return value;
+			}
+			
+			public Object getNextValue() {
+				Date value = (Date)getValue();
+				if( getCalendarField() == Calendar.HOUR_OF_DAY ) {
+					value.setTime(value.getTime()+1000*60*60);
+					return value;
+				}
+				if(getCalendarField() == Calendar.MINUTE ) {
+					value.setTime(value.getTime()+1000*60*15);
+					return value;
+				}
+				return value;
+			}
+			
+			public Time getSQLTime() {
+				Calendar c = new GregorianCalendar();
+				c.setTime((Date)getValue());
+				return Time.valueOf(c.get(Calendar.HOUR_OF_DAY)+":"
+						+c.get(Calendar.MINUTE)+":00");
+			}
+			
+		};
+	    /*    new Date(7*60*60*1000), new Date(7*60*60*1000), new Date(18*60*60*1000), Calendar.HOUR_OF_DAY);
 	    
-	    JSpinner spinner = new JSpinner(dateModel);
-	    
-	    
-	    spinner.setEditor(new JSpinner.DateEditor(spinner, "HH:mm"));
-	    
-		JFrame jf = new JFrame();
-		jf.getContentPane().add(spinner);
+		dateModel.*/
+		
+	    JFrame jf = new JFrame();
+		jf.getContentPane().add(SpinnerFactory.createTimeSpinner(new Date(7*60*60*1000), new Date(7*60*60*1000), new Date(18*60*60*1000)));
 		jf.pack();
 		jf.setVisible(true);
 		
