@@ -272,7 +272,7 @@ protected JButton search(){
  * @throws InvalidStateException
  */
 public static void main (String[] args) throws InvalidStateException{
-	/*Materiel r=new materiel("m", null);
+	Materiel r=new Materiel("mat", null);
 	Collection l=null;
 	
 		try {
@@ -283,9 +283,9 @@ public static void main (String[] args) throws InvalidStateException{
 	
 	System.out.println(l);
 	for (Iterator i=l.iterator();i.hasNext();){
-		new MaterielWindow(InformationWindow.MODIFY,((Room)i.next())).OpenWindow();
-	}*/
-	Materiel m=null;
-	new MaterielWindow(InformationWindow.CREATE,m).OpenWindow();
+		new MaterielWindow(InformationWindow.SEE,((Materiel)i.next())).OpenWindow();
+	}
+	/*Materiel m=null;
+	new MaterielWindow(InformationWindow.SEARCH,m).OpenWindow();*/
 }
 }

@@ -29,7 +29,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	 */
 	private JFrame frame;
 	private static int with=300;
-	private static int height=00;
+	private static int height=200;
 	/**
 	 * Constructor of the window
 	 * @param c
@@ -37,6 +37,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	public ListTeacherWindow(Collection c) {
 		super(c);
 		frame=new JFrame();
+		System.out.println("ListTeacherWindow "+c);
 	}
 
 	private Object[][] fill(){
