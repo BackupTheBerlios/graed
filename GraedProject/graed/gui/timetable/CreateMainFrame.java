@@ -359,6 +359,7 @@ public class CreateMainFrame {
 			String title="<html>"+r.getType()+": "+r.print()+"<br>du "+dateDebut+" au "+dateFin+"</html>";
 			CreateColTimetable time2=new CreateColTimetable(null,title,start,stop);
 			tp.addTab(time2.getTitle(),time2, (Icon)icons.get(r.getType()));
+			tp.setSelectedIndex(tp.getTabCount()-1);
 			if(c!=null){
 				for(Iterator i=trie.iterator();i.hasNext();)
 					time2.addIndispo((IndisponibiliteInterface)i.next());
