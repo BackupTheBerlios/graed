@@ -112,4 +112,8 @@ public class DataBaseManager{
             throw (DataBaseException)new  DataBaseException( "Erreur lors de la récupération de données à partir de la base de données").initCause(he);
         }
 	}
+	
+	public Criteria createCriteria( Class c ) {
+		return session.createCriteria(c);
+	}
 }

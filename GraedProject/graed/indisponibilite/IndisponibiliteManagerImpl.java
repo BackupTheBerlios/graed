@@ -16,6 +16,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+
+import net.sf.hibernate.Criteria;
+import net.sf.hibernate.expression.Expression;
+
 /**
  * @author Helder DE SOUSA
  */
@@ -102,6 +106,19 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 	       }
 	}
 	
+	/**
+	 * @see graed.indisponibilite.IndisponibiliteManager#getIndisponibilitesBetween(java.util.Date, java.util.Date)
+	 */
+	public Collection getIndisponibilitesBetween(Date begin, Date end) throws RemoteException {
+		Criteria c = dbm.createCriteria(Indisponibilite.class);
+		c.add(Expression.between("debut", begin, end ));
+		try {
+			return c.list();
+		} catch(Exception e) {
+			throw new RemoteException(e.getMessage());
+		}
+	}
+	
 	public static void main( String[] args ) throws RemoteException {
 		Ressource t = new Teacher("Zipstein", "Mark", "", "", "zipstein@univ-mlv.fr");
 		Ressource r = new Room("2b104","Copernic","Copernic",40);
@@ -117,9 +134,9 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		Indisponibilite inn = new Indisponibilite();
 		inn.addRessource(new Teacher("Forax", null, null, null, null));
 		
-		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilites(inn);
+		/*Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilites(inn);
 		for( Iterator i = c.iterator(); i.hasNext(); ) {
 			System.out.println(i.next());
-		}
+		}*/
 	}
 }

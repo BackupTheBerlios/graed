@@ -2,21 +2,19 @@
 package graed.ressource;
 
 /**
- * @author hdesou01
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author Helder DE SOUSA
  */
 public class Ressource {
 	private String id_ressource;
 	private String id_indisponibilite;
 	private String type;
 	
+	
 	public Ressource() {
-		type="none";
 	}
 	
 	public Ressource( String type ) {
+		this();
 		this.type = type;
 	}
 	

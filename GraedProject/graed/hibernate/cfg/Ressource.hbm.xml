@@ -15,7 +15,7 @@
     <property name="type">
     	<column name="type" sql-type="varchar(12)" not-null="true"/>
     </property>
-    
+            
     <!--
     <joined-subclass name="graed.ressource.type.Group" table="formation">
         <key column="id_formation"/>
