@@ -31,8 +31,13 @@ public class Server {
 			Registry r = LocateRegistry.createRegistry(portNumber);
 
 			//Facultatif, mais plus sûr dans le cas de chargement dynamique de classes
-			System.out.println("Mise en place du Security Manager ...");
-			//System.setSecurityManager(new java.rmi.RMISecurityManager());
+			/*System.out.println("Mise en place du Security Manager ...");
+			Properties p = new Properties();
+			p.put("java.net.SocketPermission","jdbc:postgresql://sqletud.univ-mlv.fr:5432");
+			
+			java.rmi.RMISecurityManager rmi = new java.rmi.RMISecurityManager();
+			System.setProperties(p);
+			System.setSecurityManager(new java.rmi.RMISecurityManager());*/
 			
 			//Creation des objets serveurs
 			RessourceManager rm = RessourceManagerImpl.getInstance();

@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<project name="Graed" default="compile" basedir=".">
+<project name="Graed" default="jar" basedir=".">
 
 <property name="src" value="graed"/>
 <property name="build" value="build"/>
@@ -47,13 +47,21 @@
 
 <target name="jar" depends="compile">
 	<!-- Création du jar exécutable -->
-	<jar destfile="graed.jar" basedir="${build}">
+	<jar destfile="graedServer.jar" basedir="${build}">
 		<!-- Création du fichier mantifest.mf -->
 		<manifest>
 			<attribute name="Built-By" value="Your name"/>
 			<attribute name="Main-Class"
-						value="graed.gui.timetable.CreateMainFrame"/>
+						value="graed.server.Server"/>
 		</manifest>
+	</jar>
+	<jar destfile="graedClient.jar" basedir="${build}">
+			<!-- Création du fichier mantifest.mf -->
+			<manifest>
+				<attribute name="Built-By" value="Your name"/>
+				<attribute name="Main-Class"
+							value="graed.gui.timetable.CreateMainFrame"/>
+			</manifest>
 	</jar>
 </target>
 	

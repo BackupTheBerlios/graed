@@ -116,6 +116,7 @@ public class DataBaseManager implements Serializable{
 	        session.update(convertStub(dbo));
 	        tx.commit();
 	    } catch( HibernateException he ) {
+	    	he.printStackTrace();
 	        throw (DataBaseException)new DataBaseException( "Erreur lors de la mise à jour de la base de données").initCause(he);
 	    }
 	}
