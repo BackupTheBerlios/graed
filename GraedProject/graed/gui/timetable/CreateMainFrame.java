@@ -29,6 +29,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.hokage.swing.JBackgroundPanel;
 import com.hokage.swing.JCloseableTabbedPane;
@@ -47,11 +48,15 @@ public class CreateMainFrame {
 	private Hashtable icons;
 	/**
 	 * Constructeur
+	 * @throws UnsupportedLookAndFeelException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException 
 	 *
 	 */
-	public CreateMainFrame(){
+	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
-		frame=new JFrame();
+        frame=new JFrame();
 		tp=new JCloseableTabbedPane("graed/gui/timetable/icons/fond.png");
 		tp.setOpaque(false);
 		frame.setTitle("Graed project");
@@ -62,13 +67,10 @@ public class CreateMainFrame {
 		icons.put( "Professeur", new ImageIcon(TeacherWindow.class.getResource("professeur16.jpg")) );
 		//icons.put( "Materiel", new ImageIcon(TeacherWindow.class.getResource("classe.gif")) );
 		
-		try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        UIManager.setLookAndFeel("com.hokage.swing.plaf.HokageLookAndFeel");
         SwingUtilities.updateComponentTreeUI(frame);
-		splash.close();
+		
+        splash.close();
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -161,9 +163,13 @@ public class CreateMainFrame {
 	    return b;
 	}
 	
-	/** test ****/
-	public static void main(String[] args) {
+	/** test ***
+	 * @throws UnsupportedLookAndFeelException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 * @throws ClassNotFoundException */
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
         UIManager.installLookAndFeel("Hokage","com.hokage.swing.plaf.HokageLookAndFeel" );
-		new CreateMainFrame();
+        new CreateMainFrame();
 	}
 }

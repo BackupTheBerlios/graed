@@ -42,6 +42,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import com.hokage.swing.plaf.HokageLookAndFeel;
+
 /**
  * @author ngonord
  *
@@ -485,8 +487,8 @@ public class CreateMenuBar {
 		    Object key = i.next();
 			final String classe = (String)map.get(key);
 			System.out.println(key+" : "+classe);
-			boolean natif = classe.equals(UIManager.getSystemLookAndFeelClassName());
-			JRadioButtonMenuItem item = new JRadioButtonMenuItem((String) key,natif);
+			boolean set = classe.equals(HokageLookAndFeel.class.getName());
+			JRadioButtonMenuItem item = new JRadioButtonMenuItem((String) key,set);
 			item.addActionListener(new ActionListener(){ 
 				public void actionPerformed(ActionEvent ae){ 
 					try{ 
