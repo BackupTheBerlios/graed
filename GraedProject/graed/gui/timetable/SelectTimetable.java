@@ -21,7 +21,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -235,7 +234,7 @@ protected JPanel OpenWindow(){
 	addJComponent(p,c);
 	c.gridx = 1;
 	c.gridy = 8;
-	p.add(search(),c);	
+	p.add(open(),c);	
 	return p;
 		
 }
@@ -244,8 +243,8 @@ protected JPanel OpenWindow(){
  * Création du bouton de recherche
  * @return bouton
  */
-protected JButton search(){
-	JButton b=new JButton("Chercher");
+protected JButton open(){
+	JButton b=new JButton("Visualiser");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			
