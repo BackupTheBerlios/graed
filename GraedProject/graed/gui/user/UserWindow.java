@@ -350,7 +350,8 @@ protected JButton search(){
 				String office_prof = office.getText().length()==0?null:office.getText();
 				String phone_prof = phone.getText().length()==0?null:phone.getText();
 				String email_prof = email.getText().length()==0?null:email.getText();
-				
+				String login_prof = login.getText().length()==0?null:login.getText();
+				String fonct_prof = ((String)fonction.getSelectedItem()).length()==0?null:(String)fonction.getSelectedItem();
 				UserInterface ti=(UserInterface) Client.getUserManager().createUser();
 				//setInformation(ti);		
 				ti.setName(name_prof);			
@@ -358,6 +359,8 @@ protected JButton search(){
 				ti.setOffice(office_prof);
 				ti.setPhone(phone_prof);
 				ti.setEmail(email_prof);
+				ti.setLogin(login_prof);
+				ti.setFonction(fonct_prof);
 				System.out.println("--------->"+ti.print());	
 				
 				Collection l=null;			

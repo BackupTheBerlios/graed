@@ -36,6 +36,7 @@ public class CreateColTimetable extends JBackgroundPanel{
 	private RessourceInterface r;
 	private int start;
 	private int stop;
+	private boolean menu;
 	private Color color;
 	String title;
 	
@@ -46,7 +47,7 @@ public class CreateColTimetable extends JBackgroundPanel{
 	 * @param start heure de début
 	 * @param stop heure de fin
 	 */
-	public CreateColTimetable(RessourceInterface r,String title, int start, int stop){
+	public CreateColTimetable(RessourceInterface r,String title, int start, int stop, boolean menu){
 		super("graed/gui/timetable/icons/fond.png");
 		this.r=r;
 		color = new Color(0xffffed);
@@ -54,6 +55,7 @@ public class CreateColTimetable extends JBackgroundPanel{
 		this.title=title;
 		this.start = start;
 		this.stop = stop;
+		this.menu=menu;
 		setSize((stop-start)*100+60,500);
 		CreateTables();
 	}
@@ -132,7 +134,7 @@ public class CreateColTimetable extends JBackgroundPanel{
 	 * @return table correspondant à un jour de la semaine
 	 */
 	private TimetableColJTable CreateIndispoTable(String name, TimetableDefaultListSelectionModel mdl){
-		TimetableColJTable t= new TimetableColJTable(new TimetableDefaultTableModel(stop-start+1,name ),mdl);
+		TimetableColJTable t= new TimetableColJTable(new TimetableDefaultTableModel(stop-start+1,name ),mdl,menu);
 		t.setOpaque(false);
 		t.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		t.setPreferredSize( new Dimension( (stop-start)*100,getHeight()/6 ));
@@ -264,9 +266,9 @@ public class CreateColTimetable extends JBackgroundPanel{
 		JFrame f=new JFrame("Test Emploi du temps");		
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JTabbedPane tp=new JTabbedPane();
-		CreateColTimetable time1=new CreateColTimetable(null,"Emploi du temps n°1",8,15);
+		CreateColTimetable time1=new CreateColTimetable(null,"Emploi du temps n°1",8,15,true);
 		tp.add(time1.getTitle(),time1);
-		CreateColTimetable time2=new CreateColTimetable(null,"Emploi du temps n°2",8,15);
+		CreateColTimetable time2=new CreateColTimetable(null,"Emploi du temps n°2",8,15,true);
 		tp.add(time2.getTitle(),time2);
 		f.setContentPane(tp);
 		/* Affichage de l'interface */

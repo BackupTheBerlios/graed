@@ -8,6 +8,7 @@ import graed.client.Client;
 import graed.ressource.type.MaterielInterface;
 import graed.user.UserInterface;
 import graed.user.UserManager;
+import graed.util.ldap.ConnectLDAP;
 
 import java.math.BigInteger;
 import java.rmi.RemoteException;
@@ -181,19 +182,23 @@ public class GraedLoginModule implements LoginModule {
     		md.update( password.getBytes() );
     		BigInteger hash = new BigInteger( 1, md.digest() );
     		String hpassword = hash.toString(16);
-    	
     		try{
     			UserManager um = Client.getUserManager();
     			UserInterface ui = um.createUser();
     			ui.setLogin(userName);
     			
-    			Collection col = (Collection)um.getUsers(ui);
+    			Collection col = (Collection)um.getUsers(ui);    			 	
     			Iterator i=null;
-    			if(col != null){
+    			if(col != null && col.size()>0){
     			    i = col.iterator();
     			}
     			else{
     			    System.out.println("Aucun utilisateur");
+    			    ConnectLDAP ldap=new ConnectLDAP();
+    			    if(ldap.identification(userName,password)){
+    			    	success=true;
+    			    	return true;
+    			    }
     			    success = false;
     			    throw new LoginException();
     			}

@@ -13,6 +13,8 @@ import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceInterface;
+import graed.user.UserInterface;
+import graed.user.UserManager;
 import graed.auth.*;
 
 import java.awt.BorderLayout;
@@ -85,6 +87,7 @@ public class CreateMainFrame {
 	private Hashtable icons;/* Images pour les onglets */
 	private ConcurrentHashMap timetable_list;/* Stockage des emplois du temps ouverts */
 	private Hashtable buttons;/* barre de menu */
+	private UserInterface user;
 	/* Date de début et de fin pour la navigation dans un emploi du temps */
 	Date debut;
 	Date fin;
@@ -134,17 +137,31 @@ public class CreateMainFrame {
 			Iterator i = subj.getPrincipals().iterator();
 
 			if(i.hasNext()){
-			   System.out.println("Principal"+((GraedPrincipal)i.next()).getName()); 
-			}
-			else{
-			    System.out.println("pas de principal");
-			}
+				String login=((GraedPrincipal)i.next()).getName();
+				UserInterface ui=null;
+				try {
+					ui = Client.getUserManager().createUser();
+					ui.setLogin(login);
+					Collection col = (Collection)Client.getUserManager().getUsers(ui);
+					if(col!=null){
+						Iterator it=col.iterator();
+						if(it.hasNext())user=(UserInterface) it.next();
+						}
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
+			}			
 			
 		}catch(LoginException e){
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(frame,
+					"Login ou mot de passe incorrect",
+					"Erreur d'identification",JOptionPane.ERROR_MESSAGE);	
 			System.exit(0);
 		}
-	    
+		
 		/* Ecran de démarrage */
 	    	    
 	    /* Onglets */
@@ -209,7 +226,7 @@ public class CreateMainFrame {
 		JBackgroundPanel bars = new JBackgroundPanel(new BorderLayout());
 		p.setBackgroundImage("graed/gui/timetable/fond.png");
 		bars.setBackgroundImage("graed/gui/timetable/fond.png");
-		bars.add(new CreateMenuBar(frame,tp).getMenuBar(),BorderLayout.NORTH);
+		bars.add(new CreateMenuBar(frame,tp,user).getMenuBar(),BorderLayout.NORTH);
 		bars.add( createToolBar(), BorderLayout.SOUTH );
 				
 		p.add(bars,BorderLayout.NORTH);
@@ -433,7 +450,9 @@ public class CreateMainFrame {
 			});
 			trie.addAll(c);
 			String title="<html>"+r.getType()+": "+r.print()+"<br>du "+dateDebut+" au "+dateFin+"</html>";
-			CreateColTimetable time2=new CreateColTimetable(null,title,start,stop);
+			boolean affiche=false;
+			if(user!=null && !user.equals("etudiant"))affiche=true;
+			CreateColTimetable time2=new CreateColTimetable(null,title,start,stop,affiche);
 			tp.addTab(time2.getTitle(),time2, (Icon)icons.get(r.getType()));
 			tp.setSelectedIndex(tp.getTabCount()-1);
 			if(c!=null){

@@ -14,6 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.sql.Date;
@@ -46,6 +47,7 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
     private IndisponibiliteManagerImpl() throws RemoteException {
     	dbm = DataBaseManager.getInstance();
     	toBeNotified = new ArrayList();
+    	toBeNotified = Collections.synchronizedList(toBeNotified);
     }
     
     /**

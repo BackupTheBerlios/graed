@@ -70,7 +70,7 @@ public class TimetableColJTable extends JTable {
 	 * Ajoute toutes les colonnes
 	 * @param arg0
 	 */
-	public TimetableColJTable(TimetableDefaultTableModel arg0,TimetableDefaultListSelectionModel l) {
+	public TimetableColJTable(TimetableDefaultTableModel arg0,TimetableDefaultListSelectionModel l,final boolean menu) {
 		super(arg0);
 		i_tmp=null;
 		creer=null;
@@ -111,7 +111,7 @@ public class TimetableColJTable extends JTable {
             			TimetableColJTable.this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
             		}     
             		/* Menu Popup */
-            		if(e.getButton() == MouseEvent.BUTTON3 ){
+            		if(e.getButton() == MouseEvent.BUTTON3 && menu){
     				 	JPopupMenu pop=TimetableColJTable.this.getComponentPopupMenu();
     				 	    				 	if( k!= null){      				 		
                 			creer.setEnabled(false);

@@ -60,18 +60,27 @@ public class CreateMenuBar {
 	 * Constructeur
 	 *
 	 */
-	public CreateMenuBar(JFrame frame,JTabbedPane tp){
+	public CreateMenuBar(JFrame frame,JTabbedPane tp,UserInterface user){
 		this.frame=frame;
 		this.tp=tp;
 		barMenu=new JMenuBar();
 		barMenu.setOpaque(false);
 		barMenu.add(createMenuExport());
-		barMenu.add(createMenuRessource());
-		barMenu.add(createMenuImport());
-		barMenu.add(createMenuInd());
-		barMenu.add(createMenuLF());
-		barMenu.add(createMenuConf());
+		try {
+			if(user!=null && !user.getFonction().equals("etudiant"))
+				barMenu.add(createMenuRessource());	
+			if(user!=null && user.getFonction().equals("administrateur"))
+				barMenu.add(createMenuImport());
+			if(user!=null && !user.getFonction().equals("etudiant"))
+				barMenu.add(createMenuInd());
+			barMenu.add(createMenuLF());
+			if(user!=null && user.getFonction().equals("administrateur"))
+				barMenu.add(createMenuConf());
 		//barMenu.add(createMenuEDT());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	/**
