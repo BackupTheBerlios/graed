@@ -13,9 +13,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.rmi.RemoteException;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -50,7 +52,7 @@ public class CreateColTimetable extends JBackgroundPanel{
 		super("graed/gui/timetable/icons/fond.png");
 		this.r=r;
 		color = new Color(0xffffed);
-		jourTable=new Hashtable();
+		jourTable=new Hashtable();		
 		this.title=title;
 		this.start = start;
 		this.stop = stop;
@@ -239,6 +241,14 @@ public class CreateColTimetable extends JBackgroundPanel{
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+	}
+	/**
+	 * Vide l'emploi du temps
+	 *
+	 */
+	public void refresh(){
+		for(Iterator it=jourTable.values().iterator();it.hasNext();)
+			((TimetableColJTable) it.next()).clear();
 	}
 	/**
 	 * Vide l'emploi du temps

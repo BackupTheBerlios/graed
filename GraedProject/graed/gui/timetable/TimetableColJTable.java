@@ -167,6 +167,7 @@ public class TimetableColJTable extends JTable {
 							i.setHdebut(new Time(i.getHdebut().getTime()+((col-colF)*1000*60*15)));
 							table.addIndispo(i,col,size,false);	
 							Client.getIndisponibiliteManager().updateIndiponibilite(i);
+							//table.refresh();
 						}
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
@@ -373,18 +374,23 @@ public class TimetableColJTable extends JTable {
 		if((JTextArea) getValueAt(0,col)==null)tm.setValueAt(j,col,size);
 		TableColumn c=getColumnModel().getColumn(col);	
 		c.setPreferredWidth((size*c.getPreferredWidth())+size-1);
-		for (int in=col;in<col+size;++in){
+		/*for (int in=col+1;in<col+size;++in){
 			Collection co=getI(in);
 			if(co!=null)
 				for (Iterator it=co.iterator();it.hasNext();)
-					System.out.println("Timetable "+(IndisponibiliteInterface) it.next());/*{
-				removeIndispo (in);
-				for (Iterator it=co.iterator();it.hasNext();){
-					addIndispo ((IndisponibiliteInterface) it.next(),col,size+in,false);
-				}
-					
-			}*/
-		}
+					try {
+						System.out.println("Timetable "+((IndisponibiliteInterface) it.next()).print());{
+removeIndispo (in);
+for (Iterator it=co.iterator();it.hasNext();){
+						addIndispo ((IndisponibiliteInterface) it.next(),col,size+in,false);
+}
+						
+}
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+		}*/
 	}
 	/**
 	 * Supprime la donnée à la colonne indiquée
@@ -497,7 +503,35 @@ public class TimetableColJTable extends JTable {
 		tm.clear();
 		list_ind.clear();
 	}
-	
+	public void refresh() throws RemoteException{
+		TreeSet trie=new TreeSet(new Comparator(){
+			public int compare(Object o1, Object o2){
+				if (o1 instanceof IndisponibiliteInterface && o2 instanceof IndisponibiliteInterface)
+					try {
+						return ((IndisponibiliteInterface)o1).getHdebut().compareTo(((IndisponibiliteInterface)o2).getHdebut());
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				return 0;
+			}
+			
+		});
+		trie.add(list_ind.values());
+		clear();
+		for(Iterator j=trie.iterator();j.hasNext();){
+			Collection coll=(Collection) j.next();
+			for(Iterator i=coll.iterator();i.hasNext();){
+				IndisponibiliteInterface in=(IndisponibiliteInterface)i.next();
+				int celldebut =(in.getHdebut().getHours()-8)*4+(in.getHdebut().getMinutes()/15);
+				int nbcell=in.getDuree()/15;	
+				addIndispo (in,celldebut,nbcell,true);
+				System.out.println("refresh"+in.print());
+			}
+		}
+		validate();
+		repaint();
+	}
 	
 	
 	/*public void resize(int width, int height, int nbcol) {
