@@ -161,7 +161,7 @@ public class TimetableColJTable extends JTable {
 							int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
 							i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));	
 							i.setFin( new Date((i.getFin().getTime()+j*(1000*60*60*24))));	
-							table.addIndispo(i,col,size);	
+							table.addIndispo(i,col,size,false);	
 							Client.getIndisponibiliteManager().updateIndiponibilite(i);
 						}
 					} catch (RemoteException e1) {
@@ -274,8 +274,8 @@ public class TimetableColJTable extends JTable {
 	 * @param col
 	 * @param size taille du cours (nombre de colonnes)
 	 */
-	public void addIndispo (IndisponibiliteInterface i,int col,int size){
-		col=find_col(col,size);
+	public void addIndispo (IndisponibiliteInterface i,int col,int size,boolean b){
+		if(b)col=find_col(col,size);
 		addI(i,col);
 		JTextArea j =(JTextArea) getValueAt(0,col);
 		String text="";
