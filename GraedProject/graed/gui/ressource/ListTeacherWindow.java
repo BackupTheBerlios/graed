@@ -8,6 +8,7 @@ package graed.gui.ressource;
 
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.ressource.Ressource;
 import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Teacher;
 
@@ -169,14 +170,19 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				Teacher t = (Teacher) getRessource(table.getSelectedRow());
+				table.remove(table.getSelectedRow());
+				System.out.println(table);
+				removeRessource(t);
 				try {
 					RessourceManagerImpl.getInstance().deleteRessource(t);
 				} catch (RemoteException e) {
+					e.printStackTrace();
 					JOptionPane.showMessageDialog(frame,
 							"Cette ressource ne peut etre supprimée",
 							"Erreur",JOptionPane.WARNING_MESSAGE);
 				}
-				
+				frame.validate();
+				frame.repaint();
 				
 			}		
 		});
