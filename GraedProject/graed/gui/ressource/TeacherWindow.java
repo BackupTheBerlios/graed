@@ -306,7 +306,7 @@ protected JButton search(){
  * @throws InvalidStateException
  */
 public static void main (String[] args) throws InvalidStateException{
-	Teacher t=new Teacher("Gonord", null, null,null,null);
+	/*Teacher t=new Teacher("Gonord", null, null,null,null);
 	Collection l=null;
 
 	try {
@@ -318,8 +318,8 @@ public static void main (String[] args) throws InvalidStateException{
 	System.out.println(l);
 	for (Iterator i=l.iterator();i.hasNext();){
 		new TeacherWindow(InformationWindow.MODIFY,((Teacher)i.next())).OpenWindow();
-	}
-	/*Teacher t=null;
-	new TeacherWindow(InformationWindow.CREATE,t).OpenWindow();*/
+	}*/
+	Teacher t=null;
+	new TeacherWindow(InformationWindow.SEARCH,t).OpenWindow();
 }
 }
