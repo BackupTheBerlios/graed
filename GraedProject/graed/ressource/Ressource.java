@@ -1,22 +1,21 @@
 
 package graed.ressource;
 
-import java.io.Serializable;
-import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
  * @author Helder DE SOUSA
  */
-public class Ressource extends UnicastRemoteObject{
+public class Ressource extends UnicastRemoteObject implements RessourceInterface{
 	private String id_ressource;
 	private String type;
 	
 	
-	public Ressource() {
+	public Ressource() throws RemoteException{
 	}
 	
-	public Ressource( String type ) {
+	public Ressource( String type ) throws RemoteException {
 		this();
 		this.type = type;
 	}

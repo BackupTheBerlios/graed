@@ -118,11 +118,13 @@ public class ConnectLDAP {
 				 NameClassPair item = (NameClassPair)ne.next();
 				 Attributes attr=((SearchResult)item).getAttributes();	
 				 l.add(new Teacher(((String)attr.get("sn").get()),
-				 		((String)attr.get("givenName").get()),"","", 
-						((String)attr.get("mail").get())));
+					 		((String)attr.get("givenName").get()),"","", 
+							((String)attr.get("mail").get())));
 			}
 		} catch (NamingException e) {
 			return null;
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
 		}
 		return l;
 	}
@@ -182,6 +184,8 @@ public class ConnectLDAP {
 			}			
 		} catch (NamingException e) {
 			return null;
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
 		}
 		return l;
 	}
@@ -217,6 +221,8 @@ public class ConnectLDAP {
 			}
 		} catch (NamingException e) {
 			return null;
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
 		}
 		return l;
 	}

@@ -6,6 +6,8 @@
  */
 package graed.ressource.type;
 
+import java.rmi.RemoteException;
+
 import graed.ressource.Ressource;
 import graed.user.User;
 
@@ -25,9 +27,10 @@ public class Group extends Ressource {
 	private String options;
 	/**
 	 * Constructeur vide
+	 * @throws RemoteException
 	 *
 	 */
-	public Group(){
+	public Group() throws RemoteException{
 		super("Formation");
 	}
 	/**
@@ -39,9 +42,10 @@ public class Group extends Ressource {
 	 * @param user secrétaire de la formation
 	 * @param prof_responsable professeur responsable de la formation
 	 * @param options options de la formation
+	 * @throws RemoteException
 	 */
 	public Group(String number,String name, String description,String mail,
-			User user, Teacher prof_responsable, String options){
+			User user, Teacher prof_responsable, String options) throws RemoteException{
 		this();
 		this.number=number;
 		this.name=name;

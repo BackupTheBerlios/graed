@@ -1,5 +1,7 @@
 package graed.ressource.type;
 
+import java.rmi.RemoteException;
+
 import graed.ressource.Ressource;
 
 /**
@@ -9,10 +11,10 @@ public class Materiel extends Ressource {
 	 private String name;
      private String typeMateriel;
 
-     public Materiel(){
+     public Materiel() throws RemoteException{
              super("Materiel");
      }
-     public Materiel(String name,String typeMateriel){
+     public Materiel(String name,String typeMateriel) throws RemoteException{
              this();
              this.name=name;
              this.typeMateriel=typeMateriel;

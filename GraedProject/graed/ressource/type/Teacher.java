@@ -6,6 +6,8 @@
  */
 package graed.ressource.type;
 
+import java.rmi.RemoteException;
+
 import graed.ressource.Ressource;
 
 /**
@@ -20,11 +22,11 @@ public class Teacher extends Ressource {
 	private String office;
 	private String phone; 
 	private String email;
-	public Teacher(){
+	public Teacher() throws RemoteException{
 		super("Professeur");
 	}
 	public Teacher(String name, String firstName, 
-					String office, String phone, String email){
+					String office, String phone, String email) throws RemoteException{
 		this();
 		this.name=name;
 		this.firstName=firstName;
