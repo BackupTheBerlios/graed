@@ -5,6 +5,7 @@
 package graed.gui.ressource;
 
 import graed.exception.InvalidStateException;
+import graed.gui.InformationWindow;
 import graed.ressource.type.Teacher;
 
 import java.awt.GridBagConstraints;
@@ -26,35 +27,22 @@ import javax.swing.SwingConstants;
  *
  * The window for alter teachers
  */
-public class TeacherWindow {
-
-/**
- * The different state to open the window
- */
-private static int CREATE=1;
-private static int MODIFY=2;
-private static int SEE=3;
-private static int SEARCH=4;
-/**
- * The current state
- */
-private int state;
-private Teacher t;
+public class TeacherWindow extends InformationWindow{
 
 /**
  * Window
  */
-private JFrame frame=new JFrame();
-private int with=200;
-private int height=200;
+private JFrame frame;
+private static int with=200;
+private static int height=200;
 /**
  * TextField
  */
-private JFormattedTextField name=new JFormattedTextField();
-private JFormattedTextField firstName=new JFormattedTextField();
-private JFormattedTextField office=new JFormattedTextField();
-private JFormattedTextField phone=new JFormattedTextField(); 
-private JFormattedTextField email=new JFormattedTextField();
+private JFormattedTextField name;
+private JFormattedTextField firstName;
+private JFormattedTextField office;
+private JFormattedTextField phone; 
+private JFormattedTextField email;
 
 /**
  * Constructor which open the teacher window
@@ -63,14 +51,7 @@ private JFormattedTextField email=new JFormattedTextField();
  * @throws InvalidStateException
  */
 public TeacherWindow(int state, Teacher t) throws InvalidStateException{
-	if((state!=CREATE && state!=MODIFY
-			&& state!=SEE && state!=SEARCH)
-			|| (t==null && 
-			state!=CREATE && state!=SEARCH))
-		throw new InvalidStateException();
-	this.state=state;
-	this.t=t;	
-	OpenWindow();
+	super(state,t);
 }
 /**
  * Add a label and a texfield
@@ -80,7 +61,7 @@ public TeacherWindow(int state, Teacher t) throws InvalidStateException{
  * @param name the label
  * @param value the value of the textfield
  */
-private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextField tf,String name, String value){
+private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextField tf,String name){
 	c.gridx = 0;
     c.gridwidth = 1;    
     c.weightx=0; 
@@ -105,13 +86,11 @@ private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextFie
 		}		
 	}
 	*/
+	tf=new JFormattedTextField();
 	
-	if((state==SEE || state==MODIFY)&& value!=null){
-		tf.setText(value);
-		if(state==SEE){
-			tf.setEnabled(false);
-		}
-		}
+	if(isSee()){
+		tf.setEnabled(false);
+	}
 	p.add(tf,c);
 }
 /**
@@ -119,73 +98,57 @@ private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextFie
  * @param p panel
  * @param c constraint
  */
-private void CreateOrSearch(JPanel p,GridBagConstraints c){
+private void addJComponent(JPanel p,GridBagConstraints c){
 	String mask="UUUUUUUUUUUUUUUUUUUUUUUU";
 	c.gridy = 0;
-	addLine(p,c,mask,name, "Nom : ", null);
+	addLine(p,c,mask,name, "Nom : ");
 	c.gridy = 1;
-	addLine(p,c,mask,firstName,"Prénom : ", null);
+	addLine(p,c,mask,firstName,"Prénom : ");
 	
 	mask="*****";
 	c.gridy = 2;		
-	addLine(p,c,mask,office,"Bureau : ", null);
+	addLine(p,c,mask,office,"Bureau : ");
 	
 	/* Phone */
 	mask="##.##.##.##.##";
 	c.gridy = 3;
-	addLine(p,c,mask,phone,"Téléphone : ", null);
+	addLine(p,c,mask,phone,"Téléphone : ");
 	
 	mask="************************";
 	c.gridy = 4;
-	addLine(p,c,mask,email,"Courriel : ", null);
+	addLine(p,c,mask,email,"Courriel : ");
 	
 	c.gridy = 5;
 	c.gridx = 0;
 	
-	if(state==CREATE){
+	if(isCreate()){
 		p.add(create(),c);
 	}
-	else{
+	else if(isSearch()){
 		p.add(search(),c);
 	}
-}
-/**
- * Add the component for the window see and modify
- * @param p panel
- * @param c constraint
- */
-private void SeeOrModify(JPanel p,GridBagConstraints c){
-	String mask="UUUUUUUUUUUUUUUUUUUUUUUU";
-	c.gridy = 0;
-	addLine(p,c,mask,name, "Nom : ", t.getName());
-	c.gridy = 1;
-	addLine(p,c,mask,firstName,"Prénom : ", t.getFirstName());
-	
-	mask="*****";
-	c.gridy = 2;		
-	addLine(p,c,mask,office,"Bureau : ", t.getOffice());
-	
-	/* Phone */
-	mask="##.##.##.##.##";
-	c.gridy = 3;
-	addLine(p,c,mask,phone,"Téléphone : ", t.getPhone());
-	
-	mask="************************";
-	c.gridy = 4;
-	addLine(p,c,mask,email,"Courriel : ", t.getEmail());
-	
-	c.gridy = 5;
-	c.gridx = 0;
-	
-	if(state==MODIFY){
+	else if(isModify()){
 		p.add(modify(),c);
 	}	
 }
 /**
+ * Fill the component for the window see and modify
+ * @param p panel
+ * @param c constraint
+ */
+private void FillComponent(){
+	name.setText(((Teacher) getInformation()).getName());
+	firstName.setText(((Teacher) getInformation()).getFirstName());
+	office.setText(((Teacher) getInformation()).getOffice());
+	phone.setText(((Teacher) getInformation()).getPhone());
+	email.setText(((Teacher) getInformation()).getEmail());
+	
+}
+/**
  * Open and fill the window
  */
-private void OpenWindow(){
-	JFrame frame=new JFrame();
+protected void OpenWindow(){
+	frame=new JFrame();
 	Class clazz=TeacherWindow.class;
 	ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
 	frame.setIconImage(i.getImage());
@@ -204,11 +167,9 @@ private void OpenWindow(){
 	c.weighty=1;
 	c.fill = GridBagConstraints.BOTH;
 	c.insets=new Insets(1,1,1,1);
-	if(state==CREATE || state==SEARCH){
-		CreateOrSearch(p,c);
-	}
-	else{
-		SeeOrModify(p,c);
+	addJComponent(p,c);
+	if(isModify() || isSee()){
+		FillComponent();
 	}
 	
 	c.gridx = 2;
@@ -218,34 +179,21 @@ private void OpenWindow(){
 	frame.setVisible(true);
 	
 }
-/**
- * Création du bouton annuler
- * @return bouton
- */
-private JButton stop(){
-	JButton b=new JButton("Annuler");
-	b.addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent arg0) {
-			System.exit(0);
-		}		
-	});
-	return b;
-	
-}
+
 /**
  * Création du bouton modifier
  * @return bouton
  */
-private JButton modify(){
+protected JButton modify(){
 	JButton b=new JButton("Modifier");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			t.setName(name.getText());
-			t.setFirstName(firstName.getText());
-			t.setOffice(office.getText());
-			t.setPhone(phone.getText());
-			t.setEmail(email.getText());
-			System.out.println(t);
+			((Teacher) getInformation()).setName(name.getText());
+			((Teacher) getInformation()).setFirstName(firstName.getText());
+			((Teacher) getInformation()).setOffice(office.getText());
+			((Teacher) getInformation()).setPhone(phone.getText());
+			((Teacher) getInformation()).setEmail(email.getText());
+			System.out.println(((Teacher) getInformation()));
 			System.exit(0);
 		}		
 	});
@@ -257,13 +205,13 @@ private JButton modify(){
  * Création du bouton creer
  * @return bouton
  */
-private JButton create(){
+protected JButton create(){
 	JButton b=new JButton("Creer");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			t=new Teacher(name.getText(),firstName.getText(),
-					office.getText(),phone.getText(),email.getText());
-			System.out.println(t);
+			setInformation(new Teacher(name.getText(),firstName.getText(),
+					office.getText(),phone.getText(),email.getText()));
+			System.out.println(((Teacher) getInformation()));
 			System.exit(0);
 		}		
 	});
@@ -274,13 +222,13 @@ private JButton create(){
  * Création du bouton de recherche
  * @return bouton
  */
-private JButton search(){
+protected JButton search(){
 	JButton b=new JButton("Chercher");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			t=new Teacher(name.getText(),firstName.getText(),
-					office.getText(),phone.getText(),email.getText());
-			System.out.println(t);
+			setInformation(new Teacher(name.getText(),firstName.getText(),
+					office.getText(),phone.getText(),email.getText()));
+			System.out.println(((Teacher) getInformation()));
 			System.exit(0);
 		}		
 	});
@@ -295,6 +243,6 @@ private JButton search(){
 public static void main (String[] args) throws InvalidStateException{
 	Teacher t=new Teacher("GONORD", "Nadege", 
 			"2B117", "0164022461", "nade77@neuf.fr");
-	new TeacherWindow(TeacherWindow.SEARCH,t);
+	new TeacherWindow(InformationWindow.SEARCH,t);
 }
 }
