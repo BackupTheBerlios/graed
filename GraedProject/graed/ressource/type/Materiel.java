@@ -8,7 +8,7 @@ import graed.ressource.Ressource;
 /**
  * @author Propriétaire
  */
-public class Materiel extends Ressource{
+public class Materiel extends Ressource implements MaterielInterface{
 	 private String name;
      private String typeMateriel;
 

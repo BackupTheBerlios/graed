@@ -10,6 +10,7 @@ import graed.indisponibilite.IndisponibiliteManager;
 import graed.ressource.RessourceInterface;
 import graed.ressource.RessourceManager;
 import graed.ressource.type.Room;
+import graed.ressource.type.RoomInterface;
 import graed.ressource.type.TeacherInterface;
 
 import java.rmi.Remote;
@@ -59,6 +60,6 @@ public class Client {
 		RessourceManager rm = Client.getRessourceManager();
 		Collection c = rm.getRessourcesByType("Salle");
 		for( Iterator i = c.iterator(); i.hasNext(); )
-			System.out.println( ((Room)i.next()).getBatiment() );
+			System.out.println( ((RoomInterface)i.next()) );
 	}
 }
