@@ -1,6 +1,7 @@
 
 package graed.ressource;
 
+import graed.callback.Callback;
 import graed.ressource.event.RessourceListener;
 
 import java.rmi.Remote;
@@ -42,7 +43,7 @@ public interface RessourceManager extends Remote{
      * @param o The object to register.
      * @throws RemoteException
      */
-    public void registerForNotification( RessourceListener rl ) throws RemoteException;
+    public void registerForNotification( Callback c ) throws RemoteException;
     /**
      * Returns the availables types for ressources.
      * @return An array containing all types.

@@ -3,6 +3,7 @@
  */
 package graed.ressource;
 
+import graed.callback.Callback;
 import graed.db.DataBaseManager;
 import graed.exception.DataBaseException;
 import graed.ressource.event.RessourceEvent;
@@ -78,8 +79,8 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     /**
      * @see graed.ressource.RessourceManager#registerForNotification(java.lang.Object)
      */
-    public void registerForNotification(RessourceListener rl) throws RemoteException {
-        toBeNotified.add(rl);
+    public void registerForNotification(Callback c) throws RemoteException {
+        toBeNotified.add(c);
     }
 
     /**
@@ -120,14 +121,22 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     
    protected void fireRessourceDeleted( RessourceEvent re  ) {
        for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-           ((RessourceListener)i.next()).ressourceDeleted(re);
+           try {
+			((Callback)i.next()).notify(re, Callback.DELETE);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
        }
    }
    
    protected void fireRessourceUpdated( RessourceEvent re  ) {
-       for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
-           ((RessourceListener)i.next()).ressourceUpdated(re);
-       }
+   	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
+        try {
+			((Callback)i.next()).notify(re, Callback.UPDATE);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+    }
    }
 
    /**
