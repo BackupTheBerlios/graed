@@ -64,6 +64,7 @@ public class CreateMainFrame {
 	private JCloseableTabbedPane tp;
 	private Hashtable icons;
 	private final JList notif;
+	private Hashtable buttons;
 	/**
 	 * Constructeur
 	 * @throws UnsupportedLookAndFeelException 
@@ -74,6 +75,8 @@ public class CreateMainFrame {
 	 */
 	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
+	    
+	    buttons = new Hashtable();
 	    notif = new JList();
 	    notif.setModel(new DefaultListModel());
 	    notif.setCellRenderer(new NotificationRenderer());
@@ -275,12 +278,26 @@ public class CreateMainFrame {
 	    		}
 	    });
 	    
+	    JButton ref = createButton("Rafraîchir",
+				"Met à jour les emplois du temps", 
+				"icons/general/Refresh24.gif",
+				new ActionListener() {
+	    		public void actionPerformed( ActionEvent ae ) {
+	    			JOptionPane.showInternalMessageDialog(frame,"Non implémenté","Arf",JOptionPane.INFORMATION_MESSAGE);
+	    		}
+	    });
+	    
+	    buttons.put("export",exp);
+	    buttons.put("print",imp);
+	    buttons.put("refresh",ref);
+	    
 	    tb.add(exp);
 	    tb.add(imp);
 	    tb.addSeparator();
+	    tb.add(ref);
 	    tb.setBorderPainted(true);
 	    tb.setFloatable(false);
-	    tb.setOpaque(false);
+	    tb.setOpaque(true);
 	    return tb;
 	}
 	
@@ -292,6 +309,10 @@ public class CreateMainFrame {
 	    b.setIcon(new ImageIcon(getClass().getResource(image)));
 	    if( a!=null ) b.addActionListener(a);
 	    return b;
+	}
+	
+	protected void enableRefresh(boolean b) {
+		((JButton)buttons.get("ref")).setEnabled(b);
 	}
 	
 	/** test ***
