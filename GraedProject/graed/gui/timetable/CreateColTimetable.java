@@ -15,7 +15,6 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
@@ -32,8 +31,9 @@ public class CreateColTimetable {
 	
 	public CreateColTimetable(Ressource r,String title, int start, int stop){
 		this.r=r;
-		colTimetable=CreateTables(start,stop);		
-		//colTimetable.setSize((stop-start)*100+50,310);
+		colTimetable=new JPanel();
+		colTimetable.setSize((stop-start)*100+60,300);
+		CreateTables(start,stop);		
 	}
 	public JPanel getTimetable(){
 		return colTimetable;
@@ -69,7 +69,7 @@ public class CreateColTimetable {
 		days.setGridColor(Color.BLACK);		
 		days.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		days.setEnabled(false);
-		days.setPreferredSize( new Dimension( 50,colTimetable.getHeight()*5/6 ));
+		days.setPreferredSize( new Dimension( 60,colTimetable.getHeight()*5/6 ));
 		days.setRowHeight(colTimetable.getHeight()/6);
 		days.setValueAt("Lundi",0,0);
 		days.setValueAt("Mardi",1,0);
@@ -86,13 +86,12 @@ public class CreateColTimetable {
 		
 		return t;
 	}
-	private JPanel CreateTables(int start, int stop){
-		JPanel p=new JPanel();
+	private void CreateTables(int start, int stop){
 		GridBagLayout l=new GridBagLayout();
 		
-		p.setLayout(l);
-		p.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
-		p.setBackground(Color.LIGHT_GRAY);
+		colTimetable.setLayout(l);
+		colTimetable.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
+		colTimetable.setBackground(Color.LIGHT_GRAY);
 		GridBagConstraints c= new GridBagConstraints();
 		
 		/* Table affichant les heures */
@@ -104,7 +103,7 @@ public class CreateColTimetable {
 	    c.weightx=1;
 	    c.weighty=1;
 	    c.fill = GridBagConstraints.BOTH;
-		p.add(heure,c);
+	    colTimetable.add(heure,c);
 		
 		/* Table affichant les jours */
 		JTable jour =CreateDaysTable();
@@ -115,7 +114,7 @@ public class CreateColTimetable {
 	    c.weighty=0.2;
 	    c.fill = GridBagConstraints.BOTH;
 	    
-		p.add(jour,c);
+	    colTimetable.add(jour,c);
 	
 		
 		/* Tables affichant les cours */
@@ -154,7 +153,7 @@ public class CreateColTimetable {
 	    c.gridheight = 1;
 	    c.weightx=1;
 	    c.fill = GridBagConstraints.BOTH;
-		p.add(col,c);
+	    colTimetable.add(col,c);
 		
 		/* Table affichant les heures */
 		JTable heure2 =CreateHoursTable(start, stop);
@@ -163,13 +162,13 @@ public class CreateColTimetable {
 	    c.gridwidth = 1;
 	    c.gridheight = 1;
 	    c.fill = GridBagConstraints.BOTH;
-		p.add(heure2,c);
+	    colTimetable.add(heure2,c);
 		
-		return p;
 	}
 	public static void main(String[] args) {
 		JFrame f=new JFrame("Test Emploi du temps");
-		f.getContentPane().add(new CreateColTimetable(null,"Emploi du temps",8,15).getTimetable());
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setContentPane(new CreateColTimetable(null,"Emploi du temps",8,15).getTimetable());
 		/* Affichage de l'interface */
 		f.pack();
 		f.setVisible(true);
