@@ -144,9 +144,6 @@ public class DataBaseManager implements Serializable{
 		return session.createCriteria(c);
 	}
 	
-	
-	
-	
 	/**
 	 * @return Returns the session.
 	 */

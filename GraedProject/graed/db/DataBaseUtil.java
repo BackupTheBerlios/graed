@@ -77,7 +77,6 @@ public class DataBaseUtil {
 						/* Exception levée si on essaye d'invoquer une methode n'existant pas.
 						 * Dans ce cas on l'ignore tout simplement.
 						 */
-						
 					}
 				}
 			}
