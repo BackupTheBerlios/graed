@@ -7,6 +7,7 @@
 package graed.client;
 
 import graed.indisponibilite.IndisponibiliteManager;
+import graed.ressource.RessourceInterface;
 import graed.ressource.RessourceManager;
 import graed.ressource.type.TeacherInterface;
 
@@ -59,6 +60,6 @@ public class Client {
 		ti.setName("zipstein");
 		Collection c = rm.getRessources(ti);
 		TeacherInterface tic = (TeacherInterface)c.iterator().next();
-		rm.deleteRessource(ti);
+		rm.deleteRessource(tic);
 	}
 }

@@ -92,6 +92,8 @@ public class DataBaseManager implements Serializable{
 	        session.delete(convertStub(dbo));
 	        tx.commit();
 	    } catch( HibernateException he ) {
+	    	he.printStackTrace();
+	    	
 	    	Throwable[] t = he.getThrowables();
 	    	
 	    	for( int i=0; i<t.length; ++i ) {
@@ -100,6 +102,7 @@ public class DataBaseManager implements Serializable{
 	    			e.printStackTrace();
 	    		}
 	    	}
+	    	
 	        throw (DataBaseException)new DataBaseException( "Erreur lors de la suppression de la base de données").initCause(he);
 	    }
 	}
@@ -152,7 +155,7 @@ public class DataBaseManager implements Serializable{
 			Class dest = Class.forName(original);
 			Object destObj = dest.newInstance();
 			Method[] ms = dest.getMethods();
-			
+						
 			for( int i=0; i<ms.length; ++i ) {
 				Method m = ms[i];
 				String s = m.getName();
@@ -166,7 +169,9 @@ public class DataBaseManager implements Serializable{
 					}
 				}
 			}
-			return destObj;
+			Criteria c = session.createCriteria(destObj.getClass());
+			c.add( Example.create(destObj).excludeZeroes().ignoreCase().enableLike());
+			return c.list().get(0);
 		} catch( Exception e ) {
 			e.printStackTrace();
 			return null;
