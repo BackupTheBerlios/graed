@@ -305,8 +305,8 @@ public class TimetableColJTable extends JTable {
 	}
 	private int find_col(int col,int size){
 		if(list_ind!=null){
-			for(Enumeration enum=list_ind.keys();enum.hasMoreElements();){
-				int col_tmp=((Integer)enum.nextElement()).intValue();				
+			for(Enumeration en=list_ind.keys();en.hasMoreElements();){
+				int col_tmp=((Integer)en.nextElement()).intValue();				
 				if(col_tmp<col){
 					col-=(tm.getCellSize(0,col_tmp)-1);
 					if(col<0)System.out.println("Timetable error ("+col+","+size+")");
