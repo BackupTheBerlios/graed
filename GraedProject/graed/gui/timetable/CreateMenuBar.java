@@ -9,6 +9,7 @@ import graed.gui.ressource.GroupWindow;
 import graed.gui.ressource.MaterielWindow;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
+import graed.gui.user.UserWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.GroupInterface;
@@ -16,7 +17,6 @@ import graed.ressource.type.MaterielInterface;
 import graed.ressource.type.RoomInterface;
 import graed.ressource.type.TeacherInterface;
 import graed.user.UserInterface;
-import graed.user.UserWindow;
 import graed.util.ldap.ConnectLDAP;
 
 import java.awt.BorderLayout;
