@@ -87,6 +87,17 @@ public class TimetableDefaultTableModel extends DefaultTableModel {
 		return null;
 	}
 	/**
+	 * Renvoie l'élément à la colonne données
+	 */
+	public void modifyCellSize(int col,int size) {
+		Object o =value.get(new Integer(col));	
+		if (o!=null){
+			int old=((MyCell)o).getSize();
+			nbcells-=(size-old);
+			((MyCell)o).setSize(size);
+		}
+	}
+	/**
 	 * Récupère la taille en nombre de colonnes de la cellule
 	 * @param row
 	 * @param col

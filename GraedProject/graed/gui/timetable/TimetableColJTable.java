@@ -120,7 +120,7 @@ public class TimetableColJTable extends JTable {
                     				suppr.setEnabled(false);
                 				}
                 				
-								System.out.println("\nPopUp: "+i_tmp.print());
+								if(i_tmp!=null)System.out.println("\nPopUp: "+i_tmp.print());
 							} catch (RemoteException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
@@ -179,6 +179,9 @@ public class TimetableColJTable extends JTable {
 		addMouseListener(listener);
 		
 	}
+	/**
+	 * On redéfinit la taille de la JTable et de ses colonnes
+	 */
 	public void setPreferredSize(Dimension preferredSize){
 		super.setPreferredSize(preferredSize);
 		for(int i=0;i<getColumnCount();++i)
@@ -280,12 +283,19 @@ public class TimetableColJTable extends JTable {
 		if(j!=null)	{
 			text=j.getText()+"\n";
 			tooltext=j.getToolTipText().replaceAll("</html>","<br><br>");
+			int size_tmp=tm.getCellSize(0,col);
+			TableColumn c=getColumnModel().getColumn(col);
+			c.setPreferredWidth(c.getPreferredWidth()/size_tmp);
+			System.out.println("Size tmp:"+size_tmp);
+			size=size>size_tmp?size:size_tmp;
+			tm.modifyCellSize(col,size);
+			System.out.println("Size tmp:"+size_tmp);
 		}
 		else{
 			j = new JTextArea();
 			tooltext="<html>";
 		}
-			try {
+		try {
 			j.setText(text+i.print());
 			tooltext+=i.print().replaceAll("\\n","<br>");	
 			j.setToolTipText(tooltext+"</html>");
@@ -299,7 +309,7 @@ public class TimetableColJTable extends JTable {
 		j.setWrapStyleWord(true);		
 		//Gestion des erreurs de la taille de la cellule
 		if(size>tm.getColumnCount()-col)size=tm.getColumnCount()-col;
-		tm.setValueAt(j,col,size);
+		if((JTextArea) getValueAt(0,col)==null)tm.setValueAt(j,col,size);
 		TableColumn c=getColumnModel().getColumn(col);
 		c.setPreferredWidth(size*c.getPreferredWidth()+size-1);
 		
@@ -316,9 +326,19 @@ public class TimetableColJTable extends JTable {
 		c.setPreferredWidth(c.getPreferredWidth()/size);
 		return removeI(col);
 	}
+	/**
+	 * Supprime une liste d'indisponibilité sur une colonne
+	 * @param col la colonne
+	 * @return la liste des indisponibilités
+	 */
 	public Collection removeI(int col){
 		return (Collection) list_ind.remove(new Integer(col));
 	}
+	/**
+	 * Ajoute une indisponibilité sur une colonne
+	 * @param i l'indisponibilité
+	 * @param col la colonne
+	 */
 	public void addI(IndisponibiliteInterface i,int col){
 		Collection coll=getI(col);
 		if(coll!=null)coll.add(i);
@@ -328,16 +348,30 @@ public class TimetableColJTable extends JTable {
 		}
 		list_ind.put(new Integer(col), coll);
 	}
+	/**
+	 * Récupère la liste des indisponibilités à l'emplacement donné
+	 * @param col la colonne
+	 * @return une collection d'indisponibilités
+	 */
 	public Collection getI(int col){
 		return (Collection) list_ind.get(new Integer(col));
 	}
+	/**
+	 * Trouve le bon numéro de colonne par rapport 
+	 * aux indisponibilités déjà ajoutée à la table
+	 * @param col le numéro de colonne initial
+	 * @param size la taille
+	 * @return le numéro de colonne calculé
+	 */
 	private int find_col(int col,int size){
 		if(list_ind!=null){
 			for(Enumeration en=list_ind.keys();en.hasMoreElements();){
 				int col_tmp=((Integer)en.nextElement()).intValue();				
 				if(col_tmp<col){
 					col-=(tm.getCellSize(0,col_tmp)-1);
-					if(col<0)System.out.println("Timetable error ("+col+","+size+")");
+					if(col<0){
+						col=col_tmp;						
+					}
 				}				
 			}
 		}		

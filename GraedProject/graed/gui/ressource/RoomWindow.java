@@ -236,7 +236,7 @@ protected JButton create(){
 			if(nom.getText()!=null &&
 					lieu.getText()!=null && batiment.getText()!=null){
 				try {
-					RoomInterface room = (RoomInterface)Client.getRessourceManager().createRessource("Classe");
+					RoomInterface room = (RoomInterface)Client.getRessourceManager().createRessource("Salle");
 					room.setNom(nom.getText());
 					room.setBatiment(batiment.getText());
 					room.setCapacite(Integer.parseInt(capacite.getText()));
