@@ -146,4 +146,11 @@ public class Group extends Ressource implements GroupInterface{
 	public void setUser(User user) {
 		this.user = user;
 	}
+	/* (non-Javadoc)
+	 * @see graed.ressource.type.GroupInterface#setProf_responsable(graed.ressource.type.TeacherInterface)
+	 */
+	public void setProf_responsable(TeacherInterface prof) throws RemoteException {
+		this.prof_responsable = prof_responsable;
+		
+	}
 }

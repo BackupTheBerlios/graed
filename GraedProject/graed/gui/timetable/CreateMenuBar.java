@@ -9,12 +9,12 @@ import graed.gui.ressource.GroupWindow;
 import graed.gui.ressource.MaterielWindow;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
-import graed.indisponibilite.Indisponibilite;
+import graed.indisponibilite.IndisponibiliteInterface;
 import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Group;
-import graed.ressource.type.Materiel;
-import graed.ressource.type.Room;
-import graed.ressource.type.Teacher;
+import graed.ressource.type.GroupInterface;
+import graed.ressource.type.MaterielInterface;
+import graed.ressource.type.RoomInterface;
+import graed.ressource.type.TeacherInterface;
 import graed.util.ldap.ConnectLDAP;
 
 import java.awt.BorderLayout;
@@ -74,7 +74,7 @@ public class CreateMenuBar {
 		JMenuItem prof=new JMenuItem("Professeur");
 		prof.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Teacher t=null;
+				TeacherInterface t=null;
 				try {					
 					new TeacherWindow(InformationWindow.SEARCH,t).OpenWindow();					
 				} catch (InvalidStateException e1) {
@@ -89,7 +89,7 @@ public class CreateMenuBar {
 		JMenuItem salle=new JMenuItem("Salle");
 		salle.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Room t=null;
+				RoomInterface t=null;
 				try {
 					new RoomWindow(InformationWindow.SEARCH,t).OpenWindow();
 				} catch (InvalidStateException e1) {
@@ -104,7 +104,7 @@ public class CreateMenuBar {
 		JMenuItem materiel=new JMenuItem("Materiel");
 		materiel.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Materiel t=null;
+				MaterielInterface t=null;
 				try {
 					new MaterielWindow(InformationWindow.SEARCH,t).OpenWindow();
 				} catch (InvalidStateException e1) {
@@ -120,7 +120,7 @@ public class CreateMenuBar {
 		JMenuItem formation=new JMenuItem("Formation");
 		formation.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Group t=null;
+				GroupInterface t=null;
 				try {
 				 	
 					new GroupWindow(InformationWindow.SEARCH,t).OpenWindow();
@@ -149,7 +149,7 @@ public class CreateMenuBar {
 		JMenuItem prof=new JMenuItem("Professeur");
 		prof.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Teacher t=null;
+				TeacherInterface t=null;
 				try {					
 					new TeacherWindow(InformationWindow.CREATE,t).OpenWindow();					
 				} catch (InvalidStateException e1) {
@@ -164,7 +164,7 @@ public class CreateMenuBar {
 		JMenuItem salle=new JMenuItem("Salle");
 		salle.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Room t=null;
+				RoomInterface t=null;
 				try {
 					new RoomWindow(InformationWindow.CREATE,t).OpenWindow();
 				} catch (InvalidStateException e1) {
@@ -179,7 +179,7 @@ public class CreateMenuBar {
 		JMenuItem materiel=new JMenuItem("Materiel");
 		materiel.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Materiel t=null;
+				MaterielInterface t=null;
 				try {
 					new MaterielWindow(InformationWindow.CREATE,t).OpenWindow();
 				} catch (InvalidStateException e1) {
@@ -195,7 +195,7 @@ public class CreateMenuBar {
 		JMenuItem formation=new JMenuItem("Formation");
 		formation.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Group t=null;
+				GroupInterface t=null;
 				try {
 				 	
 					new GroupWindow(InformationWindow.CREATE,t).OpenWindow();
@@ -243,7 +243,7 @@ public class CreateMenuBar {
 				System.out.println(p.size()+" teacher find:");
 				try{
 					for (Iterator i=p.iterator();i.hasNext();){
-						Teacher t=(Teacher)i.next();
+						TeacherInterface t=(TeacherInterface)i.next();
 						System.out.println(t);
 						RessourceManagerImpl.getInstance().addRessource(t);
 					}
@@ -265,7 +265,7 @@ public class CreateMenuBar {
 				System.out.println(p.size()+" rooms find:");
 				try{
 					for (Iterator i=p.iterator();i.hasNext();){
-						Room r=(Room)i.next();
+						RoomInterface r=(RoomInterface)i.next();
 						System.out.println(r);						
 						RessourceManagerImpl.getInstance().addRessource(r);
 					}
@@ -290,7 +290,7 @@ public class CreateMenuBar {
 				System.out.println(p.size()+" groups find:");
 				try{
 					for (Iterator i=p.iterator();i.hasNext();){
-						Group g=(Group) i.next();
+						GroupInterface g=(GroupInterface) i.next();
 						System.out.println(g);					
 						RessourceManagerImpl.getInstance().addRessource(g);
 					}
@@ -320,7 +320,7 @@ public class CreateMenuBar {
 		/* Creer une indisponibilite */
 		select.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Indisponibilite t=null;
+				IndisponibiliteInterface t=null;
 				try {					
 					new IndisponibiliteWindow(InformationWindow.SEARCH,t).OpenWindow();					
 				} catch (InvalidStateException e1) {
@@ -336,7 +336,7 @@ public class CreateMenuBar {
 		JMenuItem creer=new JMenuItem("Creer");
 		creer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				Indisponibilite t=null;
+				IndisponibiliteInterface t=null;
 				try {					
 					new IndisponibiliteWindow(InformationWindow.CREATE,t).OpenWindow();					
 				} catch (InvalidStateException e1) {

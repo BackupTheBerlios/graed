@@ -2,8 +2,9 @@
 package graed.gui.timetable;
 
 
-import graed.indisponibilite.Indisponibilite;
-import graed.ressource.Ressource;
+
+import graed.indisponibilite.IndisponibiliteInterface;
+import graed.ressource.RessourceInterface;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,13 +12,13 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.rmi.RemoteException;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -32,7 +33,7 @@ import javax.swing.JTable;
 public class CreateColTimetable {
 	private final JPanel colTimetable;
 	private Hashtable jourTable;
-	private Ressource r;
+	private RessourceInterface r;
 	private int start;
 	private int stop;
 	private Color color;
@@ -45,7 +46,7 @@ public class CreateColTimetable {
 	 * @param start heure de début
 	 * @param stop heure de fin
 	 */
-	public CreateColTimetable(Ressource r,String title, int start, int stop){
+	public CreateColTimetable(RessourceInterface r,String title, int start, int stop){
 		this.r=r;
 		color = Color.LIGHT_GRAY;
 		jourTable=new Hashtable();
@@ -218,28 +219,33 @@ public class CreateColTimetable {
 	 * Ajouter une indisponibilité à l'emploi du temps de la ressource
 	 * @param i l'indisponibilitée à ajouter
 	 */
-	public void addIndispo(Indisponibilite i){
-		GregorianCalendar gcal=new GregorianCalendar();
-		String libelle;
-		gcal.setTime(i.getDebut());
-		System.out.println(gcal.get(GregorianCalendar.DAY_OF_WEEK));
-		int celldebut =(i.getHdebut().getHours()-start)*4+(i.getHdebut().getMinutes()/15);
-		int nbcell=i.getDuree()/15;
-		libelle=i.getLibelle();
-		if(i.getPeriodicite().equals("ponctuel")){
-			libelle+=" le "+i.getDebut();
-		}
-		else if(i.getPeriodicite().equals("bihebdomadaire")){
-			libelle+=" tous les 15 jours à partir du "+i.getDebut();
-		}
-		Set s=i.getRessources();
-		for(Iterator it=s.iterator();it.hasNext();){			
-			Ressource tmp=(Ressource)it.next();
-			if (this.r!=tmp)
-				libelle+=" "+tmp;
-		}
-		((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(i,
+	public void addIndispo(IndisponibiliteInterface i){
+		try {
+			GregorianCalendar gcal=new GregorianCalendar();
+			String libelle;		
+			gcal.setTime(i.getDebut());
+		
+			System.out.println(gcal.get(GregorianCalendar.DAY_OF_WEEK));
+			int celldebut =(i.getHdebut().getHours()-start)*4+(i.getHdebut().getMinutes()/15);
+			int nbcell=i.getDuree()/15;
+			libelle=i.getLibelle();
+			if(i.getPeriodicite().equals("ponctuel")){
+				libelle+=" le "+i.getDebut();
+			}
+			else if(i.getPeriodicite().equals("bihebdomadaire")){
+				libelle+=" tous les 15 jours à partir du "+i.getDebut();
+			}
+			Set s=i.getRessources();
+			for(Iterator it=s.iterator();it.hasNext();){			
+				RessourceInterface tmp=(RessourceInterface)it.next();
+				if (this.r!=tmp)
+					libelle+=" "+tmp;
+			}
+			((TimetableColJTable)jourTable.get(gcal.get(GregorianCalendar.DAY_OF_WEEK)+"")).addIndispo(i,
 				celldebut,nbcell);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * Test

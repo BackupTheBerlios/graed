@@ -6,9 +6,9 @@
  */
 package graed.gui.timetable;
 
-import graed.indisponibilite.Indisponibilite;
+import graed.indisponibilite.IndisponibiliteInterface;
 import graed.indisponibilite.IndisponibiliteManagerImpl;
-import graed.ressource.Ressource;
+import graed.ressource.RessourceInterface;
 
 import java.awt.BorderLayout;
 import java.rmi.RemoteException;
@@ -18,7 +18,6 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 
 /**
  * @author ngonord
@@ -75,7 +74,7 @@ public class CreateMainFrame {
 	 * @param dateDebut
 	 * @param dateFin
 	 */
-	public void addTimetable(Ressource r,java.sql.Date dateDebut,java.sql.Date dateFin){
+	public void addTimetable(RessourceInterface r,java.sql.Date dateDebut,java.sql.Date dateFin){
 		Collection c=null;
 		try {
 			c=IndisponibiliteManagerImpl.getInstance().getIndisponibilites(
@@ -84,7 +83,7 @@ public class CreateMainFrame {
 			tp.add(time2.getTitle(),time2.getTimetable());
 			if(c!=null){
 				for(Iterator i=c.iterator();i.hasNext();)
-					time2.addIndispo((Indisponibilite)i.next());
+					time2.addIndispo((IndisponibiliteInterface)i.next());
 			}
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block

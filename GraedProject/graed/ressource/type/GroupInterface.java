@@ -64,9 +64,9 @@ public interface GroupInterface extends Remote, RessourceInterface {
 	 */
 	public Teacher getProf_responsable() throws RemoteException;
 	/**
-	 * @param prof_responsable The prof_responsable to set.
+	 * @param prof The prof_responsable to set.
 	 */
-	public void setProf_responsable(Teacher prof_responsable) throws RemoteException;
+	public void setProf_responsable(TeacherInterface prof) throws RemoteException;
 	/**
 	 * @return Returns the user.
 	 */

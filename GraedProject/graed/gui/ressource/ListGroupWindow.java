@@ -6,10 +6,10 @@
  */
 package graed.gui.ressource;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Group;
+import graed.ressource.type.GroupInterface;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -53,18 +53,24 @@ public class ListGroupWindow extends ListRessourceWindow {
 	 * @return le tableau permettant le remplissage de la JTable
 	 */
 	private Object[][] fill(){
-		int j=0;
-		Object[][]o= new Object[super.size()][6];
-		for (Iterator i=super.getIteractor();i.hasNext();){
-			Group t=(Group)i.next();
-			o[j][0]=t.getName();
-			o[j][1]=t.getDescription();
-			o[j][2]=t.getOptions();			
-			o[j][3]=t.getProf_responsable();
-			o[j][4]=t.getUser();	
-			o[j][5]=t.getMail();
-			j++;
-		}
+		Object[][]o=null;
+		try {
+			int j=0;
+			 o=new Object[super.size()][6];
+			for (Iterator i=super.getIteractor();i.hasNext();){
+				GroupInterface t=(GroupInterface)i.next();			
+				o[j][0]=t.getName();			
+				o[j][1]=t.getDescription();
+				o[j][2]=t.getOptions();			
+				o[j][3]=t.getProf_responsable();
+				o[j][4]=t.getUser();	
+				o[j][5]=t.getMail();
+				j++;
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 		return o;
 	}
 	/* (non-Javadoc)
@@ -107,7 +113,7 @@ public class ListGroupWindow extends ListRessourceWindow {
 		JButton b=new JButton("Consulter");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Group t = (Group) getRessource(table.getSelectedRow());	
+				GroupInterface t = (GroupInterface) getRessource(table.getSelectedRow());	
 				frame.setEnabled(false);
 				try {
 					new GroupWindow(InformationWindow.SEE,t).OpenWindow();
@@ -129,7 +135,7 @@ public class ListGroupWindow extends ListRessourceWindow {
 		JButton b=new JButton("Modifier");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Group t = (Group) getRessource(table.getSelectedRow());
+				GroupInterface t = (GroupInterface) getRessource(table.getSelectedRow());
 				frame.setEnabled(false);
 				try {
 					new GroupWindow(InformationWindow.MODIFY,t).OpenWindow();
@@ -151,7 +157,7 @@ public class ListGroupWindow extends ListRessourceWindow {
 		JButton b=new JButton("Afficher EDP");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Group t = (Group) getRessource(table.getSelectedRow());
+				GroupInterface t = (GroupInterface) getRessource(table.getSelectedRow());
 				//frame.setEnabled(false);
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",
@@ -169,12 +175,12 @@ public class ListGroupWindow extends ListRessourceWindow {
 		JButton b=new JButton("Supprimer");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Group t = (Group) getRessource(table.getSelectedRow());
+				GroupInterface t = (GroupInterface) getRessource(table.getSelectedRow());
 				table.remove(table.getSelectedRow());
 				System.out.println(table);
 				removeRessource(t);
 				try {
-					RessourceManagerImpl.getInstance().deleteRessource(t);
+					Client.getRessourceManager().deleteRessource(t);
 				} catch (RemoteException e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(frame,

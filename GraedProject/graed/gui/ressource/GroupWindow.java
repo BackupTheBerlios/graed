@@ -4,12 +4,12 @@
  */
 package graed.gui.ressource;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.ressource.RessourceManagerImpl;
 import graed.ressource.event.RessourceEvent;
-import graed.ressource.type.Group;
-import graed.ressource.type.Teacher;
+import graed.ressource.type.GroupInterface;
+import graed.ressource.type.TeacherInterface;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -59,7 +59,7 @@ private JComboBox directeur;
  * @param t the group
  * @throws InvalidStateException
  */
-public GroupWindow(int state, Group t) throws InvalidStateException{
+public GroupWindow(int state, GroupInterface t) throws InvalidStateException{
 	super(state,t);
 	name = new JFormattedTextField();
 	description = new JFormattedTextField();
@@ -69,7 +69,7 @@ public GroupWindow(int state, Group t) throws InvalidStateException{
 	directeur.addItem("");
 	Collection c;//Collection
 	try {
-		c = RessourceManagerImpl.getInstance().getRessourcesByType("Professeur");
+		c = Client.getRessourceManager().getRessourcesByType("Professeur");
 		if(c!=null){
 			for( Iterator it=c.iterator();it.hasNext();)
 				directeur.addItem(it.next());		}
@@ -159,11 +159,15 @@ private void addJComponent(JPanel p,GridBagConstraints c){
  * @param c constraint
  */
 private void FillComponent(){
-	name.setText(((Group) getInformation()).getName());
-	description.setText(((Group) getInformation()).getDescription());
-	option.setText(((Group) getInformation()).getOptions());
-	email.setText(((Group) getInformation()).getMail());
-	
+	try {
+		name.setText(((GroupInterface) getInformation()).getName());	
+		description.setText(((GroupInterface) getInformation()).getDescription());
+		option.setText(((GroupInterface) getInformation()).getOptions());
+		email.setText(((GroupInterface) getInformation()).getMail());
+	} catch (RemoteException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 }
 /**
  * Open and fill the window
@@ -223,13 +227,14 @@ protected JButton modify(){
 	JButton b=new JButton("Modifier");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			((Group) getInformation()).setName(name.getText());
-			((Group) getInformation()).setDescription(description.getText());
-			((Group) getInformation()).setOptions(option.getText());
-			((Group) getInformation()).setMail(email.getText());
-			System.out.println(((Group) getInformation()));
 			try {
-				RessourceManagerImpl.getInstance().updateRessource(((Group) getInformation()));
+				((GroupInterface) getInformation()).setName(name.getText());			
+				((GroupInterface) getInformation()).setDescription(description.getText());
+				((GroupInterface) getInformation()).setOptions(option.getText());
+				((GroupInterface) getInformation()).setMail(email.getText());
+				System.out.println(((GroupInterface) getInformation()));
+			
+				Client.getRessourceManager().updateRessource(((GroupInterface) getInformation()));
 			} catch (RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
 				"La formation ne peut être modifiée ",
@@ -253,11 +258,14 @@ protected JButton create(){
 			if(name.getText()!=null &&
 					description.getText()!=null){
 				try {
-				setInformation(new Group(null,name.getText(),description.getText(),
-						email.getText(),null,null,option.getText()));
-				System.out.println(((Group) getInformation()));				
+					GroupInterface g=(GroupInterface) Client.getRessourceManager().createRessource("Formation");
+					g.setName(name.getText());
+					g.setDescription(description.getText());
+					g.setMail(email.getText());
+					g.setOptions(option.getText());
+					System.out.println(g);				
 					
-						RessourceManagerImpl.getInstance().addRessource(((Group) getInformation()));
+					Client.getRessourceManager().addRessource(g);
 					} catch (RemoteException e) {	
 						e.printStackTrace();
 						JOptionPane.showMessageDialog(frame,
@@ -290,11 +298,17 @@ protected JButton search(){
 			String d = description.getText().length()==0?null:description.getText();
 			String op = option.getText().length()==0?null:option.getText();
 			String m = email.getText().length()==0?null:email.getText();
-			Teacher prof = (Teacher) (((String)directeur.getSelectedItem().toString()).length()==0?null:directeur.getSelectedItem());
-			setInformation(new Group(null,n,d,m,null,prof,op));
-			System.out.println(((Group) getInformation()));	
+			TeacherInterface prof = (TeacherInterface) (((String)directeur.getSelectedItem().toString()).length()==0?null:directeur.getSelectedItem());
+			
+			GroupInterface g=(GroupInterface) Client.getRessourceManager().createRessource("Formation");
+			g.setName(n);
+			g.setDescription(d);
+			g.setMail(m);
+			g.setOptions(op);
+			g.setProf_responsable(prof);
+			System.out.println(g);		
 			Collection l=null;			
-					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Group) getInformation()));
+					l= (Collection) Client.getRessourceManager().getRessources(((GroupInterface) getInformation()));
 				
 			
 			System.out.println("List:"+l);	
@@ -364,7 +378,7 @@ public static void main (String[] args) throws InvalidStateException{
 	for (Iterator i=l.iterator();i.hasNext();){
 		new TeacherWindow(InformationWindow.MODIFY,((Teacher)i.next())).OpenWindow();
 	}*/
-	Group t=null;
+	GroupInterface t=null;
 	new GroupWindow(InformationWindow.SEARCH,t).OpenWindow();
 }
 }

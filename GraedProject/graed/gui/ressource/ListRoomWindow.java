@@ -4,10 +4,10 @@
  */
 package graed.gui.ressource;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Room;
+import graed.ressource.type.RoomInterface;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -53,13 +53,18 @@ public class ListRoomWindow extends ListRessourceWindow {
 	private Object[][] fill(){
 		int j=0;
 		Object[][]o= new Object[super.size()][4];
-		for (Iterator i=super.getIteractor();i.hasNext();){
-			Room t=(Room)i.next();
-			o[j][0]=t.getNom();
-			o[j][1]=t.getBatiment();
-			o[j][2]=t.getLieu();
-			o[j][3]=t.getCapacite()+"";		
-			j++;
+		try {
+			for (Iterator i=super.getIteractor();i.hasNext();){
+				RoomInterface t=(RoomInterface)i.next();			
+				o[j][0]=t.getNom();			
+				o[j][1]=t.getBatiment();
+				o[j][2]=t.getLieu();
+				o[j][3]=t.getCapacite()+"";		
+				j++;
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return o;
 	}
@@ -103,7 +108,7 @@ public class ListRoomWindow extends ListRessourceWindow {
 		JButton b=new JButton("Consulter");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Room t = (Room) getRessource(table.getSelectedRow());	
+				RoomInterface t = (RoomInterface) getRessource(table.getSelectedRow());	
 				frame.setEnabled(false);
 				try {
 					new RoomWindow(InformationWindow.SEE,t).OpenWindow();
@@ -125,7 +130,7 @@ public class ListRoomWindow extends ListRessourceWindow {
 		JButton b=new JButton("Modifier");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Room t = (Room) getRessource(table.getSelectedRow());
+				RoomInterface t = (RoomInterface) getRessource(table.getSelectedRow());
 				frame.setEnabled(false);
 				try {
 					new RoomWindow(InformationWindow.MODIFY,t).OpenWindow();
@@ -147,7 +152,7 @@ public class ListRoomWindow extends ListRessourceWindow {
 		JButton b=new JButton("Afficher EDP");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Room t = (Room) getRessource(table.getSelectedRow());
+				RoomInterface t = (RoomInterface) getRessource(table.getSelectedRow());
 				//frame.setEnabled(false);
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",
@@ -165,9 +170,9 @@ public class ListRoomWindow extends ListRessourceWindow {
 		JButton b=new JButton("Supprimer");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Room t = (Room) getRessource(table.getSelectedRow());
+				RoomInterface t = (RoomInterface) getRessource(table.getSelectedRow());
 				try {
-					RessourceManagerImpl.getInstance().deleteRessource(t);
+					Client.getRessourceManager().deleteRessource(t);
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
 							"Cette ressource ne peut etre supprimée",

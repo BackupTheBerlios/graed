@@ -4,10 +4,10 @@
  */
 package graed.gui.ressource;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Materiel;
+import graed.ressource.type.MaterielInterface;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -53,11 +53,16 @@ public class ListMaterielWindow extends ListRessourceWindow {
 	private Object[][] fill(){
 		int j=0;
 		Object[][]o= new Object[super.size()][2];
-		for (Iterator i=super.getIteractor();i.hasNext();){
-			Materiel t=(Materiel)i.next();
-			o[j][0]=t.getName();
-			o[j][1]=t.getTypeMateriel();	
-			j++;
+		try{
+			for (Iterator i=super.getIteractor();i.hasNext();){
+				MaterielInterface t=(MaterielInterface)i.next();
+				o[j][0]=t.getName();
+				o[j][1]=t.getTypeMateriel();	
+				j++;
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return o;
 	}
@@ -101,7 +106,7 @@ public class ListMaterielWindow extends ListRessourceWindow {
 		JButton b=new JButton("Consulter");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Materiel t = (Materiel) getRessource(table.getSelectedRow());	
+				MaterielInterface t = (MaterielInterface) getRessource(table.getSelectedRow());	
 				frame.setEnabled(false);
 				try {
 					new MaterielWindow(InformationWindow.SEE,t).OpenWindow();
@@ -123,7 +128,7 @@ public class ListMaterielWindow extends ListRessourceWindow {
 		JButton b=new JButton("Modifier");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Materiel t = (Materiel) getRessource(table.getSelectedRow());
+				MaterielInterface t = (MaterielInterface) getRessource(table.getSelectedRow());
 				frame.setEnabled(false);
 				try {
 					new MaterielWindow(InformationWindow.MODIFY,t).OpenWindow();
@@ -145,7 +150,7 @@ public class ListMaterielWindow extends ListRessourceWindow {
 		JButton b=new JButton("Afficher EDP");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Materiel t = (Materiel) getRessource(table.getSelectedRow());
+				MaterielInterface t = (MaterielInterface) getRessource(table.getSelectedRow());
 				//frame.setEnabled(false);
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",
@@ -164,9 +169,9 @@ public class ListMaterielWindow extends ListRessourceWindow {
 		JButton b=new JButton("Supprimer");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Materiel t = (Materiel) getRessource(table.getSelectedRow());
+				MaterielInterface t = (MaterielInterface) getRessource(table.getSelectedRow());
 				try {
-					RessourceManagerImpl.getInstance().deleteRessource(t);
+					Client.getRessourceManager().deleteRessource(t);
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
 							"Cette ressource ne peut etre supprimée",

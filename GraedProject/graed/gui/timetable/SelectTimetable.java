@@ -4,9 +4,9 @@
  */
 package graed.gui.timetable;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
-import graed.ressource.Ressource;
-import graed.ressource.RessourceManagerImpl;
+import graed.ressource.RessourceInterface;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -74,11 +74,11 @@ public SelectTimetable(CreateMainFrame main) {
 	p=new JPanel();
 	p.setSize(with,height);
 	
-	final RessourceManagerImpl rmi;
+	
 	String[] ressTypes=null;
 	try {
-		rmi=RessourceManagerImpl.getInstance();
-		ressTypes=rmi.getRessourcesTypes();
+		
+		ressTypes=Client.getRessourceManager().getRessourcesTypes();
 	} catch (RemoteException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
@@ -93,7 +93,7 @@ public SelectTimetable(CreateMainFrame main) {
 			if(e.getItem()==type.getSelectedItem()){
 				try {
 					ressource.removeAllItems();
-					Collection c=RessourceManagerImpl.getInstance().getRessourcesByType((String)type.getSelectedItem());//Collection
+					Collection c=Client.getRessourceManager().getRessourcesByType((String)type.getSelectedItem());//Collection
 					if(c!=null){
 						for( Iterator it=c.iterator();it.hasNext();)
 							ressource.addItem(it.next());
@@ -287,7 +287,7 @@ protected JButton search(){
 				e.printStackTrace();
 			}
 			System.out.println(c);*/
-			main.addTimetable((Ressource)ressource.getSelectedItem(),
+			main.addTimetable((RessourceInterface)ressource.getSelectedItem(),
 						new java.sql.Date(dateDebut.getDate().getTime()),
 						new java.sql.Date(dateFin.getDate().getTime()));
 			}		

@@ -10,8 +10,7 @@
 package graed.gui.timetable;
 
 import graed.client.Client;
-import graed.indisponibilite.Indisponibilite;
-import graed.ressource.RessourceManagerImpl;
+import graed.indisponibilite.IndisponibiliteInterface;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -28,7 +27,6 @@ import java.util.Hashtable;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.TableColumn;
-import javax.swing.text.JTextComponent;
 /**
  * @author Nadège GONORD
  *
@@ -98,12 +96,12 @@ public class TimetableColJTable extends JTable {
 			if( o!= null) {
 				int size = TimetableColJTable.this.getCellSize( rowF, colF );	
 				//On ne déplace si la taille est trop grande
-				if(size<=table.getColumnCount()-col){
-					Indisponibilite i=TimetableColJTable.this.removeIndispo(colF);
-					int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
-					i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));					
-					table.addIndispo(i,col,size);	
+				if(size<=table.getColumnCount()-col){					
 					try {
+						IndisponibiliteInterface i=TimetableColJTable.this.removeIndispo(colF);
+						int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
+						i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));					
+						table.addIndispo(i,col,size);	
 						Client.getIndisponibiliteManager().updateIndiponibilite(i);
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
@@ -147,7 +145,7 @@ public class TimetableColJTable extends JTable {
 	 * @param col
 	 * @param size taille du cours (nombre de colonnes)
 	 */
-	public void addIndispo (Indisponibilite i,int col,int size){
+	public void addIndispo (IndisponibiliteInterface i,int col,int size){
 		addI(i,col);
 		JTextArea j=new JTextArea((String)i.toString());
 		j.setOpaque(true);
@@ -165,17 +163,17 @@ public class TimetableColJTable extends JTable {
 	 * @param col
 	 * @return
 	 */
-	public Indisponibilite removeIndispo (int col){
+	public IndisponibiliteInterface removeIndispo (int col){
 		int size = tm.getCellSize(0, col);
 		Object o =tm.removeValueAt(col,size);
 		TableColumn c=getColumnModel().getColumn(col);
 		c.setPreferredWidth(c.getPreferredWidth()/size);
 		return removeI(col);
 	}
-	public Indisponibilite removeI(int col){
-		return (Indisponibilite) list_ind.remove(new Integer(col));
+	public IndisponibiliteInterface removeI(int col){
+		return (IndisponibiliteInterface) list_ind.remove(new Integer(col));
 	}
-	public void addI(Indisponibilite i,int col){
+	public void addI(IndisponibiliteInterface i,int col){
 		list_ind.put(new Integer(col), i);
 	}
 	/**
