@@ -71,7 +71,7 @@ public class CreateMainFrame {
 	private final JList notif;
 	private Hashtable timetable_list;
 	private Hashtable buttons;
-	final JLabel date;
+	final JLabel date_lib;
 	private int start=8;
 	private int stop=15;
 	/**
@@ -84,7 +84,7 @@ public class CreateMainFrame {
 	 */
 	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
-	    date=new JLabel();	
+	    date_lib=new JLabel();	
 	    buttons = new Hashtable();
 	    notif = new JList();
 	    timetable_list=new Hashtable();
@@ -327,6 +327,7 @@ public class CreateMainFrame {
 	 */
 	public void addTimetable(RessourceInterface r,java.sql.Date dateDebut,java.sql.Date dateFin){
 		Collection c=null;
+		if(timetable_list.isEmpty())date_lib.setText("du " +dateDebut+" au "+dateFin);
 		try {
 			c=Client.getIndisponibiliteManager().getIndisponibilites(
 					r,dateDebut,dateFin);
@@ -463,15 +464,28 @@ public class CreateMainFrame {
     		}
     		}));
 	    Object[] o={"semaine","mois","trimestre"};
-	    JComboBox jcb=new JComboBox(o);
+	    final JComboBox jcb=new JComboBox(o);
 	    p.add(jcb);
 	    p.add(createButton("","Période suivante","icons/navigation/Forward16.gif",
 	    		new ActionListener() {
     		public void actionPerformed( ActionEvent ae ) {
+    			if(jcb.getSelectedItem().equals("semaine")){
+    				Timetable t=(Timetable) timetable_list.get(tp.getSelectedComponent());
+    				GregorianCalendar cal=new GregorianCalendar();
+    				cal.setTime(t.getDateDebut());
+    				if(cal.DAY_OF_WEEK!=GregorianCalendar.MONDAY){}
+    				date_lib.setText("du "+t.getDateDebut().toString()+" au "+t.getDateFin().toString());
+    			}
     		}	
     		}));
-	    p.add(date);
-	    p.setMaximumSize(new Dimension(300,75));
+	    date_lib.setPreferredSize(new Dimension(230,40));
+	    p.add(date_lib);
+	    p.add(createButton("","Voir","icons/general/Zoom16.gif",
+	    		new ActionListener() {
+    		public void actionPerformed( ActionEvent ae ) {
+    		}	
+    		}));
+	    p.setMaximumSize(new Dimension(530,75));
 	    
 	    tb.add(exp);
 	    tb.add(imp);
