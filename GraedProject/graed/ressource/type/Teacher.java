@@ -109,7 +109,7 @@ public class Teacher extends Ressource implements TeacherInterface{
 	/* (non-Javadoc)
 	 * @see graed.ressource.type.TeacherInterface#print()
 	 */
-	public String print() throws RemoteException {
+	public String print() {
 		String p="";
 		p+=name+" ";
 		p+=firstName;	

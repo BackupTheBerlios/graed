@@ -34,7 +34,7 @@ public class Room extends Ressource implements RoomInterface{
 		this.capacite=capacite;
 	}
 	
-	public String toString() {
+	public String print() {
 		String p="";
 		p+=nom+" ";
 		p+="("+batiment+")";

@@ -47,7 +47,7 @@ public class Materiel extends Ressource implements MaterielInterface{
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString() {
+	public String print() {
 		String p="";
 		p+=name+" ";
 		p+="("+typeMateriel+")";

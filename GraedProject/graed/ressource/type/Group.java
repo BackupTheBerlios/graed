@@ -55,7 +55,7 @@ public class Group extends Ressource implements GroupInterface{
 		this.prof_responsable=prof_responsable;
 		this.options=options;
 	}		
-	public String toString() {
+	public String print() {
 		String p="";
 		p+=name+" ";
 		p+="("+description+")";

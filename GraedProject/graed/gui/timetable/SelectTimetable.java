@@ -6,6 +6,7 @@ package graed.gui.timetable;
 
 import graed.client.Client;
 import graed.exception.InvalidStateException;
+import graed.gui.renderer.RessourceListRenderer;
 import graed.ressource.RessourceInterface;
 
 import java.awt.GridBagConstraints;
@@ -86,6 +87,7 @@ public SelectTimetable(CreateMainFrame main) {
 	
 
 	ressource = new JComboBox();
+	ressource.setRenderer(new RessourceListRenderer());
 	type = new JComboBox(ressTypes);
 	type.addItemListener(new ItemListener(){
 
