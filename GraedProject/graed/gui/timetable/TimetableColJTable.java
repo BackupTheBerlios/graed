@@ -15,6 +15,7 @@ import graed.gui.InformationWindow;
 import graed.gui.indisponibilite.IndisponibiliteWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
@@ -343,22 +344,23 @@ public class TimetableColJTable extends JTable {
 		if(b)col=find_col(col,size);		
 		addI(i,col);		
 		JTextArea j =(JTextArea) getValueAt(0,col);
-		String text="";
-		String tooltext="";
-		if(j!=null)	{
-			text=j.getText()+"\n";
-			tooltext=j.getToolTipText().replaceAll("</html>","<br><br>");
-			int size_tmp=tm.getCellSize(0,col);
-			TableColumn c=getColumnModel().getColumn(col);
-			c.setPreferredWidth(c.getPreferredWidth()/size_tmp);
-			size=size>size_tmp?size:size_tmp;
-			tm.modifyCellSize(col,size);
-		}
-		else{
-			j = new JTextArea();
-			tooltext="<html>";
-		}
 		try {
+			String text="";
+			String tooltext="";
+			if(j!=null)	{
+				text=j.getText()+"\n";
+				tooltext=j.getToolTipText().replaceAll("</html>","<br><br>");
+				int size_tmp=tm.getCellSize(0,col);
+				TableColumn c=getColumnModel().getColumn(col);
+				c.setPreferredWidth(c.getPreferredWidth()/size_tmp);
+				size=size>size_tmp?size:size_tmp;
+				tm.modifyCellSize(col,size);				
+			}
+			else{
+				j = new JTextArea();
+				tooltext="<html>";
+			}
+		
 			j.setText(text+i.print());
 			tooltext+=i.print().replaceAll("\\n","<br>");	
 			j.setToolTipText(tooltext+"</html>");
@@ -369,7 +371,8 @@ public class TimetableColJTable extends JTable {
 		j.setOpaque(true);
 		//Passer à la ligne suivante pour le texte
 		j.setLineWrap(true);
-		j.setWrapStyleWord(true);		
+		j.setWrapStyleWord(true);	
+		
 		//Gestion des erreurs de la taille de la cellule
 		if(size>tm.getColumnCount()-col)size=tm.getColumnCount()-col;
 		if((JTextArea) getValueAt(0,col)==null)tm.setValueAt(j,col,size);
