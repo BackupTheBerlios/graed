@@ -12,14 +12,16 @@ package graed.gui.timetable;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.TableColumn;
+import javax.swing.text.JTextComponent;
 /**
  * @author Nadège GONORD
  *
@@ -89,7 +91,7 @@ public class TimetableColJTable extends JTable {
 				//On ne déplace si la taille est trop grande
 				if(size<=table.getColumnCount()-col){
 					TimetableColJTable.this.removeIndispo(colF);				
-					table.addIndispo(((JLabel)o).getText(),col,size);
+					table.addIndispo(((JTextComponent)o).getText(),col,size);
 				}
 				TimetableColJTable.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				table.changeSelection(row,col,false,false);
@@ -102,7 +104,14 @@ public class TimetableColJTable extends JTable {
 		addMouseListener(listener);
 		
 	}
-	
+	public void setPreferredSize(Dimension preferredSize){
+		super.setPreferredSize(preferredSize);
+		for(int i=0;i<getColumnCount();++i)
+		{
+			TableColumn c=getColumnModel().getColumn(i);
+			c.setPreferredWidth(preferredSize.width/getColumnCount());
+		}
+	}
 	/**
 	 * Renvoie le nom de la table (jour)
 	 */
@@ -117,14 +126,17 @@ public class TimetableColJTable extends JTable {
 	}
 	/**
 	 * Ajoute un nouveau cours (du texte obligatoirement)
-	 * Insère un JLabel dans la table
+	 * Insère un JTextArea dans la table
 	 * @param o = texte!!!
 	 * @param col
 	 * @param size taille du cours (nombre de colonnes)
 	 */
 	public void addIndispo (Object o, int col,int size){
-		JLabel j=new JLabel((String)o);
+		JTextArea j=new JTextArea((String)o);
 		j.setOpaque(true);
+		//Passer à la ligne suivante pour le texte
+		j.setLineWrap(true);
+		j.setWrapStyleWord(true);		
 		//Gestion des erreurs de la taille de la cellule
 		if(size>tm.getColumnCount()-col)size=tm.getColumnCount()-col;
         tm.setValueAt(j,col,size);

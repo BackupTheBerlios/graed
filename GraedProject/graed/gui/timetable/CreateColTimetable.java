@@ -15,6 +15,7 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
@@ -25,22 +26,17 @@ import javax.swing.JTable;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class CreateColTimetable {
-	private final JFrame colTimetable;
+	private final JPanel colTimetable;
 	private Ressource r;
+	String title;
 	
 	public CreateColTimetable(Ressource r,String title, int start, int stop){
 		this.r=r;
-		colTimetable=new JFrame();
-		colTimetable.setTitle(title);
-		colTimetable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		colTimetable.setSize(900,600);
-		GridBagLayout l=new GridBagLayout();
-		
-		colTimetable.setContentPane(CreateTables(start,stop));
-		
-		/* Affichage de l'interface */
-		colTimetable.pack();
-		colTimetable.setVisible(true);
+		colTimetable=CreateTables(start,stop);		
+		//colTimetable.setSize((stop-start)*100+50,310);
+	}
+	public JPanel getTimetable(){
+		return colTimetable;
 	}
 
 	/**
@@ -53,9 +49,13 @@ public class CreateColTimetable {
 		/* Table affichant les heures */
 		
 		JTable hours =new JTable(1,(stop+1-start)*4);
+		hours.setBackground(Color.LIGHT_GRAY);
+		hours.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		hours.setCellSelectionEnabled(true);
+		hours.setEnabled(false);
+		hours.setRowHeight(colTimetable.getHeight()/12);
 		hours.setFont(new Font("Dialog",Font.PLAIN,8));
-		hours.setPreferredSize( new Dimension( (stop-start)*100,20 ));
+		hours.setPreferredSize( new Dimension( (stop-start)*100,colTimetable.getHeight()/12 ));
 		for(int i=start;i<=stop;++i){
 			hours.setValueAt(i+"h",0,(i-start)*4);			
 		}
@@ -66,9 +66,11 @@ public class CreateColTimetable {
 		/* Table affichant les jours */
 		JTable days =new JTable(5,1);
 		days.setBackground(Color.LIGHT_GRAY);
+		days.setGridColor(Color.BLACK);		
+		days.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
 		days.setEnabled(false);
-		days.setPreferredSize( new Dimension( 100,170 ));
-		days.setRowHeight(32);
+		days.setPreferredSize( new Dimension( 50,colTimetable.getHeight()*5/6 ));
+		days.setRowHeight(colTimetable.getHeight()/6);
 		days.setValueAt("Lundi",0,0);
 		days.setValueAt("Mardi",1,0);
 		days.setValueAt("Mercredi",2,0);
@@ -78,7 +80,10 @@ public class CreateColTimetable {
 	}
 	private TimetableColJTable CreateIndispoTable(String name, TimetableDefaultListSelectionModel mdl, int start, int stop){
 		TimetableColJTable t= new TimetableColJTable(new TimetableDefaultTableModel(stop-start+1,name ),mdl);
-		t.setPreferredSize( new Dimension( (stop-start)*100,30 ));
+		t.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
+		t.setPreferredSize( new Dimension( (stop-start)*100,colTimetable.getHeight()/6 ));
+		t.setRowHeight(colTimetable.getHeight()/6);
+		
 		return t;
 	}
 	private JPanel CreateTables(int start, int stop){
@@ -87,6 +92,7 @@ public class CreateColTimetable {
 		
 		p.setLayout(l);
 		p.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
+		p.setBackground(Color.LIGHT_GRAY);
 		GridBagConstraints c= new GridBagConstraints();
 		
 		/* Table affichant les heures */
@@ -106,8 +112,8 @@ public class CreateColTimetable {
 	    c.gridy = 1;
 	    c.gridwidth = 1;
 	    c.gridheight = 1;
-	    c.weightx=0;
-	    c.fill = GridBagConstraints.HORIZONTAL;
+	    c.weighty=0.2;
+	    c.fill = GridBagConstraints.BOTH;
 	    
 		p.add(jour,c);
 	
@@ -115,12 +121,12 @@ public class CreateColTimetable {
 		/* Tables affichant les cours */
 		JPanel col=new JPanel();
 		col.setLayout(new GridLayout(5,1));
-		col.setPreferredSize( new Dimension( (stop-start)*100,170 ));
+		col.setPreferredSize( new Dimension( (stop-start)*100,colTimetable.getHeight()*5/6  ));
 		TimetableDefaultListSelectionModel mdl=new TimetableDefaultListSelectionModel();
 		
 		   
 		TimetableColJTable t1= CreateIndispoTable("lundi", mdl, start, stop);
-		t1.addIndispo("bla1",1,20);
+		t1.addIndispo("bla1",1,15);
 		col.add(t1);
 		
 		TimetableColJTable t2= CreateIndispoTable("mardi", mdl, start, stop);
@@ -132,7 +138,7 @@ public class CreateColTimetable {
 		col.add(t3);
 		
 		TimetableColJTable t4= CreateIndispoTable("jeudi", mdl, start, stop);
-		t4.addIndispo("bla4",2,7);
+		t4.addIndispo("toto aime titi qui aime tata mais tutu n'est pas là",2,7);
 		col.add(t4);
 		
 		TimetableColJTable t5= CreateIndispoTable("vendredi", mdl, start, stop);
@@ -162,7 +168,10 @@ public class CreateColTimetable {
 		return p;
 	}
 	public static void main(String[] args) {
-		new CreateColTimetable(null,"Test",8,13);
-		
+		JFrame f=new JFrame("Test Emploi du temps");
+		f.getContentPane().add(new CreateColTimetable(null,"Emploi du temps",8,15).getTimetable());
+		/* Affichage de l'interface */
+		f.pack();
+		f.setVisible(true);
 	}
 }
