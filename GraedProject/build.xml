@@ -2,19 +2,17 @@
 <project name="Graed" default="compile" basedir=".">
 
 <property name="src" value="graed"/>
-<property name="build" value="build"/>
+<property name="build" value="antBuild"/>
 <property name="lib" value="graed/lib"/>
 <property name="cfg" value="graed/hibernate/cfg"/>
 
 <!-- Création du repertoire de construction des classes  -->
-<!--
-	<target name="init">
-	
-	<mkdir dir="${build}" />
+<target name="init">
+	<mkdir dir="${build}"/>
+	<copy srcdir="${cfg}" destdir="${build}"/>
 </target>
--->
-	
-<target name="compile">
+
+<target name="compile" depends="init">
 	<!-- Compilation des sources -->
     <javac srcdir="${src}" destdir="${build}">
     	<classpath>

@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="hibernate.Teacher" table="Utilisateur">
+    <class name="graed.ressource.type.Teacher" table="Utilisateur">
 
         <!-- Une chaîne de 32 caractères hexadécimaux est notre
 	    clé technique. Elle est générée automatiquement par 

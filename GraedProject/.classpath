@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path=""/>
+	<classpathentry excluding="graed/hibernate/cfg/" kind="src" path=""/>
+	<classpathentry kind="src" path="graed/hibernate/cfg"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="graed/lib/c3p0-0.8.4.5.jar"/>
 	<classpathentry kind="lib" path="graed/lib/cglib-full-2.0.2.jar"/>
