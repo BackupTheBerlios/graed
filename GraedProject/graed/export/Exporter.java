@@ -84,16 +84,16 @@ public class Exporter {
         exportToPrinter(jf,jf.getContentPane());
     }
     
-    public static void main( String[] args ) throws ExportException {
+    public static void main( String[] args ) throws ExportException, IOException {
         javax.swing.JFrame f = new javax.swing.JFrame();
         javax.swing.JButton test = new javax.swing.JButton("Test export JPEG");
         f.getContentPane().add( test);
         f.pack();
         f.setVisible(true);
-        /*javax.swing.JFileChooser jfc = new javax.swing.JFileChooser();
+        javax.swing.JFileChooser jfc = new javax.swing.JFileChooser();
         int state = jfc.showSaveDialog(null);
         f.dispose();
-        Exporter.exportToJpeg( f.getContentPane(), jfc.getSelectedFile().getCanonicalPath() );*/
+        Exporter.exportToJpeg( f.getContentPane(), jfc.getSelectedFile().getCanonicalPath() );
         Exporter.exportToPrinter(f,test);
     }
 }
