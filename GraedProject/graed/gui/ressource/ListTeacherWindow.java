@@ -8,11 +8,15 @@ package graed.gui.ressource;
 
 import graed.ressource.type.Teacher;
 
+import java.awt.Frame;
 import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -27,16 +31,17 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	/**
 	 * Window
 	 */
-	private JFrame frame;
+	private JDialog frame;
 	private static int with=300;
 	private static int height=200;
 	/**
 	 * Constructor of the window
 	 * @param c
 	 */
-	public ListTeacherWindow(Collection c) {
+	public ListTeacherWindow(Collection c,Frame m) {
 		super(c);
-		frame=new JFrame();
+		frame=new JDialog(m);
+		OpenWindow();
 	}
 
 	private Object[][] fill(){
@@ -58,18 +63,20 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	 * @see graed.gui.ressource.ListRessourceWindow#OpenWindow()
 	 */
 	public void OpenWindow() {
-		Class clazz=TeacherWindow.class;
+		/*Class clazz=TeacherWindow.class;
 		ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
-		frame.setIconImage(i.getImage());
+		frame.setIconImage(i.getImage());*/
 		frame.setSize(with,height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//JScrollPane p=new JScrollPane();
 		frame.setTitle("Liste des professeurs");
 		//frame.setContentPane(p);
-		Object[] o={"Nom","Prénom","Bureau","Tel","Courriel"};
-		JTable t=new JTable(fill(),o);
+		//Object[] o={"Nom","Prénom","Bureau","Tel","Courriel"};
+		//JTable t=new JTable(fill(),o);
 		//p.add(t);
-		frame.setContentPane(t);
+		JPanel p=new JPanel();
+		p.add(new JLabel("toto"));
+		frame.setContentPane(p);
 		/** Affichage de la fenêtre **/
 		frame.setVisible(true);
 	}

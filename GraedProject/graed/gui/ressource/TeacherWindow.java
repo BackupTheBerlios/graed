@@ -294,7 +294,7 @@ protected JButton search(){
 				}
 			
 			System.out.println("List:"+l);	
-			new ListTeacherWindow(l).OpenWindow();
+			new ListTeacherWindow(l,frame);
 			System.exit(0);
 		}		
 	});
