@@ -79,14 +79,14 @@ public SelectTimetable() {
 	
 	
 	type = new JComboBox(ressTypes);
-	type.addItemListener(new ItemListener(){
+	/*type.addItemListener(new ItemListener(){
 
 		public void itemStateChanged(ItemEvent e) {
 			System.out.println(type.getSelectedItem());
 			
 		}
 		
-	});
+	});*/
 	ressource = new JComboBox();
 	
 	ButtonGroup group=new ButtonGroup();

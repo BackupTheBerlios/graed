@@ -23,8 +23,11 @@ public class Group extends Ressource {
 	private int id_utilisateur;
 	private int id_prof_responsable;
 	private String options;
-	public Group(String number,String name, String description,String mail/*Personne directeur,Secretariat s,List options */ ){
+	public Group(){
 		super("Formation");
+	}
+	public Group(String number,String name, String description,String mail/*Personne directeur,Secretariat s,List options */ ){
+		this();
 		id=0;
 		this.number=number;
 		this.name=name;
@@ -34,7 +37,7 @@ public class Group extends Ressource {
 	public Group (int id, String number, String name, String description, String mail){
 		this(number,name, description,mail);
 		this.id=id;
-	}
+	}	
 	public String toString() {
 		String p="";
 		p+="ID"+id+" ";

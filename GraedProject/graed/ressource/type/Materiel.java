@@ -15,8 +15,11 @@ import graed.ressource.Ressource;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Materiel extends Ressource {
-	public Materiel(String nom,String type){
+	public Materiel(){
 		super("Materiel");
+	}
+	public Materiel(String nom,String type){
+		this();
 	}
 	public Materiel(int id,String nom,String type){
 		this(nom,type);
