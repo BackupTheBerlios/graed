@@ -5,6 +5,7 @@ import graed.exception.InvalidStateException;
 import graed.export.Exporter;
 import graed.gui.InformationWindow;
 import graed.gui.indisponibilite.IndisponibiliteWindow;
+import graed.gui.ressource.GroupWindow;
 import graed.gui.ressource.MaterielWindow;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
@@ -120,14 +121,14 @@ public class CreateMenuBar {
 		formation.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				Group t=null;
-				/*try {
+				try {
 				 	
 					new GroupWindow(InformationWindow.SEARCH,t).OpenWindow();
-				} catch (InvalidStateException e1) {*/
+				} catch (InvalidStateException e1) {
 					JOptionPane.showMessageDialog(frame,
 							"le système ne peut afficher la fenêtre de sélection",
 							"Erreur",JOptionPane.ERROR_MESSAGE);
-				//}
+				}
 				
 			}
 			
@@ -195,14 +196,14 @@ public class CreateMenuBar {
 		formation.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				Group t=null;
-				/*try {
+				try {
 				 	
 					new GroupWindow(InformationWindow.CREATE,t).OpenWindow();
-				} catch (InvalidStateException e1) {*/
+				} catch (InvalidStateException e1) {
 					JOptionPane.showMessageDialog(frame,
 							"le système ne peut afficher la fenêtre de création",
 							"Erreur",JOptionPane.ERROR_MESSAGE);
-				//}
+				}
 				
 			}
 			
