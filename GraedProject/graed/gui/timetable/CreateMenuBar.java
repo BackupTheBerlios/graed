@@ -24,14 +24,20 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * @author ngonord
@@ -54,6 +60,7 @@ public class CreateMenuBar {
 		barMenu.add(createMenuRessource());
 		barMenu.add(createMenuImport());
 		barMenu.add(createMenuInd());
+		barMenu.add(createMenuLF());
 		//barMenu.add(createMenuEDT());
 	}
 	/**
@@ -449,5 +456,41 @@ public class CreateMenuBar {
 		
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	private Map getLookAndFeelsMap(){
+		UIManager.LookAndFeelInfo[] info = UIManager.getInstalledLookAndFeels();
+		Map map = new TreeMap();
+		for(int i=0; i<info.length;i++){
+			String nomLF = info[i].getName();
+			String nomClasse = info[i].getClassName();
+			map.put(nomLF,nomClasse); 	
+		}
+		return map;	
+	}
+	
+	private JMenu createMenuLF() {
+	    JMenu menu = new JMenu("L&F");
+		ButtonGroup bg = new ButtonGroup();
+		Map map = getLookAndFeelsMap();
+		for(Iterator i = map.keySet().iterator(); i.hasNext(); ){
+		    Object key = i.next();
+			final String classe = (String)map.get(key);
+			boolean natif = classe.equals(UIManager.getSystemLookAndFeelClassName());
+			JRadioButtonMenuItem item = new JRadioButtonMenuItem((String) key,natif);
+			item.addActionListener(new ActionListener(){ 
+				public void actionPerformed(ActionEvent ae){ 
+					try{ 
+						UIManager.setLookAndFeel(classe); 
+					}catch(Exception e){
+						e.printStackTrace();	
+					} 
+					SwingUtilities.updateComponentTreeUI(frame); 
+				} 
+			}); 
+			bg.add(item); 
+			menu.add(item);  	
+		}
+		return menu;
 	}
 }
