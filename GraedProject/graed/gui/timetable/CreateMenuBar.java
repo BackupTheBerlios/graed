@@ -470,7 +470,7 @@ public class CreateMenuBar {
 	}
 	
 	private JMenu createMenuLF() {
-	    JMenu menu = new JMenu("L&F");
+	    JMenu menu = new JMenu("Apparence");
 		ButtonGroup bg = new ButtonGroup();
 		Map map = getLookAndFeelsMap();
 		for(Iterator i = map.keySet().iterator(); i.hasNext(); ){
