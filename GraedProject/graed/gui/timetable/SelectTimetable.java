@@ -5,6 +5,8 @@
 package graed.gui.timetable;
 
 import graed.exception.InvalidStateException;
+import graed.indisponibilite.IndisponibiliteManagerImpl;
+import graed.ressource.Ressource;
 import graed.ressource.RessourceManagerImpl;
 
 import java.awt.GridBagConstraints;
@@ -15,18 +17,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.rmi.RemoteException;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import com.toedter.calendar.JDateChooser;
 
 /**
  * @author Gonord Nadège
@@ -50,8 +57,8 @@ private JRadioButton semestre1;
 private JRadioButton semestre2; 
 private JRadioButton semestre3;
 private JRadioButton autre;
-private JFormattedTextField dateDebut;
-private JFormattedTextField dateFin;
+private JDateChooser dateDebut;
+private JDateChooser dateFin;
 
 /**
  * Constructor which open the selection of a timetable
@@ -60,9 +67,9 @@ private JFormattedTextField dateFin;
  * @throws InvalidStateException
  */
 public SelectTimetable() {
-
-	String d;
-	String f;
+	
+	Date d=new Date();
+	Date f=new Date();
 	
 	p=new JPanel();
 	p.setSize(with,height);
@@ -77,58 +84,66 @@ public SelectTimetable() {
 		e1.printStackTrace();
 	}
 	
-	
+
+	ressource = new JComboBox();
 	type = new JComboBox(ressTypes);
 	type.addItemListener(new ItemListener(){
 
 		public void itemStateChanged(ItemEvent e) {
 			if(e.getItem()==type.getSelectedItem()){
-				//Collection col=rmi.getRessourcesByType((String)e.getItem());
-				
-				//ressource.add();
+				try {
+					ressource.removeAllItems();
+					Collection c=RessourceManagerImpl.getInstance().getRessourcesByType((String)type.getSelectedItem());//Collection
+					if(c!=null){
+						for( Iterator it=c.iterator();it.hasNext();)
+							ressource.addItem(it.next());
+					}
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 		
 	});
-	ressource = new JComboBox();
 	
 	ButtonGroup group=new ButtonGroup();
 	
 	semestre1 = new JRadioButton("1er semestre");
-	d="Deb s1";
-	f="Fin s1";
+	/*d="Deb s1";
+	f="Fin s1";*/
 	group.add(semestre1);
 	
 	semestre2 = new JRadioButton("2ème semestre"); 
-	d="Deb s2";
-	f="Fin s2";
+	/*d="Deb s2";
+	f="Fin s2";*/
 	group.add(semestre2);
 	
 	semestre3 = new JRadioButton("3ème semestre");
-	d="Deb s3";
-	f="Fin s3";
+	/*d="Deb s3";
+	f="Fin s3";*/
 	group.add(semestre3);
 	
 	autre = new JRadioButton("autre");  
 	group.add(autre);
 	
-	dateDebut = new JFormattedTextField();	
-	dateFin = new JFormattedTextField();
+	dateDebut = new JDateChooser("d/MMMM/yyyy",false);	
+	dateFin = new JDateChooser("d/MMMM/yyyy",false);
 	
 	
 	/** Listener **/
-	addSelectedListener(semestre1,d,f);
-	addSelectedListener(semestre2,d,f);
-	addSelectedListener(semestre3,d,f);
+	addSelectedListener(semestre1,new Date(104,8,01),new Date(104,11,31));
+	addSelectedListener(semestre2,new Date(105,0,01),new Date(105,03,31));
+	addSelectedListener(semestre3,new Date(105,4,01),new Date(105,8,31));
 	
 	autre.addChangeListener(new ChangeListener(){
 
 		public void stateChanged(ChangeEvent e) {
 			if(autre.isSelected()){
 				dateDebut.setEnabled(true);
-				dateDebut.setText("");
+				dateDebut.setDate(new Date());
 				dateFin.setEnabled(true);
-				dateFin.setText("");
+				dateFin.setDate(new Date());
 			}
 			else{
 				dateDebut.setEnabled(false);
@@ -144,13 +159,13 @@ public SelectTimetable() {
  * @param d date de début du semestre
  * @param f date de fin du semestre
  */
-private void addSelectedListener( final JRadioButton jrb,final String d,final String f){
+private void addSelectedListener( final JRadioButton jrb,final Date d,final Date f){
 	jrb.addChangeListener(new ChangeListener(){
 
 		public void stateChanged(ChangeEvent e) {
 			if(jrb.isSelected()){
-				dateDebut.setText(d);
-				dateFin.setText(f);
+				dateDebut.setDate(d);
+				dateFin.setDate(f);
 				dateDebut.setEnabled(false);
 				dateFin.setEnabled(false);
 			}
@@ -260,8 +275,18 @@ protected JButton search(){
 	JButton b=new JButton("Chercher");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			
-		}		
+			Collection c=null;
+			try {
+				c=IndisponibiliteManagerImpl.getInstance().getIndisponibilites(
+						(Ressource)ressource.getSelectedItem(),
+						new java.sql.Date(dateDebut.getDate().getTime()),
+						new java.sql.Date(dateFin.getDate().getTime()));
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(c);
+			}		
 	});
 	return b;
 	

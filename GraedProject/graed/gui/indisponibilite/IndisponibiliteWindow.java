@@ -75,8 +75,8 @@ public class IndisponibiliteWindow extends InformationWindow{
     public IndisponibiliteWindow(int state, Indisponibilite i) throws InvalidStateException{
     	super(state,i);
     	libelle = new JFormattedTextField();
-        date_debut = new JDateChooser();
-    	date_fin = new JDateChooser();
+        date_debut = new JDateChooser("d/MMMM/yyyy",false);
+    	date_fin = new JDateChooser("d/MMMM/yyyy",false);
     	hdebut = new JFormattedTextField();
     	duree = new JFormattedTextField();
     	periodicite = new JComboBox(fillPeriodicite());/* occ, hebdo */
