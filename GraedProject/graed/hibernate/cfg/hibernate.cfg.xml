@@ -27,6 +27,7 @@
 
         <!-- fichiers de mapping -->
         <mapping resource="Professeur.hbm.xml"/>
+        <mapping resource="Salle.hbm.xml"/>
 
     </session-factory>
 
