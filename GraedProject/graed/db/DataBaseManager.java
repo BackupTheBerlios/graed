@@ -12,18 +12,23 @@ import net.sf.hibernate.expression.Example;
 
 
 /**
+ * @author Helder DE SOUSA
  * Classe s'occupant de la gestion des objets dans la BD
  * Design Pattern : Singleton
  */
 public class DataBaseManager{
-    DataBaseManager instance;
-	protected Session session;
+    private static DataBaseManager instance;
+	private static Session session;
 	
-	private DataBaseManager() throws HibernateException {
-	    session = DataBaseUtil.currentSession();
+	private DataBaseManager() {
+	    try {
+	        session = DataBaseUtil.currentSession();
+	    } catch( HibernateException he ) {
+	        throw new RuntimeException("Impossible d'obtenir une session base de données : " + he.getMessage(), he);
+	    }
 	}
 	
-	DataBaseManager getInstance() throws HibernateException {
+	public static DataBaseManager getInstance() {
 	    if( instance == null ) 
 	        instance = new DataBaseManager();
 	    return instance;

@@ -1,23 +1,21 @@
-/*
- * Created on 7 janv. 2005
- *
- * To change the template for this generated file go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- */
+
 package graed.ressource;
 
 /**
- * @author Propriétaire
+ * @author hdesou01
  *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
  */
 public abstract class Ressource {
 	private String type;
-	public Ressource(String type) {
-		this.type=type;
+	
+	protected Ressource( String type ) {
+		this.type = type;
 	}
-	public String getRessourceType(){
+	
+	public String getRessourceType() {
 		return type;
 	}
+	
 }

@@ -1,59 +1,57 @@
 
 package graed.ressource;
 
-import java.util.List;
+import graed.ressource.event.RessourceListener;
 
-public class RessourceManager {
-	/**
-	 * Ajoute une ressource sur le système de données
-	 * @param r
-	 */
-	 public void addRessource( Ressource r ){
-	 }
-	/**
-	 * Supprime une ressource sur le système de données
-	 * @param r
-	 */
-	 public void deleteRessource( Ressource r ){
-	 }
-	/**
-	 * Modifie une ressource sur le système de données
-	 * @param r
-	 */
-	 public void updateRessource( Ressource r ){
-	 }
-	/**
-	 * Retourne un ensemble de ressources
-	 * @param r
-	 * @param constraint
-	 * @return
-	 */ 
-	 public Ressource[] getRessources( String type, List constraints ) {
-	 	return null;
-	 }
-	 /**
-	  * Retourne un ensemble de ressources
-	  * @param type
-	  * @return
-	  */
-	 public Ressource[] getRessourcesByType( String type ){
-	 	return null;
-	 }
-	/**
-	 * Retourne la liste des différents types de ressources par introspection
-	 * @return
-	 */
-	 public String[] getRessourcesTypes() {
-	 	return null;
-	 }
-	 
-	 public void registerForNotification( Object o ) {
-	 	
-	 }
-	 
-	 protected void fireRessourceUpdated() {
-	 }
-	 
-	 protected void fireRessourceDeleted() {
-	 }
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.util.Collection;
+
+
+/**
+ * @author Helder DE SOUSA
+ */
+public interface RessourceManager extends Remote{
+    /**
+     * Adds a resource.
+     * @param r The resource to add
+     * @throws RemoteException
+     */
+    public void addRessource( Ressource r ) throws RemoteException;
+    /**
+     * Deletes a ressource.
+     * @param r The ressource to delete
+     * @throws RemoteException
+     */
+    public void deleteRessource( Ressource r ) throws RemoteException;
+    /**
+     * Updates a resource.
+     * @param r The resource to update.
+     * @throws RemoteException
+     */
+    public void updateRessource( Ressource r ) throws RemoteException;
+    /**
+     * Gets resources using a resource as example.
+     * @param r The resource used as an example
+     * @return A collection of <code>Ressource</code>
+     * @throws RemoteException
+     */
+    public Collection getRessources( Ressource r ) throws RemoteException;
+    /**
+     * Objects can register on an implementation of the ressource manager to be notified of changes.
+     * @param o The object to register.
+     * @throws RemoteException
+     */
+    public void registerForNotification( RessourceListener rl ) throws RemoteException;
+    /**
+     * Returns the availables types for ressources.
+     * @return An array containing all types.
+     */
+    public String[] getRessourcesTypes() throws RemoteException;
+    /**
+     * Gets all ressources corresponding to a type.
+     * @param type The type of the ressources to fetch
+     * @return A collection of ressources of the given type
+     */
+    public Collection getRessourcesByType( String type ) throws RemoteException;
 }
