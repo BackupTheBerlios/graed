@@ -59,7 +59,6 @@ public TeacherWindow(int state, Teacher t) throws InvalidStateException{
  * @param c constraint
  * @param mask contrainst for the textfield
  * @param name the label
- * @param value the value of the textfield
  */
 private void addLine(JPanel p,GridBagConstraints c,String mask,JFormattedTextField tf,String name){
 	c.gridx = 0;
@@ -148,15 +147,28 @@ private void FillComponent(){
  * Open and fill the window
  */
 protected void OpenWindow(){
+	/** Fenêtre d'affichage des données d'un professeur **/
 	frame=new JFrame();
 	Class clazz=TeacherWindow.class;
 	ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
 	frame.setIconImage(i.getImage());
-	frame.setTitle("Teacher");
+	if(isSee()){
+		frame.setTitle("Consulter un professeur");
+	}
+	else if(isModify()){
+		frame.setTitle("Modifier un professeur");
+	}
+	else if(isSearch()){
+		frame.setTitle("Rechercher un professeur");
+	}
+	else if(isCreate()){
+		frame.setTitle("Créer un professeur");
+	}
 	frame.setSize(with,height);
 	frame.setResizable(false);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
+	/** Ajout des composants à la fenêtre **/
 	JPanel p=new JPanel();
 	GridBagLayout l=new GridBagLayout();
 	p.setLayout(l);
@@ -175,6 +187,7 @@ protected void OpenWindow(){
 	c.gridx = 2;
 	p.add(stop(),c);	
 	
+	/** Affichage de la fenêtre **/
 	frame.setContentPane(p);	
 	frame.setVisible(true);
 	
