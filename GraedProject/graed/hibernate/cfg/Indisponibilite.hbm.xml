@@ -15,7 +15,7 @@
             <generator class="uuid.hex"/>
         </id>
 
-        <set name="Ressources">
+        <set name="ressources">
              <key column="id_indisponibilite"/>
              <one-to-many class="graed.ressource.Ressource"/>
         </set>
