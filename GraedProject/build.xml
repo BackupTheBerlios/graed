@@ -11,6 +11,12 @@
 	<mkdir dir="${build}"/>
 	
 	<copy todir="${build}">
+		 <fileset dir="${src}">
+		     <include name="**/*.java"/>
+		 </fileset>
+	</copy>
+	
+	<copy todir="${build}">
 	      <fileset dir="${cfg}">
 	        <include name="*.xml"/>
 	      </fileset>

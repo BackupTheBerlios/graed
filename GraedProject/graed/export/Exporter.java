@@ -17,6 +17,13 @@ import sun.awt.image.codec.JPEGImageEncoderImpl;
  * @author Helder DE SOUSA
  */
 public class Exporter {
+    /**
+     * Exporte un component vers une image au format Jpeg
+     * @param c Le component à exporter
+     * @param filePath Le chemin de l'image où exporter
+     * @throws ImageFormatException
+     * @throws IOException
+     */
     public static void exportToJpeg( Component c, String filePath ) throws ImageFormatException, IOException {
         FileOutputStream out = new FileOutputStream(filePath);
         JPEGImageEncoderImpl j = new JPEGImageEncoderImpl(out);
@@ -25,7 +32,7 @@ public class Exporter {
         /* Ecriture du component sur le graphics de l'image */
         Graphics g = img.getGraphics();
         c.printAll(g);
-        
+        /* Encodage de l'image */
         j.encode(img);
         out.close();
     }
