@@ -128,7 +128,7 @@ private void addJComponent(JPanel p,GridBagConstraints c){
  */
 private void FillComponent(){
 	name.setText(((Materiel) getInformation()).getName());
-	type.setText(((Materiel) getInformation()).getType());
+	type.setText(((Materiel) getInformation()).getTypeMateriel());
 	
 }
 /**
@@ -190,7 +190,7 @@ protected JButton modify(){
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			((Materiel) getInformation()).setName(name.getText());
-			((Materiel) getInformation()).setType(type.getText());
+			((Materiel) getInformation()).setTypeMateriel(type.getText());
 			System.out.println(((Materiel) getInformation()));			
 				try {
 					RessourceManagerImpl.getInstance().updateRessource(((Materiel) getInformation()));
