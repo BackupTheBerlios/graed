@@ -23,6 +23,14 @@
         	<column name="prenom" sql-type="varchar(16)" not-null="true"/>
         </property>
 
+		<property name="office">
+        	<column name="bureau" sql-type="varchar(5)" not-null="false"/>
+        </property>
+
+		<property name="phone">
+        	<column name="telephone" sql-type="varchar(16)" not-null="false"/>
+        </property>
+
         <!--
         <property name="login">
         	<column name="login" sql-type="varchar(8)" not-null="true"/>
