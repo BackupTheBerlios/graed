@@ -3,10 +3,11 @@
  */
 package graed.gui.renderer;
 
+
+import graed.indisponibilite.IndisponibiliteInterface;
+
 import java.awt.Component;
 import java.rmi.RemoteException;
-
-import graed.ressource.RessourceInterface;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -15,8 +16,8 @@ import javax.swing.ListCellRenderer;
 /**
  * @author Helder DE SOUSA
  */
-public class RessourceListRenderer extends JLabel implements ListCellRenderer {
-	public RessourceListRenderer() {
+public class IndisponibiliteListRenderer extends JLabel implements ListCellRenderer {
+	public IndisponibiliteListRenderer() {
 	         setOpaque(true);
 	}
 	
@@ -28,7 +29,7 @@ public class RessourceListRenderer extends JLabel implements ListCellRenderer {
 	    boolean cellHasFocus)
 	   	{
 	         try {
-				setText(((RessourceInterface)value).print());
+				setText(((IndisponibiliteInterface)value).print());
 			} catch (RemoteException e) {
 				e.printStackTrace();
 				setText("Erreur !!");
@@ -38,4 +39,3 @@ public class RessourceListRenderer extends JLabel implements ListCellRenderer {
 	         return this;
 	     }
  }
-

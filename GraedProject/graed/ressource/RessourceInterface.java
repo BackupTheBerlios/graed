@@ -28,4 +28,5 @@ public interface RessourceInterface extends Remote {
 	 * @param id_ressource The id_ressource to set.
 	 */
 	public void setId_ressource(String id_ressource) throws RemoteException ;
+	public String print() throws RemoteException;
 }
