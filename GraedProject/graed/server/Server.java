@@ -32,7 +32,7 @@ public class Server {
 
 			//Facultatif, mais plus sûr dans le cas de chargement dynamique de classes
 			//System.out.println("Mise en place du Security Manager ...");
-			System.setSecurityManager(new java.rmi.RMISecurityManager());
+			//System.setSecurityManager(new java.rmi.RMISecurityManager());
 			
 			//Creation des objets serveurs
 			RessourceManager rm = new RessourceManagerImpl();
