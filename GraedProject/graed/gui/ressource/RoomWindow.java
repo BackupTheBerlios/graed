@@ -4,11 +4,13 @@
  */
 package graed.gui.ressource;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.ressource.RessourceManagerImpl;
 import graed.ressource.event.RessourceEvent;
 import graed.ressource.type.Room;
+import graed.ressource.type.RoomInterface;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -53,7 +55,7 @@ private JFormattedTextField capacite;
  * @param t the teacher
  * @throws InvalidStateException
  */
-public RoomWindow(int state, Room r) throws InvalidStateException{
+public RoomWindow(int state, RoomInterface r) throws InvalidStateException{
 	super(state,r);
 	nom=new JFormattedTextField();
 	batiment=new JFormattedTextField();
@@ -137,11 +139,14 @@ private void addJComponent(JPanel p,GridBagConstraints c){
  * @param c constraint
  */
 private void FillComponent(){
-	nom.setText(((Room) getInformation()).getNom());
-	batiment.setText(((Room) getInformation()).getBatiment());
-	lieu.setText(((Room) getInformation()).getLieu());
-	capacite.setText(((Room) getInformation()).getCapacite()+"");
-	
+	try {
+		nom.setText(((RoomInterface) getInformation()).getNom());
+		batiment.setText(((RoomInterface) getInformation()).getBatiment());
+		lieu.setText(((RoomInterface) getInformation()).getLieu());
+		capacite.setText(((RoomInterface) getInformation()).getCapacite()+"");
+	} catch( RemoteException e ) {
+		e.printStackTrace();
+	}
 }
 /**
  * Open and fill the window
@@ -201,20 +206,19 @@ protected JButton modify(){
 	JButton b=new JButton("Modifier");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			((Room) getInformation()).setNom(nom.getText());
-			((Room) getInformation()).setBatiment(batiment.getText());
-			((Room) getInformation()).setLieu(lieu.getText());
-			((Room) getInformation()).setCapacite(Integer.parseInt(capacite.getText()));
-			System.out.println(((Room) getInformation()));
-			
-				try {
-					RessourceManagerImpl.getInstance().updateRessource(((Room) getInformation()));
-				} catch (RemoteException e) {
+			try {
+				((RoomInterface) getInformation()).setNom(nom.getText());
+				((RoomInterface) getInformation()).setBatiment(batiment.getText());
+				((RoomInterface) getInformation()).setLieu(lieu.getText());
+				((RoomInterface) getInformation()).setCapacite(Integer.parseInt(capacite.getText()));
+				System.out.println(((RoomInterface) getInformation()));
+				Client.getRessourceManager().updateRessource(((RoomInterface) getInformation()));
+			} catch (RemoteException e) {
 				JOptionPane.showMessageDialog(frame,
 					"La salle ne peut être modifiée ",
 					"Erreur",JOptionPane.ERROR_MESSAGE);	
-				}
-				frame.dispose();
+			}
+			frame.dispose();
 		}		
 	});
 	return b;
@@ -232,17 +236,21 @@ protected JButton create(){
 			if(nom.getText()!=null &&
 					lieu.getText()!=null && batiment.getText()!=null){
 				try {
-			setInformation(new Room(nom.getText(),lieu.getText(),
-					batiment.getText(),Integer.parseInt(capacite.getText())));			
-				System.out.println(((Room) getInformation()));
+					RoomInterface room = (RoomInterface)Client.getRessourceManager().createRessource("Classe");
+					room.setNom(nom.getText());
+					room.setBatiment(batiment.getText());
+					room.setCapacite(Integer.parseInt(capacite.getText()));
+					room.setLieu(lieu.getText());
+					setInformation(room);			
+					System.out.println(((Room) getInformation()));
 				
 					
-						RessourceManagerImpl.getInstance().addRessource(((Room) getInformation()));
-					} catch (RemoteException e) {						
+					RessourceManagerImpl.getInstance().addRessource(((Room) getInformation()));
+				} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
 						"La salle ne peut être crée",
 						"Erreur",JOptionPane.ERROR_MESSAGE);	
-					}
+				}
 				
 			}
 			else{
@@ -269,13 +277,19 @@ protected JButton search(){
 			String lieu_salle = lieu.getText().length()==0?null:lieu.getText();
 			String batiment_salle = batiment.getText().length()==0?null:batiment.getText();
 			String capacite_salle = capacite.getText().length()==0?null:capacite.getText();
-			setInformation(new Room(nom_salle,lieu_salle,
-					batiment_salle,Integer.parseInt(capacite_salle)));
 			
-			System.out.println(((Room) getInformation()));			
+			RoomInterface room = (RoomInterface)Client.getRessourceManager().createRessource("Classe");
+			room.setNom(nom_salle);
+			room.setBatiment(batiment_salle);
+			room.setCapacite(Integer.parseInt(capacite_salle));
+			room.setLieu(lieu_salle);
+			
+			setInformation(room);
+			
+			System.out.println(((RoomInterface) getInformation()));			
 			Collection l=null;			
 				
-					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Room) getInformation()));
+					l= (Collection) Client.getRessourceManager().getRessources(((RoomInterface) getInformation()));
 				
 			
 			System.out.println(l);	

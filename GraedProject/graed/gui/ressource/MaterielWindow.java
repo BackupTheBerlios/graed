@@ -4,11 +4,13 @@
  */
 package graed.gui.ressource;
 
+import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.ressource.RessourceManagerImpl;
 import graed.ressource.event.RessourceEvent;
 import graed.ressource.type.Materiel;
+import graed.ressource.type.MaterielInterface;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -52,7 +54,7 @@ private JFormattedTextField type;
  * @param t the teacher
  * @throws InvalidStateException
  */
-public MaterielWindow(int state, Materiel m) throws InvalidStateException{
+public MaterielWindow(int state, MaterielInterface m) throws InvalidStateException{
 	super(state,m);
 	name=new JFormattedTextField();
 	type=new JFormattedTextField();
@@ -127,9 +129,12 @@ private void addJComponent(JPanel p,GridBagConstraints c){
  * @param c constraint
  */
 private void FillComponent(){
-	name.setText(((Materiel) getInformation()).getName());
-	type.setText(((Materiel) getInformation()).getTypeMateriel());
-	
+	try {
+		name.setText(((MaterielInterface) getInformation()).getName());
+		type.setText(((MaterielInterface) getInformation()).getTypeMateriel());
+	} catch (RemoteException e) {
+		e.printStackTrace();
+	}
 }
 /**
  * Open and fill the window
@@ -189,17 +194,18 @@ protected JButton modify(){
 	JButton b=new JButton("Modifier");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			((Materiel) getInformation()).setName(name.getText());
-			((Materiel) getInformation()).setTypeMateriel(type.getText());
-			System.out.println(((Materiel) getInformation()));			
-				try {
-					RessourceManagerImpl.getInstance().updateRessource(((Materiel) getInformation()));
-				} catch (RemoteException e) {
+			try {
+				((MaterielInterface) getInformation()).setName(name.getText());
+				((MaterielInterface) getInformation()).setTypeMateriel(type.getText());
+				System.out.println(((Materiel) getInformation()));			
+				
+				Client.getRessourceManager().updateRessource(((MaterielInterface) getInformation()));
+			} catch (RemoteException e) {
 				JOptionPane.showMessageDialog(frame,
 					"Le matériel ne peut être modifié ",
 					"Erreur",JOptionPane.ERROR_MESSAGE);	
-				}
-				frame.dispose();
+			}
+			frame.dispose();
 		}		
 	});
 	return b;
@@ -217,9 +223,9 @@ protected JButton create(){
 			if(name.getText()!=null && type.getText()!=null){	
 				try {
 					setInformation(new Materiel(name.getText(),type.getText()));			
-				System.out.println(((Materiel) getInformation()));				
+				System.out.println(((MaterielInterface) getInformation()));				
 					
-						RessourceManagerImpl.getInstance().addRessource(((Materiel) getInformation()));
+						Client.getRessourceManager().addRessource(((MaterielInterface) getInformation()));
 					} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
 						"Le matériel ne peut être cré",
@@ -250,10 +256,13 @@ protected JButton search(){
 			try {
 				String name_materiel = name.getText().length()==0?null:name.getText();
 				String type_materiel = type.getText().length()==0?null:type.getText();
-				setInformation(new Materiel(name_materiel,type_materiel));			
-				System.out.println(((Materiel) getInformation()));			
+				MaterielInterface mi = (MaterielInterface)Client.getRessourceManager().createRessource("Materiel");
+				mi.setName(name_materiel);
+				mi.setTypeMateriel(type_materiel);
+				setInformation(mi);			
+				System.out.println(((MaterielInterface) getInformation()));			
 				Collection l=null;			
-					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Materiel) getInformation()));
+					l= (Collection) Client.getRessourceManager().getRessources(((MaterielInterface) getInformation()));
 							
 				System.out.println(l);	
 				frame.setEnabled(false);
