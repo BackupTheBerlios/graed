@@ -113,4 +113,16 @@ public class Teacher extends Ressource {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	/**
+	 * @return Returns the id.
+	 */
+	public int getId() {
+		return id;
+	}
+	/**
+	 * @param id The id to set.
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
 }
