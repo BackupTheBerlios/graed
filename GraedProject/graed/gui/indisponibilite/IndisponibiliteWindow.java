@@ -400,6 +400,7 @@ public class IndisponibiliteWindow extends InformationWindow{
     			Time h=((SpinnerTimeModel)hdebut.getModel()).getSQLTime().getTime()<=0?null:((SpinnerTimeModel)hdebut.getModel()).getSQLTime();
     			int d=(int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60;
     			if(d<0)d=0;
+    			String lib=libelle.getText().length()==0?null:libelle.getText();
     			String p=((String)periodicite.getSelectedItem()).length()==0?null:(String)periodicite.getSelectedItem();
     			String ty=((String)type.getSelectedItem()).length()==0?null:((String)type.getSelectedItem());
     			System.out.println(debut+" "+fin+" "+h+" "+d+" "+p+" "+ty);
@@ -409,7 +410,7 @@ public class IndisponibiliteWindow extends InformationWindow{
 						h,
 						d,
 						p,
-    					libelle.getText(),
+    					lib,
 						ty));    			
     			for(int i=0;i<select_ress.getModel().getSize();++i){
     				((Indisponibilite) getInformation()).addRessource((Ressource)select_ress.getModel().getElementAt(i));    				

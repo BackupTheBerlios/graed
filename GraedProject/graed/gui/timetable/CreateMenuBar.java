@@ -42,14 +42,14 @@ public class CreateMenuBar {
 	 * Constructeur
 	 *
 	 */
-	public CreateMenuBar(JFrame frame,JTabbedPane tp){
+	public CreateMenuBar(JFrame frame){
 		this.frame=frame;
-		this.tp=tp;
+		//this.tp=tp;
 		barMenu=new JMenuBar();
 		barMenu.add(createMenuRessource());
 		barMenu.add(createMenuImport());
 		barMenu.add(createMenuInd());
-		barMenu.add(createMenuEDT());
+		//barMenu.add(createMenuEDT());
 	}
 	/**
 	 * Renvoie la barre de menu pour la fenêtre principale
