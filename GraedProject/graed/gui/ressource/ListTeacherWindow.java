@@ -9,7 +9,7 @@ package graed.gui.ressource;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.ressource.RessourceManagerImpl;
-import graed.ressource.type.Teacher;
+import graed.ressource.type.TeacherInterface;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -55,14 +55,19 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	private Object[][] fill(){
 		int j=0;
 		Object[][]o= new Object[super.size()][5];
-		for (Iterator i=super.getIteractor();i.hasNext();){
-			Teacher t=(Teacher)i.next();
-			o[j][0]=t.getName();
-			o[j][1]=t.getFirstName();
-			o[j][2]=t.getOffice();
-			o[j][3]=t.getPhone();
-			o[j][4]=t.getEmail();			
-			j++;
+		try {					
+			for (Iterator i=super.getIteractor();i.hasNext();){
+				TeacherInterface t=(TeacherInterface)i.next();	
+				o[j][0]=t.getName();
+				o[j][1]=t.getFirstName();
+				o[j][2]=t.getOffice();
+				o[j][3]=t.getPhone();
+				o[j][4]=t.getEmail();			
+				j++;
+			}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return o;
 	}
@@ -106,7 +111,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		JButton b=new JButton("Consulter");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Teacher t = (Teacher) getRessource(table.getSelectedRow());	
+				TeacherInterface t = (TeacherInterface) getRessource(table.getSelectedRow());	
 				frame.setEnabled(false);
 				try {
 					new TeacherWindow(InformationWindow.SEE,t).OpenWindow();
@@ -128,7 +133,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		JButton b=new JButton("Modifier");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Teacher t = (Teacher) getRessource(table.getSelectedRow());
+				TeacherInterface t = (TeacherInterface) getRessource(table.getSelectedRow());
 				frame.setEnabled(false);
 				try {
 					new TeacherWindow(InformationWindow.MODIFY,t).OpenWindow();
@@ -150,7 +155,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		JButton b=new JButton("Afficher EDP");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Teacher t = (Teacher) getRessource(table.getSelectedRow());
+				TeacherInterface t = (TeacherInterface) getRessource(table.getSelectedRow());
 				//frame.setEnabled(false);
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",
@@ -168,7 +173,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		JButton b=new JButton("Supprimer");
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Teacher t = (Teacher) getRessource(table.getSelectedRow());
+				TeacherInterface t = (TeacherInterface) getRessource(table.getSelectedRow());
 				table.remove(table.getSelectedRow());
 				System.out.println(table);
 				removeRessource(t);

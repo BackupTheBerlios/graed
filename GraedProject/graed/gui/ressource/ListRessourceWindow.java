@@ -6,7 +6,7 @@
  */
 package graed.gui.ressource;
 
-import graed.ressource.Ressource;
+import graed.ressource.RessourceInterface;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -36,16 +36,16 @@ public abstract class ListRessourceWindow {
 	 * @param i position de la ressource
 	 * @return la ressource à la position i
 	 */
-	public Ressource getRessource(int i){
+	public RessourceInterface getRessource(int i){
 		if(i<0)i=0;
-		return (Ressource) list_ress.toArray()[i];
+		return (RessourceInterface) list_ress.toArray()[i];
 	}
 	/**
 	 * Renvoie la ressource à la position i
 	 * @param i position de la ressource
 	 * @return la ressource à la position i
 	 */
-	public void removeRessource(Ressource r){		
+	public void removeRessource(RessourceInterface r){		
 		list_ress.remove(r);
 	}
 	/**

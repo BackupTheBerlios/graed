@@ -8,7 +8,6 @@ import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
 import graed.ressource.event.RessourceEvent;
-import graed.ressource.type.Teacher;
 import graed.ressource.type.TeacherInterface;
 
 import java.awt.GridBagConstraints;
@@ -16,6 +15,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Collection;
 import javax.swing.ImageIcon;
@@ -32,7 +32,7 @@ import javax.swing.SwingConstants;
  *
  * The window for alter teachers
  */
-public class TeacherWindow extends InformationWindow{
+public class TeacherWindow extends InformationWindow implements Serializable{
 
 /**
  * Window
