@@ -69,7 +69,7 @@ public TeacherWindow(int state, Teacher t) throws InvalidStateException{
 			state!=CREATE && state!=SEARCH))
 		throw new InvalidStateException();
 	this.state=state;
-	this.t=t;
+	this.t=t;	
 	OpenWindow();
 }
 /**
