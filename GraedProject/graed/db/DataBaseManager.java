@@ -63,7 +63,7 @@ public class DataBaseManager implements Serializable{
 	public void add(Object dbo) throws DataBaseException{
 	    try {
 	        Transaction tx = session.beginTransaction();
-	        session.save(convertStub(dbo));
+	        session.save(DataBaseUtil.convertStub(session, dbo));
 	        tx.commit();
 	    } catch( HibernateException he ) {
 	    	
@@ -88,7 +88,7 @@ public class DataBaseManager implements Serializable{
 	public void delete(Object dbo) throws DataBaseException{
 	    try {
 	        Transaction tx = session.beginTransaction();
-	        session.delete(convertStub(dbo));
+	        session.delete(DataBaseUtil.convertStub(session, dbo));
 	        tx.commit();
 	    } catch( HibernateException he ) {
 	    	he.printStackTrace();
@@ -113,7 +113,7 @@ public class DataBaseManager implements Serializable{
 	public void update( Object dbo ) throws DataBaseException {
 	    try {
 	        Transaction tx = session.beginTransaction();
-	        session.update(convertStub(dbo));
+	        session.update(DataBaseUtil.convertStub(session, dbo));
 	        tx.commit();
 	    } catch( HibernateException he ) {
 	    	he.printStackTrace();
@@ -128,7 +128,7 @@ public class DataBaseManager implements Serializable{
 	 * @throws DataBaseException
 	 */
 	public List get( Object example ) throws DataBaseException {
-		Object o = convertStub(example);
+		Object o = DataBaseUtil.convertStub(session, example);
 		if( o==null ) return new ArrayList();
 		Criteria c = session.createCriteria(o.getClass());
 	    // On ignore les valeurs zéro, la recherche est insensible à la case et utilise like pour les comparaison de strings
@@ -144,50 +144,5 @@ public class DataBaseManager implements Serializable{
 		return session.createCriteria(c);
 	}
 	
-	/**
-	 * Renvoi l'object auquel correspond le stub.
-	 * @param stub Le stub à convertir
-	 * @return L'object correspondant au stub 
-	 */
-	private Object convertStub( Object stub ) {
-		try {
-			Class ori = stub.getClass();
-			if( !ori.getName().endsWith("_Stub") ) return stub;
-			String original = ori.getName().split("_")[0];
-			Class dest = Class.forName(original);
-			Object destObj = dest.newInstance();
-			Method[] ms = dest.getMethods();
-						
-			for( int i=0; i<ms.length; ++i ) {
-				Method m = ms[i];
-				String s = m.getName();
-				/* On s'interesse unsiquement aux setters */ 
-				if( s.startsWith( "set" )) {
-					/* on crée le getter associé au setter */
-					String r = s.replaceFirst("set", "get");
-					try {
-						/* on récupére le getter */
-						Method mm = ori.getMethod(r, null);
-						Object[] args = {mm.invoke(stub,null)};
-						m.invoke( destObj, args );
-					} catch ( NoSuchMethodException ignored ) {
-						/* Exception levée si on essaye d'invoquer une methode n'existant pas.
-						 * Dans ce cas on l'ignore tout simplement.
-						 */
-						
-					}
-				}
-			}
-			
-			Criteria c = session.createCriteria(destObj.getClass());
-			c.add( Example.create(destObj).excludeZeroes().ignoreCase().enableLike());
-			List l = c.list();
-			if( l.size() > 0 ) return l.get(0);
-			return destObj;
-						
-		} catch( Exception e ) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+	
 }
