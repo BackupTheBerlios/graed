@@ -6,6 +6,7 @@ package graed.gui.timetable;
 
 import graed.client.Client;
 import graed.exception.InvalidStateException;
+import graed.gui.JBackgroundPanel;
 import graed.gui.renderer.RessourceListRenderer;
 import graed.ressource.RessourceInterface;
 
@@ -72,20 +73,20 @@ public SelectTimetable(CreateMainFrame main) {
 	Date d=new Date();
 	Date f=new Date();
 	
-	p=new JPanel();
+	p=new JBackgroundPanel( "graed/gui/timetable/icons/fond.png" );
 	p.setSize(with,height);
 	
 	
-	String[] ressTypes=null;
-	try {
+	String[] ressTypes=new String[0];//null;
+	/*try {
 		
 		ressTypes=Client.getRessourceManager().getRessourcesTypes();
 	} catch (RemoteException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
-	}
-	
+	}*/
 
+	
 	ressource = new JComboBox();
 	ressource.setRenderer(new RessourceListRenderer());
 	type = new JComboBox(ressTypes);

@@ -84,6 +84,9 @@ public class CreateMainFrame {
 	 */
 	private JSplitPane timetable(){
 		JSplitPane sp=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		sp.setOpaque(false);
+		sp.setDividerSize(3);
+		
 		sp.setLeftComponent(new SelectTimetable(this).OpenWindow());
 		
 		/* Affichage graphique d'un emploi du temps */		
