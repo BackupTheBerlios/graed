@@ -1,6 +1,4 @@
-/*
- * Classe de test d'interface
- */
+
 package graed.gui.timetable;
 
 
@@ -16,27 +14,46 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 
 /**
- * @author Dusk93
+ * @author Nadège GONORD
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Création d'un JPanel contenant l'emploi du temps d'une ressource
  */
 public class CreateColTimetable {
 	private final JPanel colTimetable;
 	private Ressource r;
 	String title;
 	
+	/**
+	 * Constructeur de la classe
+	 * @param r Ressource dont on veut creer l'emploi du temps
+	 * @param title titre de l'emploi du temps
+	 * @param start heure de début
+	 * @param stop heure de fin
+	 */
 	public CreateColTimetable(Ressource r,String title, int start, int stop){
 		this.r=r;
+		this.title=title;
 		colTimetable=new JPanel();
 		colTimetable.setSize((stop-start)*100+60,300);
 		CreateTables(start,stop);		
 	}
+	/**
+	 * Recupère le Jpanel contenant l'emploi du temps de la ressource
+	 * @return JPanel contenant l'emploi du temps de la ressource
+	 */
 	public JPanel getTimetable(){
 		return colTimetable;
+	}
+	/**
+	 * Récupération du titre de l'emploi du temps
+	 * @return titre de l'emploi du temps
+	 */
+	public String getTitle(){
+		return title;
 	}
 
 	/**
@@ -62,6 +79,10 @@ public class CreateColTimetable {
 		
 		return hours;	
 	}
+	/**
+	 * Création de la table contenant les jour de la semaine
+	 * @return la table contenant les jour de la semaine
+	 */
 	private JTable CreateDaysTable(){
 		/* Table affichant les jours */
 		JTable days =new JTable(5,1);
@@ -78,6 +99,14 @@ public class CreateColTimetable {
 		days.setValueAt("Vendredi",4,0);
 		return days;
 	}
+	/**
+	 * Création d'une table correspondant à un jour de la semaine
+	 * @param name nom de la table
+	 * @param mdl modèle de sélection
+	 * @param start heure de début
+	 * @param stop heure de fin
+	 * @return table correspondant à un jour de la semaine
+	 */
 	private TimetableColJTable CreateIndispoTable(String name, TimetableDefaultListSelectionModel mdl, int start, int stop){
 		TimetableColJTable t= new TimetableColJTable(new TimetableDefaultTableModel(stop-start+1,name ),mdl);
 		t.setBorder(BorderFactory.createLineBorder(Color.BLACK) );
@@ -86,6 +115,11 @@ public class CreateColTimetable {
 		
 		return t;
 	}
+	/**
+	 * Création de toutes les tables constituant un emploi du temps
+	 * @param start heure de début
+	 * @param stop heure de fin
+	 */
 	private void CreateTables(int start, int stop){
 		GridBagLayout l=new GridBagLayout();
 		
@@ -165,10 +199,19 @@ public class CreateColTimetable {
 	    colTimetable.add(heure2,c);
 		
 	}
+	/**
+	 * Test
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		JFrame f=new JFrame("Test Emploi du temps");
+		JFrame f=new JFrame("Test Emploi du temps");		
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setContentPane(new CreateColTimetable(null,"Emploi du temps",8,15).getTimetable());
+		JTabbedPane tp=new JTabbedPane();
+		CreateColTimetable time1=new CreateColTimetable(null,"Emploi du temps n°1",8,15);
+		tp.add(time1.getTitle(),time1.getTimetable());
+		CreateColTimetable time2=new CreateColTimetable(null,"Emploi du temps n°2",8,15);
+		tp.add(time2.getTitle(),time2.getTimetable());
+		f.setContentPane(tp);
 		/* Affichage de l'interface */
 		f.pack();
 		f.setVisible(true);

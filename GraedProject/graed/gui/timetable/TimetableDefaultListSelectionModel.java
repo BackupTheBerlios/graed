@@ -25,7 +25,6 @@ public class TimetableDefaultListSelectionModel extends DefaultListSelectionMode
 	 */
 	public void addTable(TimetableColJTable a){
 		l.add(a);
-		System.out.println(a.getName());
 	}
 	/**
 	 * Nettoyage des sélections antérieures
