@@ -279,7 +279,7 @@ protected JButton search(){
 			
 			System.out.println("List:"+l);	
 			frame.setEnabled(false);
-			//new ListTeacherWindow(l).OpenWindow();
+			new ListGroupWindow(l).OpenWindow();
 			frame.dispose();
 			
 		}		
@@ -320,6 +320,6 @@ public static void main (String[] args) throws InvalidStateException{
 		new TeacherWindow(InformationWindow.MODIFY,((Teacher)i.next())).OpenWindow();
 	}*/
 	Group t=null;
-	new GroupWindow(InformationWindow.CREATE,t).OpenWindow();
+	new GroupWindow(InformationWindow.SEARCH,t).OpenWindow();
 }
 }
