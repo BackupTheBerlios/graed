@@ -5,6 +5,8 @@ package graed.gui.indisponibilite;
 
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
+import graed.gui.factory.SpinnerFactory;
+import graed.gui.model.SpinnerTimeModel;
 import graed.indisponibilite.Indisponibilite;
 import graed.indisponibilite.IndisponibiliteManagerImpl;
 import graed.ressource.Ressource;
@@ -34,6 +36,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.ListSelectionModel;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
@@ -55,8 +58,8 @@ public class IndisponibiliteWindow extends InformationWindow{
     private JFormattedTextField libelle;
     private JDateChooser date_debut;
 	private JDateChooser date_fin;
-	private JFormattedTextField hdebut;
-	private JFormattedTextField duree;
+	private JSpinner hdebut;
+	private JSpinner duree;
 	private JComboBox periodicite;/* occ, hebdo */
 	private JComboBox type;/* Cours, TD, TP */
     private JComboBox type_ress;/* getRessType */
@@ -75,10 +78,21 @@ public class IndisponibiliteWindow extends InformationWindow{
     public IndisponibiliteWindow(int state, Indisponibilite i) throws InvalidStateException{
     	super(state,i);
     	libelle = new JFormattedTextField();
-        date_debut = new JDateChooser("d/MMMM/yyyy",false);
-    	date_fin = new JDateChooser("d/MMMM/yyyy",false);
-    	hdebut = new JFormattedTextField();
-    	duree = new JFormattedTextField();
+    	if (state!=InformationWindow.SEARCH){
+    		date_debut = new JDateChooser("d/MMMM/yyyy",false);
+    		date_fin = new JDateChooser("d/MMMM/yyyy",false);
+    		hdebut = SpinnerFactory.createTimeSpinner(new Date(1000*60*60*7),new Date(1000*60*60*7),new Date(1000*60*60*18));
+    		duree = SpinnerFactory.createTimeSpinner(new Date(1000*60*60*-1),new Date(1000*60*60*-1),new Date(1000*60*60*18));
+    	}
+    	else
+    	{
+    		date_debut = new JDateChooser("d/MMMM/yyyy",true);
+    		date_debut.setDate(new Date(0));
+    		date_fin = new JDateChooser("d/MMMM/yyyy",true);
+    		date_fin.setDate(new Date(0));
+    		hdebut = SpinnerFactory.createTimeSpinner(new Date(1000*60*60*-1),new Date(1000*60*60*-1),new Date(1000*60*60*18));
+    		duree = SpinnerFactory.createTimeSpinner(new Date(1000*60*60*-1),new Date(1000*60*60*-1),new Date(1000*60*60*18));
+    	}
     	periodicite = new JComboBox(fillPeriodicite());/* occ, hebdo */
     	type = new JComboBox(fillType());/* Cours, TD, TP */
     	ress_found=new Hashtable();
@@ -109,7 +123,7 @@ public class IndisponibiliteWindow extends InformationWindow{
      * @return tableau contenant les objets qui seront mis dans la combo
      */
     private Object[] fillPeriodicite(){
-    	Object[] o = {"ponctuel","hebdomadaire","bihebdomadaire"};
+    	Object[] o = {"","ponctuel","hebdomadaire","bihebdomadaire"};
     	return o;
     }
     /**
@@ -117,7 +131,7 @@ public class IndisponibiliteWindow extends InformationWindow{
      * @return tableau contenant les objets qui seront mis dans la combo
      */
     private Object[] fillType(){
-    	Object[] o = {"Cours","TD","TP"};
+    	Object[] o = {"","Cours","TD","TP"};
     	return o;
     }
     /**
@@ -350,11 +364,12 @@ public class IndisponibiliteWindow extends InformationWindow{
     			setInformation(new Indisponibilite(
     					new Date(date_debut.getDate().getTime()), 
     					new Date(date_fin.getDate().getTime()), 
-						Time.valueOf(hdebut.getText()),
-						new Integer(duree.getText()).intValue(),
+						((SpinnerTimeModel)hdebut.getModel()).getSQLTime(),
+						(int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60,
 						(String)periodicite.getSelectedItem(),
     					libelle.getText(),
 						(String)type.getSelectedItem()));
+    			System.out.println("calcul durée:"+((SpinnerTimeModel)duree.getModel()).getSQLTime()+ " "+(int)((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime());
     			for(int i=0;i<select_ress.getModel().getSize();++i){
     				((Indisponibilite) getInformation()).addRessource((Ressource)select_ress.getModel().getElementAt(i));
     			}
@@ -366,7 +381,7 @@ public class IndisponibiliteWindow extends InformationWindow{
 							"l'indisponibilité ne peut être crée ",
 							"Erreur",JOptionPane.ERROR_MESSAGE);	
 				}
-    			System.exit(0);
+    			frame.dispose();
     		}		
     	});
     	return b;
@@ -380,9 +395,39 @@ public class IndisponibiliteWindow extends InformationWindow{
     	JButton b=new JButton("Chercher");
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
-    			/*setInformation(new Indisponibilite());
-    			System.out.println(((Indisponibilite) getInformation()));
-    			*/
+    			Date debut=date_debut.getDate().getTime()==new Date(0).getTime()?null:new Date(date_debut.getDate().getTime());
+    			Date fin=date_fin.getDate().getTime()==new Date(0).getTime()?null:new Date(date_fin.getDate().getTime());
+    			Time h=((SpinnerTimeModel)hdebut.getModel()).getSQLTime().getTime()<=0?null:((SpinnerTimeModel)hdebut.getModel()).getSQLTime();
+    			int d=(int)(((SpinnerTimeModel)duree.getModel()).getSQLTime().getTime()/60000)+60;
+    			if(d<0)d=0;
+    			String p=((String)periodicite.getSelectedItem()).length()==0?null:(String)periodicite.getSelectedItem();
+    			String ty=((String)type.getSelectedItem()).length()==0?null:((String)type.getSelectedItem());
+    			System.out.println(debut+" "+fin+" "+h+" "+d+" "+p+" "+ty);
+    			setInformation(new Indisponibilite(
+    					debut, 
+    					fin, 
+						h,
+						d,
+						p,
+    					libelle.getText(),
+						ty));    			
+    			for(int i=0;i<select_ress.getModel().getSize();++i){
+    				((Indisponibilite) getInformation()).addRessource((Ressource)select_ress.getModel().getElementAt(i));    				
+    			}    
+    			System.out.println(((Indisponibilite) getInformation()).getRessources());
+    			Collection l=null;			
+    			try {
+    				l= (Collection) IndisponibiliteManagerImpl.getInstance().getIndisponibilites(((Indisponibilite) getInformation()));
+				} catch (RemoteException e) {
+					JOptionPane.showMessageDialog(frame,
+							"Le système de peut récuperer les indisponibilités",
+							"Erreur",JOptionPane.ERROR_MESSAGE);	
+				}
+				System.out.println("List:"+l);	
+				if(!l.isEmpty()){
+					frame.setEnabled(false);
+					new ListIndisponibiliteWindow(l).OpenWindow();
+				}
     			frame.dispose();
     		}		
     	});
