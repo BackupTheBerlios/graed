@@ -32,7 +32,7 @@
         </property>
 
 		<property name="fonction">
-            <column name="role" sql-type="varchar(16)" not-null="true"/>
+            <column name="role" sql-type="varchar(32)" not-null="true"/>
         </property>
         
         <property name="email">
