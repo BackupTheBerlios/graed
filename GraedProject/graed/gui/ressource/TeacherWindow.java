@@ -292,8 +292,9 @@ protected JButton search(){
 				}
 			
 			System.out.println("List:"+l);	
-			new ListTeacherWindow(l,frame);
-			System.exit(0);
+			frame.setEnabled(false);
+			new ListTeacherWindow(l,frame).OpenWindow();
+			
 		}		
 	});
 	return b;

@@ -6,32 +6,36 @@
  */
 package graed.gui.ressource;
 
+import graed.exception.InvalidStateException;
+import graed.gui.InformationWindow;
 import graed.ressource.type.Teacher;
 
+import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 /**
  * @author ngonord
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Classe affichant une liste de professeurs
  */
 public class ListTeacherWindow extends ListRessourceWindow {
 
 	/**
 	 * Window
 	 */
-	private JDialog frame;
+	private JFrame frame;
+	private JTable table;
 	private static int with=300;
 	private static int height=200;
 	/**
@@ -40,16 +44,18 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	 */
 	public ListTeacherWindow(Collection c,Frame m) {
 		super(c);
-		frame=new JDialog(m);
-		OpenWindow();
+		frame=new JFrame();		
 	}
 
+	/**
+	 * Renvoi le tableau permettant le remplissage de la JTable
+	 * @return le tableau permettant le remplissage de la JTable
+	 */
 	private Object[][] fill(){
 		int j=0;
 		Object[][]o= new Object[super.size()][5];
 		for (Iterator i=super.getIteractor();i.hasNext();){
 			Teacher t=(Teacher)i.next();
-			System.out.println("Teacher:"+t);
 			o[j][0]=t.getName();
 			o[j][1]=t.getFirstName();
 			o[j][2]=t.getOffice();
@@ -63,22 +69,95 @@ public class ListTeacherWindow extends ListRessourceWindow {
 	 * @see graed.gui.ressource.ListRessourceWindow#OpenWindow()
 	 */
 	public void OpenWindow() {
-		/*Class clazz=TeacherWindow.class;
+		Class clazz=TeacherWindow.class;
 		ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
-		frame.setIconImage(i.getImage());*/
+		frame.setIconImage(i.getImage());
 		frame.setSize(with,height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//JScrollPane p=new JScrollPane();
+		JPanel p=new JPanel(new BorderLayout());
 		frame.setTitle("Liste des professeurs");
-		//frame.setContentPane(p);
-		//Object[] o={"Nom","Prénom","Bureau","Tel","Courriel"};
-		//JTable t=new JTable(fill(),o);
-		//p.add(t);
-		JPanel p=new JPanel();
-		p.add(new JLabel("toto"));
 		frame.setContentPane(p);
+		
+		Object[] o={"Nom","Prénom","Bureau","Tel","Courriel"};
+		table=new JTable(fill(),o);
+		table.setColumnSelectionAllowed(false);
+		table.setRowSelectionAllowed(true);
+		frame.getContentPane().add(table.getTableHeader(),BorderLayout.NORTH);
+		frame.getContentPane().add(table,BorderLayout.CENTER);
+		
+		JPanel button=new JPanel();
+		button.add(see());
+		button.add(modify());
+		button.add(timetable());
+		button.add(stop());
+		frame.getContentPane().add(button,BorderLayout.SOUTH);
+		
+		frame.pack();
 		/** Affichage de la fenêtre **/
 		frame.setVisible(true);
+	}
+
+	/* (non-Javadoc)
+	 * @see graed.gui.ressource.ListRessourceWindow#see()
+	 */
+	public JButton see() {
+		JButton b=new JButton("Consulter");
+		b.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				Teacher t = (Teacher) getRessource(table.getSelectedRow());	
+				frame.setEnabled(false);
+				try {
+					new TeacherWindow(InformationWindow.SEE,t).OpenWindow();
+				} catch (InvalidStateException e) {
+					JOptionPane.showMessageDialog(frame,
+							"Vous ne pouvez consulter cette ressource",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}		
+		});
+		return b;
+	}
+
+	/* (non-Javadoc)
+	 * @see graed.gui.ressource.ListRessourceWindow#modify()
+	 */
+	public JButton modify() {
+		JButton b=new JButton("Modifier");
+		b.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				Teacher t = (Teacher) getRessource(table.getSelectedRow());
+				frame.setEnabled(false);
+				try {
+					new TeacherWindow(InformationWindow.MODIFY,t).OpenWindow();
+				} catch (InvalidStateException e) {
+					JOptionPane.showMessageDialog(frame,
+							"Vous ne pouvez consulter cette ressource",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}		
+		});
+		return b;
+	}
+
+	/* (non-Javadoc)
+	 * @see graed.gui.ressource.ListRessourceWindow#timetable()
+	 */
+	public JButton timetable() {
+		JButton b=new JButton("Afficher EDP");
+		b.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				Teacher t = (Teacher) getRessource(table.getSelectedRow());
+				frame.setEnabled(false);
+				JOptionPane.showMessageDialog(frame,
+							"Cette option n'est pas encore disponible",
+							"Erreur",JOptionPane.INFORMATION_MESSAGE);
+				
+				System.exit(0);
+			}		
+		});
+		return b;
 	}
 
 }

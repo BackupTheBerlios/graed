@@ -21,10 +21,10 @@ public abstract class InformationWindow {
 /**
  * The different state to open the window
  */
-protected static int CREATE=1;
-protected static int MODIFY=2;
-protected static int SEE=3;
-protected static int SEARCH=4;
+public static int CREATE=1;
+public static int MODIFY=2;
+public static int SEE=3;
+public static int SEARCH=4;
 /**
  * The current state
  */

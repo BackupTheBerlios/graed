@@ -6,8 +6,14 @@
  */
 package graed.gui.ressource;
 
+import graed.ressource.Ressource;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
+
+import javax.swing.JButton;
 
 /**
  * @author ngonord
@@ -28,6 +34,29 @@ public abstract class ListRessourceWindow {
 		return list_ress.iterator();
 	}
 	/**
+	 * Renvoie la ressource à la position i
+	 * @param i position de la ressource
+	 * @return la ressource à la position i
+	 */
+	public Ressource getRessource(int i){
+		if(i<0)i=0;
+		return (Ressource) list_ress.toArray()[i];
+	}
+	/**
+	 * Création du bouton annuler
+	 * @return bouton
+	 */
+	protected JButton stop(){
+		JButton b=new JButton("Annuler");
+		b.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}		
+		});
+		return b;
+		
+	}
+	/**
 	 * Ouvre la fenêtre contenant la liste
 	 *
 	 */
@@ -39,4 +68,20 @@ public abstract class ListRessourceWindow {
 	public int size(){
 		return list_ress.size();
 	}
+	/**
+	 * Création du bouton de consultation
+	 * @return Bouton de consultation
+	 */
+	public abstract JButton see();
+	/**
+	 * Création du bouton de modification
+	 * @return Bouton de modification
+	 */
+	public abstract JButton modify();
+	/**
+	 * Création du bouton d'affichage de l'emploi du temps
+	 * @return bouton d'affichage de l'emploi du temps
+	 */
+	public abstract JButton timetable();
+	
 }
