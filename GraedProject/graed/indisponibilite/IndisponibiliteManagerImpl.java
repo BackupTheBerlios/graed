@@ -85,6 +85,15 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	 */
 	public void deleteIndisponibilite(IndisponibiliteInterface i) throws RemoteException {
 		try {
+			Indisponibilite in = (Indisponibilite)DataBaseUtil.convertStub(dbm.getSession(), i);
+			Set s = new HashSet();
+			for( Iterator it = in.getRessources().iterator(); it.hasNext(); ) {
+				s.add(
+						DataBaseUtil.convertStub(dbm.getSession(), it.next())
+						);
+			}
+			in.getRessources().clear();
+			in.setRessources(s);
             dbm.delete(i);
             fireIndisponibiliteDeleted( i);
         } catch (DataBaseException e) {
@@ -97,6 +106,15 @@ public class IndisponibiliteManagerImpl extends UnicastRemoteObject implements I
 	 */
 	public void updateIndiponibilite(IndisponibiliteInterface i) throws RemoteException {
 		try {
+			Indisponibilite in = (Indisponibilite)DataBaseUtil.convertStub(dbm.getSession(), i);
+			Set s = new HashSet();
+			for( Iterator it = in.getRessources().iterator(); it.hasNext(); ) {
+				s.add(
+						DataBaseUtil.convertStub(dbm.getSession(), it.next())
+						);
+			}
+			in.getRessources().clear();
+			in.setRessources(s);
 			dbm.update(i);
             fireIndisponibiliteUpdated( i);
         } catch (DataBaseException e) {

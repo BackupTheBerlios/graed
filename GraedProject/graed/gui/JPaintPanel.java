@@ -3,6 +3,7 @@
  */
 package graed.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -14,9 +15,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.BevelBorder;
 
 public class JPaintPanel extends JPanel {
 
@@ -63,8 +68,7 @@ public class JPaintPanel extends JPanel {
                     moving = c;
                     setCursor(new Cursor(Cursor.MOVE_CURSOR));
                     setComponentZOrder(moving,0);
-                    validate();
-                    System.out.println(moving);
+                    //validate();
                 }
             }
 
@@ -85,12 +89,13 @@ public class JPaintPanel extends JPanel {
     protected void setMouseMotionListener() {
         addMouseMotionListener( new MouseMotionListener() {
             public void mouseDragged(MouseEvent e) {
-                if( moving != null
-                        && e.getX()<=(getWidth()-moving.getWidth())
+                if( moving != null ) {
+                	if( e.getX()<=(getWidth()-moving.getWidth())
                         && e.getY()<=(getHeight()-moving.getHeight())
                         && e.getX()>=0
                         && e.getY()>=0)
-                    moving.setLocation(e.getX(),e.getY());
+                			moving.setLocation(e.getX(),e.getY());
+                }
             }
 
             public void mouseMoved(MouseEvent e) {}
@@ -101,19 +106,30 @@ public class JPaintPanel extends JPanel {
     public static void main(String[] args) {
         JFrame f = new JFrame();
         Container c = f.getContentPane();
+        JPanel p = new JPanel();
         JPaintPanel pp = new JPaintPanel();
+        JPanel ppp = new JPanel();
         pp.setPreferredSize(new Dimension(300,400));
         pp.setOpaque(true);
         pp.setBackground(Color.YELLOW);
+        p.setLayout(new BorderLayout());
         JLabel jl = new JLabel("TEATEWFD");
         jl.setOpaque(true);
         jl.setBackground(Color.GREEN);
+        jl.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         JLabel jl2 = new JLabel("TEAdsfsdfFD");
         jl2.setOpaque(true);
         jl2.setBackground(Color.RED);
+        jl2.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        JButton b = new JButton("OK");
+        JButton bb = new JButton("Cancel");
         pp.add( jl );
         pp.add( jl2 );
-        c.add(pp);
+        ppp.add(b);
+        ppp.add(bb);
+        p.add( pp, BorderLayout.CENTER);
+        p.add( ppp,BorderLayout.SOUTH );
+        c.add(p);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
         f.setVisible(true);
