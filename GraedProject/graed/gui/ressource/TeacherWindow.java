@@ -239,11 +239,11 @@ protected JButton create(){
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			if(name.getText()!=null &&
-					firstName.getText()!=null && email.getText()!=null){			
-				setInformation(new Teacher(name.getText(),firstName.getText(),
-						office.getText(),phone.getText(),email.getText()));
-				System.out.println(((Teacher) getInformation()));				
+					firstName.getText()!=null && email.getText()!=null){
 					try {
+						setInformation(new Teacher(name.getText(),firstName.getText(),
+								office.getText(),phone.getText(),email.getText()));					
+						System.out.println(((Teacher) getInformation()));	
 						RessourceManagerImpl.getInstance().addRessource(((Teacher) getInformation()));
 					} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
@@ -271,27 +271,25 @@ protected JButton search(){
 	JButton b=new JButton("Chercher");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-					
-			String name_prof = name.getText().length()==0?null:name.getText();
-			String firstName_prof = firstName.getText().length()==0?null:firstName.getText();
-			String office_prof = office.getText().length()==0?null:office.getText();
-			String phone_prof = phone.getText().length()==0?null:phone.getText();
-			String email_prof = email.getText().length()==0?null:email.getText();
-			setInformation(new Teacher(name_prof,firstName_prof,
+			try {	
+				String name_prof = name.getText().length()==0?null:name.getText();
+				String firstName_prof = firstName.getText().length()==0?null:firstName.getText();
+				String office_prof = office.getText().length()==0?null:office.getText();
+				String phone_prof = phone.getText().length()==0?null:phone.getText();
+				String email_prof = email.getText().length()==0?null:email.getText();
+				setInformation(new Teacher(name_prof,firstName_prof,
 					office_prof,phone_prof,email_prof));
-			System.out.println(((Teacher) getInformation()));	
-			Collection l=null;			
-				try {
-					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Teacher) getInformation()));
-				} catch (RemoteException e) {
-					JOptionPane.showMessageDialog(frame,
-							"Le système de peut récuperer les professeurs",
+				System.out.println(((Teacher) getInformation()));	
+				Collection l=null;			
+				l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Teacher) getInformation()));
+				System.out.println("List:"+l);	
+				frame.setEnabled(false);
+				new ListTeacherWindow(l).OpenWindow();
+			} catch (RemoteException e) {
+				JOptionPane.showMessageDialog(frame,
+							"Le système de peut récuperer les professeurs : "+e.getMessage(),
 							"Erreur",JOptionPane.ERROR_MESSAGE);
-				}
-			
-			System.out.println("List:"+l);	
-			frame.setEnabled(false);
-			new ListTeacherWindow(l).OpenWindow();
+			}			
 			frame.dispose();
 			
 		}		

@@ -396,6 +396,7 @@ public class IndisponibiliteWindow extends IndWindow{
     	JButton b=new JButton("Creer");
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
+    			try {
     			setInformation(new Indisponibilite(
     					new Date(date_debut.getDate().getTime()), 
     					new Date(date_fin.getDate().getTime()), 
@@ -409,7 +410,7 @@ public class IndisponibiliteWindow extends IndWindow{
     				((Indisponibilite) getInformation()).addRessource((Ressource)select_ress.getModel().getElementAt(i));
     			}
     			System.out.println(((Indisponibilite) getInformation()));
-    			try {
+    			
 					IndisponibiliteManagerImpl.getInstance().addIndisponibilite(((Indisponibilite) getInformation()));
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
@@ -430,6 +431,7 @@ public class IndisponibiliteWindow extends IndWindow{
     	JButton b=new JButton("Chercher");
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
+    			try {
     			Date debut=date_debut.getDate().getTime()==new Date(0).getTime()?null:new Date(date_debut.getDate().getTime());
     			Date fin=date_fin.getDate().getTime()==new Date(0).getTime()?null:new Date(date_fin.getDate().getTime());
     			Time h=((SpinnerTimeModel)hdebut.getModel()).getSQLTime().getTime()<=0?null:((SpinnerTimeModel)hdebut.getModel()).getSQLTime();
@@ -452,20 +454,21 @@ public class IndisponibiliteWindow extends IndWindow{
     			}    
     			System.out.println(((Indisponibilite) getInformation()).getRessources());
     			Collection l=null;			
-    			try {
+    			
     				l= (Collection) IndisponibiliteManagerImpl.getInstance().getIndisponibilites(((Indisponibilite) getInformation()));
-				} catch (RemoteException e) {
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(frame,
-							"Le système de peut récuperer les indisponibilités",
-							"Erreur",JOptionPane.ERROR_MESSAGE);	
-				}
+				
 				System.out.println("List:"+l);	
 				if(l!=null && !l.isEmpty()){
 					frame.setEnabled(false);
 					new ListIndisponibiliteWindow(l).OpenWindow();					
 				}
     			frame.dispose();
+    			} catch (RemoteException e) {
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(frame,
+							"Le système de peut récuperer les indisponibilités",
+							"Erreur",JOptionPane.ERROR_MESSAGE);	
+				}
     		}		
     	});
     	return b;
@@ -510,7 +513,11 @@ public class IndisponibiliteWindow extends IndWindow{
      * @throws InvalidStateException
      */
     public static void main (String[] args) throws InvalidStateException{
-    	Indisponibilite i=new Indisponibilite();
-    	new IndisponibiliteWindow(IndWindow.SEARCH,i).OpenWindow();
+    	try {
+    		Indisponibilite i=new Indisponibilite();
+    		new IndisponibiliteWindow(IndWindow.SEARCH,i).OpenWindow();
+    	} catch (RemoteException e) {
+			e.printStackTrace();
+		}
     }
 }

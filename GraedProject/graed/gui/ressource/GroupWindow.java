@@ -249,11 +249,12 @@ protected JButton create(){
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			if(name.getText()!=null &&
-					description.getText()!=null){			
+					description.getText()!=null){
+				try {
 				setInformation(new Group(null,name.getText(),description.getText(),
 						email.getText(),null,null,option.getText()));
 				System.out.println(((Group) getInformation()));				
-					try {
+					
 						RessourceManagerImpl.getInstance().addRessource(((Group) getInformation()));
 					} catch (RemoteException e) {	
 						e.printStackTrace();
@@ -281,7 +282,8 @@ protected JButton create(){
 protected JButton search(){
 	JButton b=new JButton("Chercher");
 	b.addActionListener(new ActionListener(){
-		public void actionPerformed(ActionEvent arg0) {					
+		public void actionPerformed(ActionEvent arg0) {	
+			try {
 			String n = name.getText().length()==0?null:name.getText();
 			String d = description.getText().length()==0?null:description.getText();
 			String op = option.getText().length()==0?null:option.getText();
@@ -289,18 +291,18 @@ protected JButton search(){
 			setInformation(new Group(null,n,d,m,null,null,op));
 			System.out.println(((Group) getInformation()));	
 			Collection l=null;			
-				try {
 					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Group) getInformation()));
-				} catch (RemoteException e) {
-					JOptionPane.showMessageDialog(frame,
-							"Le système de peut récuperer les formations",
-							"Erreur",JOptionPane.ERROR_MESSAGE);
-				}
+				
 			
 			System.out.println("List:"+l);	
 			frame.setEnabled(false);
 			new ListGroupWindow(l).OpenWindow();
 			frame.dispose();
+			} catch (RemoteException e) {
+				JOptionPane.showMessageDialog(frame,
+						"Le système de peut récuperer les formations",
+						"Erreur",JOptionPane.ERROR_MESSAGE);
+			}
 			
 		}		
 	});

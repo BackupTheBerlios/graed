@@ -230,12 +230,13 @@ protected JButton create(){
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			if(nom.getText()!=null &&
-					lieu.getText()!=null && batiment.getText()!=null){			
+					lieu.getText()!=null && batiment.getText()!=null){
+				try {
 			setInformation(new Room(nom.getText(),lieu.getText(),
 					batiment.getText(),Integer.parseInt(capacite.getText())));			
 				System.out.println(((Room) getInformation()));
 				
-					try {
+					
 						RessourceManagerImpl.getInstance().addRessource(((Room) getInformation()));
 					} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
@@ -263,7 +264,8 @@ protected JButton search(){
 	JButton b=new JButton("Chercher");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			String nom_salle = nom.getText().length()==0?null:nom.getText();
+			try {
+				String nom_salle = nom.getText().length()==0?null:nom.getText();
 			String lieu_salle = lieu.getText().length()==0?null:lieu.getText();
 			String batiment_salle = batiment.getText().length()==0?null:batiment.getText();
 			String capacite_salle = capacite.getText().length()==0?null:capacite.getText();
@@ -272,18 +274,19 @@ protected JButton search(){
 			
 			System.out.println(((Room) getInformation()));			
 			Collection l=null;			
-				try {
+				
 					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Room) getInformation()));
-				} catch (RemoteException e) {
-					JOptionPane.showMessageDialog(frame,
-							"Le système de peut récuperer les salles",
-							"Erreur",JOptionPane.ERROR_MESSAGE);
-				}
+				
 			
 			System.out.println(l);	
 			frame.setEnabled(false);
 			new ListRoomWindow(l).OpenWindow();
 			frame.dispose();
+			} catch (RemoteException e) {
+				JOptionPane.showMessageDialog(frame,
+						"Le système de peut récuperer les salles",
+						"Erreur",JOptionPane.ERROR_MESSAGE);
+			}
 		}		
 	});
 	return b;

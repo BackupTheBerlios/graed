@@ -215,9 +215,10 @@ protected JButton create(){
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			if(name.getText()!=null && type.getText()!=null){	
-				setInformation(new Materiel(name.getText(),type.getText()));			
+				try {
+					setInformation(new Materiel(name.getText(),type.getText()));			
 				System.out.println(((Materiel) getInformation()));				
-					try {
+					
 						RessourceManagerImpl.getInstance().addRessource(((Materiel) getInformation()));
 					} catch (RemoteException e) {						
 						JOptionPane.showMessageDialog(frame,
@@ -246,23 +247,23 @@ protected JButton search(){
 	JButton b=new JButton("Chercher");
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
-			String name_materiel = name.getText().length()==0?null:name.getText();
-			String type_materiel = type.getText().length()==0?null:type.getText();
-			setInformation(new Materiel(name_materiel,type_materiel));			
-			System.out.println(((Materiel) getInformation()));			
-			Collection l=null;			
-				try {
+			try {
+				String name_materiel = name.getText().length()==0?null:name.getText();
+				String type_materiel = type.getText().length()==0?null:type.getText();
+				setInformation(new Materiel(name_materiel,type_materiel));			
+				System.out.println(((Materiel) getInformation()));			
+				Collection l=null;			
 					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Materiel) getInformation()));
-				} catch (RemoteException e) {
-					JOptionPane.showMessageDialog(frame,
-							"Le système de peut récuperer les materiels",
-							"Erreur",JOptionPane.ERROR_MESSAGE);
-				}
-			
+							
 				System.out.println(l);	
 				frame.setEnabled(false);
 				new ListMaterielWindow(l).OpenWindow();
 				frame.dispose();
+			} catch (RemoteException e) {
+				JOptionPane.showMessageDialog(frame,
+						"Le système de peut récuperer les materiels",
+						"Erreur",JOptionPane.ERROR_MESSAGE);
+			}
 		}		
 	});
 	return b;
