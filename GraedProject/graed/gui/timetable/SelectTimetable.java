@@ -78,15 +78,13 @@ public SelectTimetable(CreateMainFrame main) {
 	p.setSize(with,height);
 	
 	
-	String[] ressTypes=new String[0]//null
-	                              ;
-	/*try {
+	String[] ressTypes=null;
+	try {
 		
 		ressTypes=Client.getRessourceManager().getRessourcesTypes();
 	} catch (RemoteException e1) {
-		// TODO Auto-generated catch block
 		e1.printStackTrace();
-	}*/
+	}
 
 	
 	ressource = new JComboBox();
@@ -104,7 +102,6 @@ public SelectTimetable(CreateMainFrame main) {
 							ressource.addItem(it.next());
 					}
 				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
