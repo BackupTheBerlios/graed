@@ -4,10 +4,15 @@ import graed.db.DataBaseManager;
 import graed.exception.DataBaseException;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
+import graed.ressource.Ressource;
+import graed.ressource.RessourceManagerImpl;
+import graed.ressource.type.Room;
+import graed.ressource.type.Teacher;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -95,5 +100,26 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
 	           ((IndisponibiliteListener)i.next()).indisponibiliteUpdated(ie);
 	       }
+	}
+	
+	public static void main( String[] args ) throws RemoteException {
+		Ressource t = new Teacher("Zipstein", "Mark", "", "", "zipstein@univ-mlv.fr");
+		Ressource r = new Room("2b104","Copernic","Copernic",40);
+		Indisponibilite in = new Indisponibilite( new Date(), new Date(), 2, "Unique", "Réseau", "Cours");
+		in.addRessource(t);
+		in.addRessource(r);
+		
+		RessourceManagerImpl.getInstance().addRessource(t);
+		RessourceManagerImpl.getInstance().addRessource(r);
+		
+		IndisponibiliteManagerImpl.getInstance().addIndisponibilite(in);
+		
+		Indisponibilite inn = new Indisponibilite();
+		inn.addRessource(new Teacher("Forax", null, null, null, null));
+		
+		Collection c = IndisponibiliteManagerImpl.getInstance().getIndisponibilites(inn);
+		for( Iterator i = c.iterator(); i.hasNext(); ) {
+			System.out.println(i.next());
+		}
 	}
 }

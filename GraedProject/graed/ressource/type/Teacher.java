@@ -15,7 +15,6 @@ import graed.ressource.Ressource;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Teacher extends Ressource {
-	private String id;
 	private String name;
 	private String firstName;
 	private String office;
@@ -107,17 +106,5 @@ public class Teacher extends Ressource {
 	 */
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-	/**
-	 * @return Returns the id.
-	 */
-	public String getId() {
-		return id;
-	}
-	/**
-	 * @param id The id to set.
-	 */
-	public void setId(String id) {
-		this.id = id;
 	}
 }

@@ -6,8 +6,7 @@ import graed.ressource.Ressource;
  * @author Propriétaire
  */
 public class Materiel extends Ressource {
-	 private String id;
-     private String name;
+	 private String name;
      private String typeMateriel;
 
      public Materiel(){
@@ -19,18 +18,6 @@ public class Materiel extends Ressource {
              this.typeMateriel=typeMateriel;
      }
      /* ******************** Getter et Setter *********************** */
-     /**
-      * @return Returns the id.
-      */
-     public String getId() {
-             return id;
-     }
-     /**
-      * @param id The id to set.
-      */
-     public void setId(String id) {
-             this.id = id;
-     }
      /**
       * @return Returns the name.
       */

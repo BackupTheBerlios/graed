@@ -15,7 +15,6 @@ import graed.ressource.Ressource;
  * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class Room extends Ressource {
-	private String id;
 	private String nom;
 	private String batiment;
 	private String lieu;
@@ -35,7 +34,6 @@ public class Room extends Ressource {
 	
 	public String toString() {
 		String p="";
-		p+="ID: "+id+" ";
 		p+="Name: "+nom+" ";
 		p+="House: "+batiment+" ";
 		p+="Where: "+lieu+" ";
@@ -91,17 +89,5 @@ public class Room extends Ressource {
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
-	}
-	/**
-	 * @return Returns the id.
-	 */
-	public String getId() {
-		return id;
-	}
-	/**
-	 * @param id The id to set.
-	 */
-	public void setId(String id) {
-		this.id = id;
 	}
 }
