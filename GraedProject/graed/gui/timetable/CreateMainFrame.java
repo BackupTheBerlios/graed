@@ -1,9 +1,3 @@
-/*
- * Created on 2 mars 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package graed.gui.timetable;
 
 import graed.callback.CallbackRunnable;
@@ -23,8 +17,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.Date;

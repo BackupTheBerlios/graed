@@ -29,6 +29,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.rmi.RemoteException;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -143,9 +144,10 @@ public class TimetableColJTable extends JTable {
     				 	if(pop!=null)pop.show(TimetableColJTable.this, e.getX(),e.getY());
     				 	return;
     				 }
+            		else System.out.println("Drag and Drop Mouse pressed");
 		}
 		
-		public void mouseReleased(MouseEvent e){			
+		public void mouseReleased(MouseEvent e){	
 			if( e.getButton() == MouseEvent.BUTTON3 ) return;
 			Container ct = TimetableColJTable.this.getParent();
 			Point p=ct.getMousePosition(true);
@@ -159,27 +161,31 @@ public class TimetableColJTable extends JTable {
 			if( o!= null && (col!=colF||row!=rowF||table!=TimetableColJTable.this)) {
 				int size = TimetableColJTable.this.getCellSize( rowF, colF );	
 				//On ne déplace si la taille est trop grande
-				if(size<=table.getColumnCount()-col){					
-					try {
+				try {
 						Collection coll = TimetableColJTable.this.removeIndispo(colF);
 						for(Iterator it=coll.iterator();it.hasNext();){
 							IndisponibiliteInterface i=(IndisponibiliteInterface) it.next();
 							int j=Integer.parseInt(table.getName())-Integer.parseInt(TimetableColJTable.this.getName());
 							i.setDebut( new Date((i.getDebut().getTime()+j*(1000*60*60*24))));	
-							i.setFin( new Date((i.getFin().getTime()+j*(1000*60*60*24))));	
+							i.setFin( new Date((i.getFin().getTime()+j*(1000*60*60*24))));
+							i.setHdebut(new Time(i.getHdebut().getTime()+((col-colF)*1000*60*15)));
 							table.addIndispo(i,col,size,false);	
 							Client.getIndisponibiliteManager().updateIndiponibilite(i);
 						}
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}
-				}
+				
 				
 				TimetableColJTable.this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				table.changeSelection(row,col,false,false);
 				table.setCellSelectionEnabled(true);
 				
 			}
+			else if(o!=null){
+				System.out.println("Drag and Drop "+col+"!="+colF+" && "+row+"!="+rowF);
+			}
+			else  System.out.println("Drag and Drop o=null");
 		}
         };
         
@@ -247,6 +253,7 @@ public class TimetableColJTable extends JTable {
 		{
 			TableColumn c=getColumnModel().getColumn(i);
 			if(c!=null)c.setPreferredWidth(preferredSize.width/getColumnCount());
+			//System.out.println(tm.getName()+"setPreferredSize col="+i+" width="+preferredSize.width/getColumnCount());
 		}
 	}
 	/**
@@ -344,9 +351,7 @@ public class TimetableColJTable extends JTable {
 			tooltext=j.getToolTipText().replaceAll("</html>","<br><br>");
 			int size_tmp=tm.getCellSize(0,col);
 			TableColumn c=getColumnModel().getColumn(col);
-			System.out.println("JTable2:"+text+" "+c.getPreferredWidth());
 			c.setPreferredWidth(c.getPreferredWidth()/size_tmp);
-			System.out.println("JTable2:"+text+" "+c.getPreferredWidth());
 			size=size>size_tmp?size:size_tmp;
 			tm.modifyCellSize(col,size);
 		}
@@ -369,10 +374,8 @@ public class TimetableColJTable extends JTable {
 		//Gestion des erreurs de la taille de la cellule
 		if(size>tm.getColumnCount()-col)size=tm.getColumnCount()-col;
 		if((JTextArea) getValueAt(0,col)==null)tm.setValueAt(j,col,size);
-		TableColumn c=getColumnModel().getColumn(col);
-		System.out.println("JTable:"+text+" "+c.getPreferredWidth());		
+		TableColumn c=getColumnModel().getColumn(col);	
 		c.setPreferredWidth((size*c.getPreferredWidth())+size-1);
-		System.out.println("JTable:"+text+" "+c.getPreferredWidth());
 	}
 	/**
 	 * Supprime la donnée à la colonne indiquée
@@ -430,7 +433,6 @@ public class TimetableColJTable extends JTable {
 			for(Enumeration en=list_ind.keys();en.hasMoreElements();){
 				int col_tmp=((Integer)en.nextElement()).intValue();				
 				if(col_tmp<col){
-					System.out.println("Col "+col);
 					col-=(tm.getCellSize(0,col_tmp)-1);
 					if(col<0){
 						col=col_tmp;						
@@ -438,7 +440,24 @@ public class TimetableColJTable extends JTable {
 				}				
 			}
 		}	
-		System.out.println("Col "+col);
+		return col;
+	}
+	/**
+	 * Trouve le bon numéro de colonne par rapport 
+	 * aux indisponibilités déjà ajoutée à la table
+	 * @param col le numéro de colonne initial
+	 * @param size la taille
+	 * @return le numéro de colonne calculé
+	 */
+	private int find_real_col(int col){
+		if(list_ind!=null){
+			for(Enumeration en=list_ind.keys();en.hasMoreElements();){
+				int col_tmp=((Integer)en.nextElement()).intValue();				
+				if(col_tmp<col){
+					col+=(tm.getCellSize(0,col_tmp)-1);					
+				}				
+			}
+		}			
 		return col;
 	}
 	/**
@@ -471,12 +490,15 @@ public class TimetableColJTable extends JTable {
 	}
 	
 	
-	/* (non-Javadoc)
-	 * @see javax.swing.JTable#resizeAndRepaint()
-	 */
-	/*protected void resizeAndRepaint() {
-		Dimension d=this.getSize();
+	
+	/*public void resize(int width, int height, int nbcol) {
 		int size=0;
+		for(int j=0;j<getColumnModel().getColumnCount();++j)
+		{
+			TableColumn c=getColumnModel().getColumn(j);
+			if(c!=null)c.setPreferredWidth(width/nbcol);
+			System.out.println(tm.getName()+"resize col="+j+" width="+width/nbcol);
+		}
 		if(list_ind!=null && !list_ind.isEmpty()){
 			for(Enumeration en=list_ind.keys();en.hasMoreElements();){
 				Integer col_tmp=((Integer)en.nextElement());	
@@ -494,6 +516,5 @@ public class TimetableColJTable extends JTable {
 				tc.setPreferredWidth((size*tc.getPreferredWidth())+size-1);	
 			}
 		}
-		super.resizeAndRepaint();
 	}*/
 }
