@@ -5,14 +5,20 @@ import graed.gui.InformationWindow;
 import graed.gui.ressource.MaterielWindow;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
+import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Group;
 import graed.ressource.type.Materiel;
 import graed.ressource.type.Room;
 import graed.ressource.type.Teacher;
+import graed.util.ldap.ConnectLDAP;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -20,8 +26,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 
 /**
  * @author ngonord
@@ -39,6 +43,7 @@ public class CreateMenuBar {
 		this.frame=frame;
 		barMenu=new JMenuBar();
 		barMenu.add(createMenuRessource());
+		barMenu.add(createMenuImport());
 	}
 	/**
 	 * Renvoie la barre de menu pour la fenêtre principale
@@ -210,6 +215,87 @@ public class CreateMenuBar {
 		return ress;
 	}
 	
+	/***********************Importer***************************/
+	/**
+	 * Création du menu ressource
+	 * @return menu ressource
+	 */
+	private JMenu createMenuImport(){
+		JMenu imp=new JMenu("Importer");
+		/* Réalisation des sous menus */
+		JMenuItem prof=new JMenuItem("Professeur");
+		/* Importer les professeurs de l'arbre LDAP */
+		prof.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				ConnectLDAP ldap=new ConnectLDAP();
+				List p= ldap.searchTeachers();
+				System.out.println(p.size()+" teacher find:");
+				try{
+					for (Iterator i=p.iterator();i.hasNext();){
+						Teacher t=(Teacher)i.next();
+						System.out.println(t);
+						RessourceManagerImpl.getInstance().addRessource(t);
+					}
+				} catch (RemoteException re) {				
+					JOptionPane.showMessageDialog(frame,
+							"le système ne peut importer les ressources",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+			
+		});
+		/* Importer les salles de l'arbre LDAP */
+		JMenuItem salle=new JMenuItem("Salle");
+		salle.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				ConnectLDAP ldap=new ConnectLDAP();
+				List p= ldap.searchRoom();
+				System.out.println(p.size()+" rooms find:");
+				try{
+					for (Iterator i=p.iterator();i.hasNext();){
+						Room r=(Room)i.next();
+						System.out.println(r);						
+						RessourceManagerImpl.getInstance().addRessource(r);
+					}
+				} catch (RemoteException re) {
+					re.printStackTrace();
+					JOptionPane.showMessageDialog(frame,
+							"le système ne peut importer les ressources",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+				
+				
+			}
+			
+		});
+		
+		/* Importer les formations de l'arbre LDAP */
+		JMenuItem formation=new JMenuItem("Formation");
+		formation.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				ConnectLDAP ldap=new ConnectLDAP();
+				List p= ldap.searchGroup();
+				System.out.println(p.size()+" groups find:");
+				try{
+					for (Iterator i=p.iterator();i.hasNext();){
+						Group g=(Group) i.next();
+						System.out.println(g);					
+						RessourceManagerImpl.getInstance().addRessource(g);
+					}
+				} catch (RemoteException re) {
+					JOptionPane.showMessageDialog(frame,
+							"le système ne peut importer les ressources",
+							"Erreur",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			
+		});
+		imp.add(prof);
+		imp.add(salle);
+		imp.add(formation);
+		return imp;
+	}
 	
 	
 	/***************** Test **********************/
