@@ -1,5 +1,7 @@
 package graed.util.ldap;
 
+import graed.db.DataBaseManager;
+import graed.exception.DataBaseException;
 import graed.ressource.type.Group;
 import graed.ressource.type.Room;
 import graed.ressource.type.Teacher;
@@ -247,14 +249,17 @@ public class ConnectLDAP {
 	}
 	
 	/* ******************* Test ************************ */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws DataBaseException {
 		ConnectLDAP ldap=new ConnectLDAP();
 		Hashtable environnementLDAP = ldap.preparerEnvirronnement ();
 		ldap.initialiserConnexionLDAP(environnementLDAP);
 		List p= ldap.searchTeachers();
 		System.out.println(p.size()+" teacher find:");
 		for (Iterator i=p.iterator();i.hasNext();){
-			System.out.println(i.next());
+			Teacher t=(Teacher)i.next();
+			System.out.println(t);
+			DataBaseManager.getInstance().add(t);
+			System.exit(0);
 		}
 		/*List p= ldap.searchGroup();
 		System.out.println(p.size()+" groups find:");
