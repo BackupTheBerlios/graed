@@ -8,6 +8,8 @@ package graed.indisponibilite;
 
 import graed.ressource.Ressource;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.HashSet;
@@ -18,7 +20,7 @@ import java.util.Set;
  * Classe représentant une indisponibilite.
  * @author Helder DE SOUSA
  */
-public class Indisponibilite {
+public class Indisponibilite extends UnicastRemoteObject implements IndisponibiliteInterface{
 	/**
 	 * L'identifiant de l'indisponibilité.
 	 */
@@ -51,7 +53,7 @@ public class Indisponibilite {
 	private Time hdebut;
 	
 	public Indisponibilite(Date debut, Date fin, Time hdebut, int duree, String periodicite,
-			String libelle, String type) {
+			String libelle, String type) throws RemoteException {
 		this();
 		this.debut = debut;
 		this.fin = fin;
@@ -62,7 +64,7 @@ public class Indisponibilite {
 		this.hdebut = hdebut;
 	}
 	
-	public Indisponibilite() {
+	public Indisponibilite() throws RemoteException{
 		ressources = new HashSet();
 	}
 	

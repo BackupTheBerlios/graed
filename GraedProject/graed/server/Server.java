@@ -35,8 +35,8 @@ public class Server {
 			//System.setSecurityManager(new java.rmi.RMISecurityManager());
 			
 			//Creation des objets serveurs
-			RessourceManager rm = new RessourceManagerImpl();
-			IndisponibiliteManager im = new IndisponibiliteManagerImpl();
+			RessourceManager rm = RessourceManagerImpl.getInstance();
+			IndisponibiliteManager im = IndisponibiliteManagerImpl.getInstance();
 			
 			//Enregistrement du serveur dans le domaine de nom rmi
 			r.rebind("rmi://"+InetAddress.getLocalHost().getHostName()+":6666/RessourceManager", rm);

@@ -29,7 +29,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
     private Hashtable types;
     private final static String directoryTypes = "graed/ressource/type";
     
-    public RessourceManagerImpl() throws RemoteException {
+    private RessourceManagerImpl() throws RemoteException {
         dbm = DataBaseManager.getInstance();
         toBeNotified = new ArrayList();
         

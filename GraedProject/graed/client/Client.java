@@ -7,11 +7,14 @@
 package graed.client;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import graed.indisponibilite.IndisponibiliteManager;
+import graed.ressource.Ressource;
 import graed.ressource.RessourceManager;
+import graed.ressource.type.Teacher;
 
 /**
  * @author hdesou01
@@ -23,12 +26,12 @@ public class Client {
 	private static final RessourceManager rm;
 	private static final IndisponibiliteManager im;
 	
-	private static final String host="localhost";
+	private static final String host="pccop2b104-06.univ-mlv.fr";
 	
 	static {
 		try {
 			//Récupération du registry de la machine dusk sur le port 6666
-			Registry rg = LocateRegistry.getRegistry("dusk",6666);
+			Registry rg = LocateRegistry.getRegistry(host,6666);
 			//Récupération de la référence du serveur distant
 			Remote r = rg.lookup("rmi://"+host+":6666/RessourceManager");
 			Remote i = rg.lookup("rmi://"+host+":6666/IndisponibiliteManager");
@@ -46,5 +49,11 @@ public class Client {
 	
 	public static IndisponibiliteManager getIndisponibiliteManager() {
 		return im;
+	}
+	
+	public static void main(String[] args) throws RemoteException {
+		IndisponibiliteManager im = Client.getIndisponibiliteManager();
+		RessourceManager rm = Client.getRessourceManager();
+		System.out.println( rm.getRessources(new Teacher("zipstein",null,null,null,null)) );
 	}
 }

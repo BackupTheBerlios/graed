@@ -1,5 +1,6 @@
 package graed.db;
 
+import java.io.Serializable;
 import java.util.List;
 
 import graed.exception.DataBaseException;
@@ -17,7 +18,7 @@ import net.sf.hibernate.expression.Example;
  * 
  * Design Pattern : Singleton
  */
-public class DataBaseManager{
+public class DataBaseManager implements Serializable{
 	/**
 	 * Instance du gestionnaire de base de données.
 	 */

@@ -1,10 +1,14 @@
 
 package graed.ressource;
 
+import java.io.Serializable;
+import java.rmi.Remote;
+import java.rmi.server.UnicastRemoteObject;
+
 /**
  * @author Helder DE SOUSA
  */
-public class Ressource {
+public class Ressource extends UnicastRemoteObject{
 	private String id_ressource;
 	private String type;
 	

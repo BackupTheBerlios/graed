@@ -5,8 +5,9 @@ import graed.exception.DataBaseException;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
 import graed.ressource.Ressource;
+
+import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -22,7 +23,7 @@ import net.sf.hibernate.expression.Expression;
  * 
  * Design pattern : singleton
  */
-public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
+public class IndisponibiliteManagerImpl implements IndisponibiliteManager, Serializable{
 	/**
 	 * Le gestionnaire de base de données utilisé.
 	 */
@@ -36,7 +37,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
      */
     private List toBeNotified;
     
-    public IndisponibiliteManagerImpl() throws RemoteException {
+    private IndisponibiliteManagerImpl() throws RemoteException {
     	dbm = DataBaseManager.getInstance();
     	toBeNotified = new ArrayList();
     }
