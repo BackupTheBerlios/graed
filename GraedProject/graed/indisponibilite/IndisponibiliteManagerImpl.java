@@ -4,6 +4,9 @@ import graed.db.DataBaseManager;
 import graed.exception.DataBaseException;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
+import graed.ressource.RessourceManagerImpl;
+import graed.ressource.type.Room;
+import graed.ressource.type.Teacher;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -95,4 +98,16 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 	           ((IndisponibiliteListener)i.next()).indisponibiliteUpdated(ie);
 	       }
 	}
+	
+	public static void main (String[] args ) throws RemoteException {
+		Teacher t = new Teacher("Zipstein","Mark","","","zipstein@univ-mlv.fr");
+		Room r = new Room("2B104","Copernic","Copernic",40);
+		RessourceManagerImpl.getInstance().addRessource(t);
+		RessourceManagerImpl.getInstance().addRessource(r);
+		Indisponibilite i = new Indisponibilite();
+		i.addRessource(t);
+		i.addRessource(r);
+		IndisponibiliteManagerImpl.getInstance().addIndisponibilite(i);
+	}
+	
 }

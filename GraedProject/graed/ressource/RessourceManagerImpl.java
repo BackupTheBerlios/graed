@@ -46,7 +46,6 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
 				files[i] = files[i].split("\\.")[0];
 				String packageType = directoryTypes.replaceAll("/",".");
 				Ressource r = (Ressource) Class.forName(packageType+"."+files[i]).newInstance();
-				System.out.println( r.getType()+" "+r.getClass() );
 				types.put( r.getType() , r.getClass() );
 			} catch (Exception e) {
 				e.printStackTrace();

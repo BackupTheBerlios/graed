@@ -15,6 +15,30 @@
             <generator class="uuid.hex"/>
         </id>
 
+		<property name="debut">
+            <column name="debut" sql-type="date" not-null="true"/>
+        </property>
+        
+        <property name="fin">
+            <column name="fin" sql-type="date" not-null="true"/>
+        </property>
+        
+        <property name="duree">
+            <column name="duree" sql-type="integer" not-null="true"/>
+        </property>
+        
+        <property name="periodicite">
+            <column name="periodicite" sql-type="varchar(32)" not-null="true"/>
+        </property>
+        
+        <property name="libelle">
+            <column name="libelle" sql-type="varchar(64)" not-null="true"/>
+        </property>
+        
+        <property name="type">
+            <column name="type" sql-type="varchar(32)" not-null="true"/>
+        </property>
+
         <set name="ressources">
              <key column="id_indisponibilite"/>
              <one-to-many class="graed.ressource.Ressource"/>

@@ -18,6 +18,7 @@
 
         <!-- fichiers de mapping -->
         <mapping resource="Ressource.hbm.xml"/>
+        <mapping resource="Indisponibilite.hbm.xml"/>
 
     </session-factory>
 
