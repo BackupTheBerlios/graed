@@ -16,6 +16,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 import com.sun.image.codec.jpeg.ImageFormatException;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
 
 import sun.awt.image.codec.JPEGImageEncoderImpl;
 
@@ -40,6 +41,9 @@ public class Exporter {
             Graphics g = img.getGraphics();
             c.printAll(g);
             /* Encodage de l'image */
+            JPEGEncodeParam param = j.getJPEGEncodeParam();
+            param.setQuality((float)0.7,true);
+            j.setJPEGEncodeParam(param);
             j.encode(img);
             out.close();
         } catch( Exception e ) {
