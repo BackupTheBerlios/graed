@@ -140,9 +140,10 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
    }
    
    protected void fireRessourceAdded( RessourceInterface re  ) {
+   
    	for( Iterator i=toBeNotified.iterator(); i.hasNext(); ) {
         try {
-			((Callback)i.next()).notify(re, Callback.ADD);
+        	((Callback)i.next()).notify(re, Callback.ADD);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

@@ -11,6 +11,7 @@ import graed.callback.CallbackThread;
 import graed.client.Client;
 import graed.exception.ExportException;
 import graed.export.Exporter;
+import graed.gui.renderer.NotificationRenderer;
 import graed.gui.ressource.RoomWindow;
 import graed.gui.ressource.TeacherWindow;
 import graed.indisponibilite.IndisponibiliteInterface;
@@ -23,7 +24,10 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
 
@@ -71,6 +75,8 @@ public class CreateMainFrame {
 	public CreateMainFrame() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
 	    JSplashScreen splash = new JSplashScreen( "graed/gui/timetable/icons/splash.png", 100000 );
 	    notif = new JList();
+	    notif.setModel(new DefaultListModel());
+	    notif.setCellRenderer(new NotificationRenderer());
 	    frame=new JFrame();
 		tp=new JCloseableTabbedPane("graed/gui/timetable/icons/fond.png");
 		tp.setOpaque(false);
@@ -137,7 +143,7 @@ public class CreateMainFrame {
 		//notification.setPreferredSize(new Dimension(800,50));
 		notification.add(js);
 		
-		
+		runCallback();
 		
 		return notification;
 	}
@@ -148,31 +154,56 @@ public class CreateMainFrame {
 
 			public void run() {
 				try {
-					((DefaultListModel)notif.getModel()).addElement("Added : "+((RessourceInterface)getSource()).print());
+					GregorianCalendar gc = new GregorianCalendar();
+					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String time = hour+":"+minute;
+					DefaultListModel dlm = (DefaultListModel)notif.getModel();
+					RessourceInterface ri = (RessourceInterface)getSource();
+					dlm.addElement(time+"    "+ri.getType()+" ajouté(e) : "+ri.print());
+					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					notif.validate();
+					notif.repaint();
 				} catch( Exception e ) {
 					e.printStackTrace();
 				}
 			}
 			
 		};
-		
 		CallbackRunnable update = new CallbackRunnable() {
 
 			public void run() {
 				try {
-					((DefaultListModel)notif.getModel()).addElement("Updated : "+((RessourceInterface)getSource()).print());
+					GregorianCalendar gc = new GregorianCalendar();
+					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String time = hour+":"+minute;
+					DefaultListModel dlm = (DefaultListModel)notif.getModel();
+					RessourceInterface ri = (RessourceInterface)getSource();
+					dlm.addElement(time+"    "+ri.getType()+" mis(e) à jour : "+ri.print());
+					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					notif.validate();
+					notif.repaint();
 				} catch( Exception e ) {
 					e.printStackTrace();
 				}
 			}
 			
 		};
-		
 		CallbackRunnable delete = new CallbackRunnable() {
 
 			public void run() {
 				try {
-					((DefaultListModel)notif.getModel()).addElement("Deleted : "+((RessourceInterface)getSource()).print());
+					GregorianCalendar gc = new GregorianCalendar();
+					String hour = gc.get(Calendar.HOUR_OF_DAY)<10?"0":""+gc.get(Calendar.HOUR_OF_DAY);
+					String minute = gc.get(Calendar.MINUTE)<10?"0":""+gc.get(Calendar.MINUTE);
+					String time = hour+":"+minute;
+					DefaultListModel dlm = (DefaultListModel)notif.getModel();
+					RessourceInterface ri = (RessourceInterface)getSource();
+					dlm.addElement(time+"    "+ri.getType()+" supprimé(e) : "+ri.print());
+					notif.ensureIndexIsVisible(dlm.getSize()-1);
+					notif.validate();
+					notif.repaint();
 				} catch( Exception e ) {
 					e.printStackTrace();
 				}
@@ -182,8 +213,7 @@ public class CreateMainFrame {
 		
 		CallbackThread t = new CallbackThread( add,delete,update, Client.getRessourceManager());
 		t.start();
-		
-		
+
 	}
 	
 	/**

@@ -46,7 +46,7 @@ public class CallbackThread extends Thread {
 		}
 	}
 	
-	public void init() {
+	protected void init() {
 		try {
 			run = true;
 			ca = new CallbackImpl();

@@ -196,7 +196,6 @@ protected JButton modify(){
 			try {
 				((MaterielInterface) getInformation()).setName(name.getText());
 				((MaterielInterface) getInformation()).setTypeMateriel(type.getText());
-				System.out.println(((Materiel) getInformation()));			
 				
 				Client.getRessourceManager().updateRessource(((MaterielInterface) getInformation()));
 			} catch (RemoteException e) {
