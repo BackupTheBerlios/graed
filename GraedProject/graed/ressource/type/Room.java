@@ -43,4 +43,53 @@ public class Room extends Ressource {
 		return p;
 	}
 	/* ******************** Getter et Setter *********************** */
+	
+	/**
+	 * @return Returns the batiment.
+	 */
+	public String getBatiment() {
+		return batiment;
+	}
+	/**
+	 * @param batiment The batiment to set.
+	 */
+	public void setBatiment(String batiment) {
+		this.batiment = batiment;
+	}
+	/**
+	 * @return Returns the capacite.
+	 */
+	public int getCapacite() {
+		return capacite;
+	}
+	/**
+	 * @param capacite The capacite to set.
+	 */
+	public void setCapacite(int capacite) {
+		this.capacite = capacite;
+	}
+	/**
+	 * @return Returns the lieu.
+	 */
+	public String getLieu() {
+		return lieu;
+	}
+	/**
+	 * @param lieu The lieu to set.
+	 */
+	public void setLieu(String lieu) {
+		this.lieu = lieu;
+	}
+	/**
+	 * @return Returns the nom.
+	 */
+	public String getNom() {
+		return nom;
+	}
+	/**
+	 * @param nom The nom to set.
+	 */
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 }
