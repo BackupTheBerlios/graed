@@ -372,7 +372,7 @@ public class IndisponibiliteWindow extends IndWindow{
     	JButton b=new JButton("Modifier");
     	b.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent arg0) {
-    			try {
+    			try {    				
     			((IndisponibiliteInterface) getInformation()).setDebut(new Date(date_debut.getDate().getTime())); 
     			((IndisponibiliteInterface) getInformation()).setFin(new Date(date_fin.getDate().getTime()));
     			((IndisponibiliteInterface) getInformation()).setHdebut(((SpinnerTimeModel)hdebut.getModel()).getSQLTime());
@@ -384,9 +384,17 @@ public class IndisponibiliteWindow extends IndWindow{
     			s.clear();
     			for(int i=0;i<select_ress.getModel().getSize();++i){
     				((IndisponibiliteInterface) getInformation()).addRessource((RessourceInterface)select_ress.getModel().getElementAt(i));
-    			}   			
-    			
-					Client.getIndisponibiliteManager().updateIndiponibilite(((IndisponibiliteInterface) getInformation()));
+    			}   
+    			String control=((IndisponibiliteInterface) getInformation()).control();
+    			if(control!=null){
+    				JOptionPane.showMessageDialog(frame,
+							control,
+							"Attention",JOptionPane.INFORMATION_MESSAGE);	
+    				return;
+    			}
+    			if(!ressource_disponible(((IndisponibiliteInterface) getInformation()))){System.out.println("bien");return;}
+				System.out.println("Indispo Modifiée");
+    			Client.getIndisponibiliteManager().updateIndiponibilite(((IndisponibiliteInterface) getInformation()));
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,
 							"l'indisponibilité ne peut être modifiée ",
@@ -399,6 +407,12 @@ public class IndisponibiliteWindow extends IndWindow{
     	
     }
 
+    /** 
+     * Recherche si les ressources de l'indisponibilité sont disponibles
+     * @param i indisponibilité
+     * @return vrai si elles sont disponibles
+     * @throws RemoteException
+     */
     private boolean ressource_disponible(IndisponibiliteInterface i) throws RemoteException{
     	for(int j=0;j<select_ress.getModel().getSize();++j){
     		Collection c=Client.getIndisponibiliteManager().getIndisponibilites((RessourceInterface)select_ress.getModel().getElementAt(j),i.getDebut(),i.getFin());
@@ -406,14 +420,63 @@ public class IndisponibiliteWindow extends IndWindow{
 					IndisponibiliteInterface tmp=(IndisponibiliteInterface) it.next();
 					if(i.getPeriodicite().equals(("ponctuel"))){
 						if(i.getDebut().equals(tmp.getDebut())){
-							Time time_tmp=new Time(i.getHdebut().getTime()+1000*60*i.getDuree());
-							if(i.getHdebut().before(tmp.getHdebut()) && time_tmp.after(tmp.getHdebut()))
-								System.out.println("La ressource "+(RessourceInterface)select_ress.getModel().getElementAt(j)+" est indisponible");
+							System.out.println("meme date");
+							
+							if(compareTime(i,tmp) || compareTime(tmp,i))
+							{
+			    				JOptionPane.showMessageDialog(frame,
+			    						"La ressource "+((RessourceInterface)select_ress.getModel().getElementAt(j)).print()+" est indisponible",
+										"Attention",JOptionPane.INFORMATION_MESSAGE);	
+			    				return false;
+			    			}
+						}
+					}
+					if(i.getPeriodicite().equals(("hebdomadaire"))){
+						System.out.println("dispo hebdomadaire");
+						for(Date d=i.getDebut();d.before(i.getFin())||d.equals(i.getFin());d=new Date(d.getTime()+7*24*60*60*100)){
+							System.out.println("dispo "+d);
+							if(d.equals(tmp.getDebut())){
+								System.out.println("dispo meme jour");							
+								if(compareTime(i,tmp) || compareTime(tmp,i))
+								{
+									JOptionPane.showMessageDialog(frame,
+			    						"La ressource "+((RessourceInterface)select_ress.getModel().getElementAt(j)).print()+" est indisponible",
+										"Attention",JOptionPane.INFORMATION_MESSAGE);	
+									return false;
+								}
+							}
+						}
+					}
+					if(i.getPeriodicite().equals(("bihebdomadaire"))){
+						
+						for(Date d=i.getDebut();d.before(i.getFin())||d.equals(i.getFin());d=new Date(d.getTime()+14*24*60*60*100))
+						if(d.equals(tmp.getDebut())){
+							if(compareTime(i,tmp) || compareTime(tmp,i))
+							{
+			    				JOptionPane.showMessageDialog(frame,
+			    						"La ressource "+((RessourceInterface)select_ress.getModel().getElementAt(j)).print()+" est indisponible",
+										"Attention",JOptionPane.INFORMATION_MESSAGE);	
+			    				return false;
+			    			}
 						}
 					}
 				}
     	}
 		return true;
+    }
+    /**
+     * Compar les horaires entre les indisponibilités
+     * @param i indisponibilité
+     * @param tmp indisponibilité
+     * @return vrai si elles se chevauchent
+     * @throws RemoteException
+     */
+    private boolean compareTime(IndisponibiliteInterface i,IndisponibiliteInterface tmp) throws RemoteException{
+    	Time time_tmp=new Time(i.getHdebut().getTime()+1000*60*tmp.getDuree());
+    	System.out.println("Heure i.deb="+i.getHdebut()+" i.fin="+time_tmp+" tmp.debut="+tmp.getHdebut());
+		if(i.getHdebut().before(tmp.getHdebut()) && time_tmp.after(tmp.getHdebut()))
+			return true;		
+    	return false;
     }
     /**
      * Création du bouton creer
@@ -435,8 +498,15 @@ public class IndisponibiliteWindow extends IndWindow{
     			for(int j=0;j<select_ress.getModel().getSize();++j){
     				i.addRessource((RessourceInterface)select_ress.getModel().getElementAt(j));
     			}
+    			String control=i.control();
+    			if(control!=null){
+    				JOptionPane.showMessageDialog(frame,
+							control,
+							"Attention",JOptionPane.INFORMATION_MESSAGE);
+    				return;
+    			}
     			//System.out.println(i);
-    			ressource_disponible(i);
+    			if(!ressource_disponible(i))return;
 					Client.getIndisponibiliteManager().addIndisponibilite(i);
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(frame,

@@ -218,5 +218,27 @@ public class Indisponibilite extends UnicastRemoteObject implements Indisponibil
 		setPeriodicite(in.getPeriodicite());
 		setRessources(in.getRessources());
 		setType(in.getType());
+	}
+
+	/**
+	 * Controle l'exactitude des données de l'indisponibilité
+	 * @throws RemoteException
+	 */
+	public String control() throws RemoteException {
+		if(getLibelle()==null || getLibelle().equals(""))return "Veuillez renseigner le libelle";
+		if(getDebut()==null)return "Veuillez renseigner la date de début";
+		if(getDuree()==0)return "Veuillez renseigner la durée";
+		if(getFin()==null)return "Veuillez renseigner la date de fin";
+		if(getPeriodicite()==null || getPeriodicite().equals(""))return "Veuillez renseigner la périodicité";
+		if(getPeriodicite().equals("ponctuel") ){
+			if(!(getDebut().equals(getFin())))
+			return "La date de début doit être égale à la date de fin";
+		}
+		else if(getDebut().after(getFin())){
+			return "La date de début doit être inférieure à la date de fin";
+		}
+		if(getType()==null || getType().equals(""))return "Veuillez renseigner le type";
+		if(getHdebut()==null)return "Veuillez renseigner l'heure de début";
+		return null;
 	}	
 }

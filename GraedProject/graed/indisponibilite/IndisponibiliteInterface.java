@@ -108,5 +108,10 @@ public interface IndisponibiliteInterface extends Remote {
 	 * @throws RemoteException
 	 */
 	public void copy( IndisponibiliteInterface in ) throws RemoteException; 
+	/**
+	 * Controle l'exactitude des données de l'indisponibilité
+	 * @throws RemoteException
+	 */
+	public String control( ) throws RemoteException; 
 	
 }
