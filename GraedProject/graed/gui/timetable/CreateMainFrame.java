@@ -1,5 +1,7 @@
 package graed.gui.timetable;
 
+
+
 import graed.callback.CallbackRunnable;
 import graed.callback.CallbackThread;
 import graed.client.Client;
@@ -16,12 +18,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -105,6 +110,16 @@ public class CreateMainFrame {
 				}
 				
 			}});
+		tp.addContainerListener(new ContainerListener(){
+			public void componentAdded(ContainerEvent e) {				
+			}
+
+			public void componentRemoved(ContainerEvent e) {
+				timetable_list.remove(e.getComponent());
+				System.out.println("Component remove");
+			}
+			
+		});
 		tp.setOpaque(false);
 		frame.setTitle("Graed project");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -368,24 +383,24 @@ public class CreateMainFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//System.out.println(c);
+		
 	}
 	/**
 	 * Mise à jour de tous les emploi du temps
 	 *
 	 */
 	public void refresh(){
-		tp.removeAll();
-		for (Iterator it=timetable_list.values().iterator();it.hasNext();)
-			refresh((Timetable) it.next());
+		for (Enumeration en=timetable_list.keys();en.hasMoreElements();)
+			refresh((CreateColTimetable) en.nextElement());
 		enableRefresh(false);
 	}
 	/**
 	 * Mise à jour de l'emploi du temps
 	 * @param t Données concernant l'emploi du temps
 	 */
-	public void refresh(Timetable t){
-		addTimetable(t.getR(),t.getDateDebut(),t.getDateFin());
+	public void refresh(CreateColTimetable t){
+		Timetable ti=(Timetable) timetable_list.get(t);
+		modify(t,ti.getDateDebut(),ti.getDateFin());
 	}
 	/**
 	 * Mise à jour de l'emploi du temps
@@ -424,7 +439,7 @@ public class CreateMainFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		tp.setTitleAt(tp.getSelectedIndex(),time2.getTitle());
+		if(tp.getSelectedIndex()>=0)tp.setTitleAt(tp.getSelectedIndex(),time2.getTitle());
 		time2.validate();
 		time2.repaint();
 	}
