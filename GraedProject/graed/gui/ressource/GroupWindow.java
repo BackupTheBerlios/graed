@@ -9,6 +9,7 @@ import graed.gui.InformationWindow;
 import graed.ressource.RessourceManagerImpl;
 import graed.ressource.event.RessourceEvent;
 import graed.ressource.type.Group;
+import graed.ressource.type.Teacher;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -289,7 +290,8 @@ protected JButton search(){
 			String d = description.getText().length()==0?null:description.getText();
 			String op = option.getText().length()==0?null:option.getText();
 			String m = email.getText().length()==0?null:email.getText();
-			setInformation(new Group(null,n,d,m,null,null,op));
+			Teacher prof = (Teacher) (((String)directeur.getSelectedItem().toString()).length()==0?null:directeur.getSelectedItem());
+			setInformation(new Group(null,n,d,m,null,prof,op));
 			System.out.println(((Group) getInformation()));	
 			Collection l=null;			
 					l= (Collection) RessourceManagerImpl.getInstance().getRessources(((Group) getInformation()));
