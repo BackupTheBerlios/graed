@@ -79,7 +79,7 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		ImageIcon i=new ImageIcon(clazz.getResource("professeur.jpg"));
 		frame.setIconImage(i.getImage());
 		frame.setSize(with,height);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel p=new JPanel(new BorderLayout());
 		frame.setTitle("Liste des professeurs");
 		frame.setContentPane(p);

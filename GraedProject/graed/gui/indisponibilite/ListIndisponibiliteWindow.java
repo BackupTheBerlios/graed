@@ -76,7 +76,7 @@ public class ListIndisponibiliteWindow extends ListIndWindow {
 	 */
 	public void OpenWindow() {		
 		frame.setSize(with,height);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel p=new JPanel(new BorderLayout());
 		frame.setTitle("Liste des indisponibilités");
 		frame.setContentPane(p);

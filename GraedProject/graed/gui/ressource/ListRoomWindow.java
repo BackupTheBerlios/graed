@@ -76,7 +76,7 @@ public class ListRoomWindow extends ListRessourceWindow {
 		ImageIcon i=new ImageIcon(clazz.getResource("classe.gif"));
 		frame.setIconImage(i.getImage());
 		frame.setSize(with,height);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel p=new JPanel(new BorderLayout());
 		frame.setTitle("Liste des salles");
 		frame.setContentPane(p);

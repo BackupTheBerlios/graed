@@ -338,7 +338,7 @@ public class IndisponibiliteWindow extends IndWindow{
     	frame.setTitle("Indisponibilite");
     	frame.setSize(with,height);
     	frame.setResizable(false);
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	
     	JPanel p=new JPanel();
     	GridBagLayout l=new GridBagLayout();

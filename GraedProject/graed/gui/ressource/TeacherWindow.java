@@ -189,7 +189,7 @@ public void OpenWindow(){
 	}
 	frame.setSize(with,height);
 	frame.setResizable(false);
-	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	/** Ajout des composants à la fenêtre **/
 	JPanel p=new JPanel();
