@@ -46,7 +46,7 @@ public class ListUserWindow extends ListRessourceWindow {
 	 */
 	private Object[][] fill(){
 		int j=0;
-		Object[][]o= new Object[super.size()][8];
+		Object[][]o= new Object[super.size()][7];
 		try {					
 			for (Iterator i=super.getIteractor();i.hasNext();){
 				UserInterface t=(UserInterface)i.next();	
@@ -56,9 +56,7 @@ public class ListUserWindow extends ListRessourceWindow {
 				o[j][3]=t.getOffice();
 				o[j][4]=t.getPhone();
 				o[j][5]=t.getEmail();
-				o[j][6]=t.getFonction();
-				o[j][7]=t.getPassword();
-				
+				o[j][6]=t.getFonction();	
 				
 				j++;
 			}
@@ -81,7 +79,7 @@ public class ListUserWindow extends ListRessourceWindow {
 		frame.setTitle("Liste des utilisateurs");
 		frame.setContentPane(p);
 		
-		Object[] o={"Nom","Prénom","Login","Bureau","Tel","Courriel","Fonction","Password"};
+		Object[] o={"Nom","Prénom","Login","Bureau","Tel","Courriel","Fonction"};
 		table=new JTable(fill(),o);
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);

@@ -11,7 +11,6 @@ package graed.gui.user;
 import graed.client.Client;
 import graed.exception.InvalidStateException;
 import graed.gui.InformationWindow;
-import graed.gui.ressource.ListUserWindow;
 import graed.ressource.event.RessourceEvent;
 import graed.user.User;
 import graed.user.UserInterface;
@@ -26,13 +25,14 @@ import java.rmi.RemoteException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class UserWindow extends InformationWindow implements Serializable{
@@ -52,7 +52,7 @@ private JFormattedTextField login;
 private JFormattedTextField office;
 private JFormattedTextField phone; 
 private JFormattedTextField email;
-private JFormattedTextField fonction;
+private JComboBox fonction;
 private JPasswordField passwd1;
 private JPasswordField passwd2;
 
@@ -70,7 +70,8 @@ public UserWindow(int state, UserInterface t) throws InvalidStateException{
 	office = new JFormattedTextField();
 	phone = new JFormattedTextField(); 
 	email = new JFormattedTextField();
-	fonction = new JFormattedTextField();
+	String[] fonct={"","administrateur","secrétaire","professeur","service audiovisuel","etudiant"};
+	fonction = new JComboBox(fonct);
 	passwd1 = new JPasswordField();
 	passwd2 = new JPasswordField();
 	if(state==InformationWindow.MODIFY || state==InformationWindow.SEE){
@@ -89,7 +90,7 @@ public UserWindow(int state, UserInterface t) throws InvalidStateException{
  * @param mask contrainst for the textfield
  * @param name the label
  */
-private void addLine(JPanel p,GridBagConstraints c,String mask,JTextField tf,String name){
+private void addLine(JPanel p,GridBagConstraints c,String mask,JComponent tf,String name){
 	c.gridx = 0;
     c.gridwidth = 1;    
     c.weightx=0; 
@@ -115,34 +116,35 @@ private void addJComponent(JPanel p,GridBagConstraints c){
 	String mask="UUUUUUUUUUUUUUUUUUUUUUUU";
 	c.gridy = 0;
 	addLine(p,c,mask,name, "Nom : ");
-	c.gridy = 1;
+	c.gridy++;
 	addLine(p,c,mask,firstName,"Prénom : ");
-	c.gridy = 2;
+	c.gridy ++;
 	addLine(p,c,mask,login,"Login : ");
 	
 	mask="*****";
-	c.gridy = 3;		
+	c.gridy ++;		
 	addLine(p,c,mask,office,"Bureau : ");
 	
 	/* Phone */
 	mask="##.##.##.##.##";
-	c.gridy = 4;
+	c.gridy ++;
 	addLine(p,c,mask,phone,"Téléphone : ");
 	
 	mask="************************";
-	c.gridy = 5;
+	c.gridy ++;
 	addLine(p,c,mask,email,"Courriel : ");
 
-	c.gridy = 6;
-	addLine(p,c,mask,fonction,"Fonction de l'utilisateur :");
+	c.gridy ++;
+	addLine(p,c,mask,fonction,"Rôle :");
 
-	c.gridy = 7;
+	if(isCreate() || isModify()){
+	c.gridy ++;
 	addLine(p,c,mask,passwd1,"Mot de passe :");
 	
-	c.gridy = 8;
+	c.gridy ++;
 	addLine(p,c,mask,passwd2,"Retaper le mdp :");
-	c.gridy = 9;
-	
+	}
+	c.gridy ++;	
 	c.gridx = 0;
 	
 	if(isCreate()){
@@ -168,7 +170,7 @@ private void FillComponent(){
 		office.setText(((UserInterface) getInformation()).getOffice());
 		phone.setText(((UserInterface) getInformation()).getPhone());
 		email.setText(((UserInterface) getInformation()).getEmail());
-		fonction.setText(((UserInterface) getInformation()).getFonction());
+		fonction.setSelectedItem(((UserInterface) getInformation()).getFonction());
 	} catch (RemoteException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -240,7 +242,7 @@ protected JButton modify(){
 				((UserInterface) getInformation()).setOffice(office.getText());
 				((UserInterface) getInformation()).setPhone(phone.getText());
 				((UserInterface) getInformation()).setEmail(email.getText());
-				((UserInterface) getInformation()).setFonction(fonction.getText());
+				((UserInterface) getInformation()).setFonction((String) fonction.getSelectedItem());
 				if(new String(passwd1.getPassword()).equals(new String(passwd2.getPassword()))){
 					try{
 					    String hpass = User.encodePassword(new String(passwd1.getPassword()));
@@ -294,7 +296,7 @@ protected JButton create(){
 						((UserInterface) getInformation()).setOffice(office.getText());
 						((UserInterface) getInformation()).setPhone(phone.getText());
 						((UserInterface) getInformation()).setEmail(email.getText());
-						((UserInterface) getInformation()).setFonction(fonction.getText());
+						((UserInterface) getInformation()).setFonction((String) fonction.getSelectedItem());
 						if(new String(passwd1.getPassword()).equals(new String(passwd2.getPassword()))){
 							try{
 							    String hpass = User.encodePassword(new String(passwd1.getPassword()));
