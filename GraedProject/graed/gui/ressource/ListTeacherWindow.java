@@ -149,12 +149,11 @@ public class ListTeacherWindow extends ListRessourceWindow {
 		b.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				Teacher t = (Teacher) getRessource(table.getSelectedRow());
-				frame.setEnabled(false);
+				//frame.setEnabled(false);
 				JOptionPane.showMessageDialog(frame,
 							"Cette option n'est pas encore disponible",
-							"Erreur",JOptionPane.INFORMATION_MESSAGE);
+							"Erreur",JOptionPane.WARNING_MESSAGE);
 				
-				System.exit(0);
 			}		
 		});
 		return b;
