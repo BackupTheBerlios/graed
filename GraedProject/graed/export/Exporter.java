@@ -3,13 +3,15 @@
  */
 package graed.export;
 
+import graed.exception.ExportException;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.JobAttributes;
+import java.awt.PageAttributes;
 import java.awt.PrintJob;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.swing.JFrame;
 
@@ -28,37 +30,61 @@ public class Exporter {
      * @throws ImageFormatException
      * @throws IOException
      */
-    public static void exportToJpeg( Component c, String filePath ) throws ImageFormatException, IOException {
-        FileOutputStream out = new FileOutputStream(filePath);
-        JPEGImageEncoderImpl j = new JPEGImageEncoderImpl(out);
-        /* Création d'une image de la taille du component */
-        BufferedImage img = new BufferedImage(c.getWidth(),c.getHeight(),BufferedImage.TYPE_INT_RGB);
-        /* Ecriture du component sur le graphics de l'image */
-        Graphics g = img.getGraphics();
-        c.printAll(g);
-        /* Encodage de l'image */
-        j.encode(img);
-        out.close();
+    public static void exportToJpeg( Component c, String filePath ) throws ExportException {
+        try {
+            FileOutputStream out = new FileOutputStream(filePath);
+            JPEGImageEncoderImpl j = new JPEGImageEncoderImpl(out);
+            /* Création d'une image de la taille du component */
+            BufferedImage img = new BufferedImage(c.getWidth(),c.getHeight(),BufferedImage.TYPE_INT_RGB);
+            /* Ecriture du component sur le graphics de l'image */
+            Graphics g = img.getGraphics();
+            c.printAll(g);
+            /* Encodage de l'image */
+            j.encode(img);
+            out.close();
+        } catch( Exception e ) {
+            throw (ExportException)new ExportException("Impossible de sauvegarder au format jpeg").initCause(e);
+        }
     }
     
-    public static void exportToPrinter( JFrame jf, Component c ) {
-        Properties props = new Properties();
+    /**
+     * Imprime le contenu d'un Component.
+     * @param jf La JFrame contenant le Component
+     * @param c Le Component à imprimer
+     */
+    public static void exportToPrinter( JFrame jf, Component c ) throws ExportException {
+        /*
+         * Impression en couleur sur la zone imprimable de la page avec une orientation du papier en paysage
+         */
+        PageAttributes pa = new PageAttributes();
+    	pa.setColor(PageAttributes.ColorType.COLOR);
+    	pa.setOrigin(PageAttributes.OriginType.PRINTABLE);
+    	pa.setOrientationRequested(PageAttributes.OrientationRequestedType.LANDSCAPE);
     	
-    	props.setProperty("awt.print.paperSize", "A4");
-    	props.setProperty("awt.print.destination", "printer");
-    	    	
     	PrintJob job = jf.getToolkit().getPrintJob
-    	    (jf, "Impression", props);
+    	    (jf, "Impression d'un emploi du temps",
+    	            new JobAttributes(), // attributs par défaut
+    	            pa);
+    	
     	if (job != null) {
     	    Graphics g = job.getGraphics();
-    	    
-    	    jf.printAll(g);
+    	    c.printAll(g);
     	    g.dispose();
     	    job.end();
-    	}
+    	} else
+    	    throw new ExportException("Impossible de lancer l'impression");
     }
     
-    public static void main( String[] args ) throws ImageFormatException, IOException {
+    /**
+     * Imprime le contenu d'une JFrame.
+     * @param jf La JFrame à imprimer.
+     * @throws ExportException
+     */
+    public static void exportToPrinter( JFrame jf ) throws ExportException {
+        exportToPrinter(jf,jf.getContentPane());
+    }
+    
+    public static void main( String[] args ) throws ExportException {
         javax.swing.JFrame f = new javax.swing.JFrame();
         javax.swing.JButton test = new javax.swing.JButton("Test export JPEG");
         f.getContentPane().add( test);
