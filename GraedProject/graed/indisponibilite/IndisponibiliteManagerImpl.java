@@ -4,6 +4,7 @@ import graed.db.DataBaseManager;
 import graed.exception.DataBaseException;
 import graed.indisponibilite.event.IndisponibiliteEvent;
 import graed.indisponibilite.event.IndisponibiliteListener;
+import graed.ressource.Ressource;
 import graed.ressource.RessourceManagerImpl;
 import graed.ressource.type.Room;
 import graed.ressource.type.Teacher;
@@ -11,8 +12,10 @@ import graed.ressource.type.Teacher;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Helder DE SOUSA
@@ -39,6 +42,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 		try {
             dbm.add(i);
         } catch (DataBaseException e) {
+        	e.printStackTrace();
         	throw new RemoteException(e.getMessage());
         }
 	}
@@ -70,7 +74,7 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 	/**
 	 * @see graed.indisponibilite.IndisponibiliteManager#getIndiponibilites(graed.indisponibilite.Indisponibilite)
 	 */
-	public Collection getIndiponibilites(Indisponibilite i)
+	public Collection getIndisponibilites(Indisponibilite i)
 			throws RemoteException {
 		try {
             return dbm.get(i);
@@ -98,16 +102,4 @@ public class IndisponibiliteManagerImpl implements IndisponibiliteManager {
 	           ((IndisponibiliteListener)i.next()).indisponibiliteUpdated(ie);
 	       }
 	}
-	
-	public static void main (String[] args ) throws RemoteException {
-		Teacher t = new Teacher("Zipstein","Mark","","","zipstein@univ-mlv.fr");
-		Room r = new Room("2B104","Copernic","Copernic",40);
-		RessourceManagerImpl.getInstance().addRessource(t);
-		RessourceManagerImpl.getInstance().addRessource(r);
-		Indisponibilite i = new Indisponibilite();
-		i.addRessource(t);
-		i.addRessource(r);
-		IndisponibiliteManagerImpl.getInstance().addIndisponibilite(i);
-	}
-	
 }
