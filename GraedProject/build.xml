@@ -2,7 +2,6 @@
 <project name="Graed" default="compile" basedir=".">
 
 <property name="src" value="graed"/>
-<property name="build" value="build"/>
 <property name="lib" value="graed/lib"/>
 <property name="cfg" value="graed/hibernate/cfg"/>
 

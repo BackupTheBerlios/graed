@@ -145,7 +145,7 @@ public class CreateMainFrame {
 	    tb.add(exp);
 	    tb.add(imp);
 	    tb.addSeparator();
-	    //tb.setBorderPainted(false);
+	    tb.setBorderPainted(true);
 	    tb.setFloatable(false);
 	    tb.setOpaque(false);
 	    return tb;

@@ -10,6 +10,7 @@ import graed.gui.renderer.RessourceListRenderer;
 import graed.ressource.RessourceInterface;
 import graed.util.Graphic;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -280,6 +281,7 @@ protected JPanel OpenWindow(){
  */
 protected JButton search(){
 	JButton b=new JButton("Chercher");
+	b.setBackground(new Color(155,155,155,200));
 	b.addActionListener(new ActionListener(){
 		public void actionPerformed(ActionEvent arg0) {
 			/*Collection c=null;
