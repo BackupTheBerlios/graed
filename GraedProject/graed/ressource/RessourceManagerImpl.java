@@ -48,7 +48,7 @@ public class RessourceManagerImpl extends UnicastRemoteObject implements Ressour
 				Ressource r = (Ressource) Class.forName(packageType+"."+files[i]).newInstance();
 				types.put( r.getRessourceType() , r.getClass() );
 			} catch (Exception e) {
-				throw new RemoteException(e.getLocalizedMessage());
+				throw new RemoteException(e.getMessage());
 			}
         }
     }
